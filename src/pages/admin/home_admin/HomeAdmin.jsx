@@ -8,7 +8,7 @@ function HomeAdmin(props) {
     return (
         <div className='flex flex-col md:flex-row min-h-max'>
             <MenuAdmin />
-            <div className="flex-1 bg-gray-600 text-white min-h-max">
+            <div className="flex-1 p-3 bg-gray-600 text-white min-h-max">
                 <HeaderAdmin />
                 <Categries />
             </div>
