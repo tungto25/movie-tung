@@ -49,10 +49,8 @@ function MenuAdmin(props) {
 
                     </div>
                     <ul className={dropbox == e.id ? "" : "hidden"}>
-                        {e.items.map((b, i) => (
-                            <div className="rounded-2xl bg-white mt-2 p-2 hover:text-yellow-500 border-b-1 mx-auto">
-                                <Link to={`/${b.path}`} >{b.title}</Link >
-                            </div>
+                        {e.items.map((b, i) => ( 
+                                <Link className="rounded-2xl block bg-white mt-2 p-2 hover:text-yellow-500 border-b-1" to={`/${b.path}`} >{b.title}</Link >       
                         ))}
                     </ul>
                 </div>

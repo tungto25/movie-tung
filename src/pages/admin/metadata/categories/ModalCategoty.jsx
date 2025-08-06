@@ -5,19 +5,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useEffect } from 'react';
 import axios from 'axios';
-
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: "15px",
-};
+import { style } from '../../../../untils/styleContants';
+import { addDocument } from '../../../../services/FirebaseService';
 
 export default function ModalCategoty({ open, handleClose, category, setCategory, error, setError, inner, handleUpdate }) {
 
@@ -29,9 +18,8 @@ export default function ModalCategoty({ open, handleClose, category, setCategory
 
     const validation = () => {
         const newError = {
-            level: category.level ? "" : "Please enter level",
-            price: category.price ? "" : "Please enter price",
-            title: category.title ? "" : "Please enter title"
+            name: category.name ? "" : "Please enter name",
+            description: category.description ? "" : "Please enter description",
         };
         setError(newError);
         return Object.values(newError).every(e => e === "");
@@ -40,6 +28,7 @@ export default function ModalCategoty({ open, handleClose, category, setCategory
     const handleChange = (e) => {
         setCategory(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
+
     const addTask = async () => {
         if (!validation()) {
             return
@@ -47,7 +36,7 @@ export default function ModalCategoty({ open, handleClose, category, setCategory
         if (category.id) {
             await axios.put(`https://6878a5b463f24f1fdc9ed6fb.mockapi.io/category/${category.id}`, category);
         } else {
-            await axios.post("https://6878a5b463f24f1fdc9ed6fb.mockapi.io/category", category);
+            await addDocument("Categories", category);
         }
         handleClose();
         setCategory(inner);
@@ -63,43 +52,32 @@ export default function ModalCategoty({ open, handleClose, category, setCategory
     return (
         <Modal
             open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-        >
+            onClose={handleClose}>
             <Box sx={style}>
-                <Typography variant="h6">Please enter information</Typography>
+                <Typography variant="h6">Modal Add Category</Typography>
                 <TextField
-                    value={category.level || ""}
-                    type='number'
+                    value={category.name || ""}
                     onChange={handleChange}
-                    name='level'
-                    label="level"
+                    name='name'
+                    label="Name"
                     fullWidth
                     sx={{ mt: 2 }}
-                    error={!!error.level}
-                    helperText={error.level}
+                    error={!!error.name}
+                    helperText={error.name}
                 />
                 <TextField
-                    value={category.price || ""}
+                    value={category.description || ""}
                     onChange={handleChange}
-                    name='price'
-                    label="Price Per Month"
+                    name='description'
+                    label="Description"
                     fullWidth
+                    multiline
+                    rows={3}
                     sx={{ mt: 2 }}
-                    error={!!error.price}
-                    helperText={error.price}
+                    error={!!error.description}
+                    helperText={error.description}
                 />
-                <TextField
-                    value={category.title || ""}
-                    onChange={handleChange}
-                    name='title'
-                    label="Title"
-                    fullWidth
-                    sx={{ mt: 2 }}
-                    error={!!error.title}
-                    helperText={error.title}
-                />
+
                 <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
                     <Button onClick={addTask} variant="contained">
                         {category?.id ? "Edit" : "Add"}
