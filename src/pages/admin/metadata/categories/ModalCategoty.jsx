@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
 
 const style = {
@@ -16,9 +16,10 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+    borderRadius: "15px",
 };
 
-export default function BasicModal({ open, handleClose, category, setCategory, error, setError, inner, handleUpdate }) {
+export default function ModalCategoty({ open, handleClose, category, setCategory, error, setError, inner, handleUpdate }) {
 
     useEffect(() => {
         if (open) {
@@ -28,7 +29,7 @@ export default function BasicModal({ open, handleClose, category, setCategory, e
 
     const validation = () => {
         const newError = {
-            lever: category.lever ? "" : "Please enter lever",
+            level: category.level ? "" : "Please enter level",
             price: category.price ? "" : "Please enter price",
             title: category.title ? "" : "Please enter title"
         };
@@ -57,6 +58,7 @@ export default function BasicModal({ open, handleClose, category, setCategory, e
         setCategory(inner);
         setError(inner);
     }
+    console.log(category);
 
     return (
         <Modal
@@ -68,15 +70,15 @@ export default function BasicModal({ open, handleClose, category, setCategory, e
             <Box sx={style}>
                 <Typography variant="h6">Please enter information</Typography>
                 <TextField
-                    value={category.lever || ""}
+                    value={category.level || ""}
                     type='number'
                     onChange={handleChange}
-                    name='lever'
-                    label="Lever"
+                    name='level'
+                    label="level"
                     fullWidth
                     sx={{ mt: 2 }}
-                    error={!!error.lever}
-                    helperText={error.lever}
+                    error={!!error.level}
+                    helperText={error.level}
                 />
                 <TextField
                     value={category.price || ""}
@@ -100,7 +102,7 @@ export default function BasicModal({ open, handleClose, category, setCategory, e
                 />
                 <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
                     <Button onClick={addTask} variant="contained">
-                        ADD
+                        {category?.id ? "Edit" : "Add"}
                     </Button>
                     <Button onClick={Cancel} variant="contained" color="error">
                         Cancel

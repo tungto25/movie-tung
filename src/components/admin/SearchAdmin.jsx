@@ -1,13 +1,22 @@
+import { useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 
-function SearchAdmin({ handleOpen }) {
+function SearchAdmin({ handleOpen, search, handleSearch, setSearch }) {
+
+    const inputValue = (e) => {
+        const value = e.target.value;
+        setSearch(value);
+        handleSearch(value);
+    }
 
     return (
-        <div className="flex justify-between items-center mt-5 p-5">
+        <div className="flex justify-between items-center mt-5 p-5 flex-col md:flex-row gap-3">
             <h1 className="text-xl font-bold text-shadow-md">List Plans</h1>
             <div className="flex items-center w-full max-w-md mx-auto  rounded-lg shadow-md p-2 bg-gray-500">
                 <IoIosSearch className="px-1 text-3xl text-white" />
                 <input
+                    value={search}
+                    onChange={inputValue}
                     type="text"
                     placeholder="Enter keyWords..."
                     className="w-full focus:outline-none"

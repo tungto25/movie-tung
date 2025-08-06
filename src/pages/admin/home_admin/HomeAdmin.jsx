@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
 import MenuAdmin from '../../../components/admin/MenuAdmin';
 import HeaderAdmin from '../../../components/admin/HeaderAdmin';
-import Categries from '../categories/Categries';
+import { Outlet } from 'react-router-dom';
+import HomeRouters from '../../../routers/HomeRouters';
 
 function HomeAdmin(props) {
 
@@ -10,7 +10,6 @@ function HomeAdmin(props) {
             <MenuAdmin />
             <div className="flex-1 p-3 bg-gray-600 text-white min-h-max">
                 <HeaderAdmin />
-                <Categries />
             </div>
         </div>
     );

@@ -22,7 +22,7 @@ export const menus = [
             },
             {
                 id: 3,
-                title: "Trailer",
+                title: "Trailers",
                 path: "media_management/Trailer"
             }
         ]
@@ -35,12 +35,12 @@ export const menus = [
             {
                 id: 1,
                 title: "Packages",
-                path: "vip/Package"
+                path: "vip/Packages"
             },
             {
                 id: 2,
-                title: "Peature",
-                path: "vip/Peature"
+                title: "Features",
+                path: "vip/Features"
             },
             {
                 id: 3,

@@ -1,16 +1,21 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
-import HomeAdmin from './pages/admin/home_admin/HomeAdmin'
+import HomeRouters from './routers/HomeRouters'
+import MenuAdmin from './components/admin/MenuAdmin'
+import HeaderAdmin from './components/admin/HeaderAdmin'
+import SearchAdmin from './components/admin/SearchAdmin'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <HomeAdmin />
-    </>
+    <div className='flex flex-col md:flex-row min-h-max'>
+      <MenuAdmin />
+      <div className="flex-1 p-3 bg-gray-600 text-white min-h-max">
+        <HeaderAdmin />
+        <HomeRouters />
+      </div>
+    </div>
   )
 }
 

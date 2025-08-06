@@ -1,4 +1,3 @@
-import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -15,9 +14,11 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import axios from 'axios';
 import { MdDeleteForever, MdEdit } from 'react-icons/md';
-import Button from '@mui/material/Button';
+import { useState } from 'react';
+import ModalDeleted from '../../../../components/admin/ModalDeleted';
+import { FaUser } from "react-icons/fa";
+import { BiSolidCategory } from "react-icons/bi";
 
 function TablePaginationActions(props) {
     const theme = useTheme();
@@ -68,22 +69,20 @@ TablePaginationActions.propTypes = {
     rowsPerPage: PropTypes.number.isRequired,
 };
 
-export default function CustomPaginationActionsTable({ editOpen }) {
-    const [categories, setCategories] = React.useState([]);
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-    const getApi = async () => {
-        const response = await axios.get("https://6878a5b463f24f1fdc9ed6fb.mockapi.io/category");
-        setCategories(response.data);
-    };
-
-    React.useEffect(() => {
-        getApi();
-    }, []);
-
+export default function TableMovie({ editOpen, filter }) {
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [openDeleted, setOpenDeleted] = useState(false);
+    const [idDeleted, setIdDeleted] = useState(null);
+    const showModalDeleted = (id) => {
+        setOpenDeleted(true);
+        setIdDeleted(id);
+    }
+    const handleCloseDel = () => {
+        setOpenDeleted(false);
+    }
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - categories.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filter?.length ?? 0) : 0;
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -94,56 +93,79 @@ export default function CustomPaginationActionsTable({ editOpen }) {
         setPage(0);
     };
 
+
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                 <TableBody>
                     <TableRow >
                         <TableCell>#</TableCell>
-                        <TableCell>lever</TableCell>
-                        <TableCell align="right">price Per Month</TableCell>
-                        <TableCell align="right">Title</TableCell>
+                        <TableCell>Image</TableCell>
+                        <TableCell align="right">Name Movie</TableCell>
+                        <TableCell align="right">Decription</TableCell>
+                        <TableCell align="right">Duration</TableCell>
+                        <TableCell align="right">Author</TableCell>
+                        <TableCell align="right">Categories</TableCell>
+                        <TableCell align="right">Entities</TableCell>
                         <TableCell align='center'>Action</TableCell>
                     </TableRow>
                     {(rowsPerPage > 0
-                        ? categories.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        : categories
+                        ? filter.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : filter
                     ).map((e) => (
 
                         <TableRow key={e.id}>
                             <TableCell>{e.id}</TableCell>
-                            <TableCell>{e.lever}</TableCell>
-                            <TableCell align="right">{e.price}</TableCell>
-                            <TableCell align="right">{e.title}</TableCell>
+                            <TableCell>{e.image}</TableCell>
+                            <TableCell align="right">{e.name}</TableCell>
+                            <TableCell align="right">{e.decription}</TableCell>
+                            <TableCell align="right">{e.duration}</TableCell>
+                            <TableCell align="right">{e.author}</TableCell>
+                            <TableCell >
+                                <div className='flex gap-2 justify-center items-center'>
+                                    <button className='bg-blue-600 p-2 rounded-md'><BiSolidCategory /></button>
+                                </div>
+                            </TableCell>
+                            <TableCell >
+                                <div className='flex gap-2 justify-center items-center'>
+                                    <button className='bg-blue-600 p-2 rounded-md'><FaUser /></button>
+                                </div>
+                            </TableCell>
                             <TableCell >
                                 <div className='flex gap-2 justify-center items-center'>
                                     <button onClick={() => editOpen(e)} className='bg-blue-600 p-2 rounded-md'><MdEdit /></button>
-                                    <button className='bg-red-600 p-2 rounded-md'><MdDeleteForever /></button>
+                                    <button onClick={() => showModalDeleted(e.id)} className='bg-red-600 p-2 rounded-md'><MdDeleteForever /></button>
                                 </div>
                             </TableCell>
                         </TableRow>
                     ))}
                     {emptyRows > 0 && (
                         <TableRow style={{ height: 53 * emptyRows }}>
-                            <TableCell colSpan={3} />
+                            <TableCell colSpan={5} />
                         </TableRow>
                     )}
                 </TableBody>
                 <TableFooter>
                     <TableRow>
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                            colSpan={3}
-                            count={categories.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                            ActionsComponent={TablePaginationActions}
-                        />
+                        <TableCell colSpan={9}>
+                            <Box display="flex" justifyContent="flex-end">
+                                <TablePagination
+                                    rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                                    count={filter.length}
+                                    rowsPerPage={rowsPerPage}
+                                    page={page}
+                                    onPageChange={handleChangePage}
+                                    onRowsPerPageChange={handleChangeRowsPerPage}
+                                    ActionsComponent={TablePaginationActions}
+                                />
+                            </Box>
+                        </TableCell>
                     </TableRow>
                 </TableFooter>
+
             </Table>
+            <ModalDeleted openDeleted={openDeleted} handleCloseDel={handleCloseDel} idDeleted={idDeleted} />
         </TableContainer>
+
     );
 }
