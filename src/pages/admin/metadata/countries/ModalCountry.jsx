@@ -6,9 +6,9 @@ import Button from '@mui/material/Button';
 import { useEffect } from 'react';
 import { style } from '../../../../untils/styleContants';
 import { addDocument, updateDocument } from '../../../../services/FirebaseService';
+import { MenuItem } from '@mui/material';
 
-export default function ModalCategoty({ open, handleClose, category, setCategory, error, setError, inner, handleUpdate }) {
-
+function ModalCountry({ open, handleClose, country, setCountry, error, setError, inner, handleUpdate }) {
     useEffect(() => {
         if (open) {
             setError({}); // Reset lỗi mỗi lần mở modal
@@ -17,45 +17,42 @@ export default function ModalCategoty({ open, handleClose, category, setCategory
 
     const validation = () => {
         const newError = {
-            name: category.name ? "" : "Please enter name",
-            description: category.description ? "" : "Please enter description",
+            name: country.name ? "" : "Please enter name",
         };
         setError(newError);
         return Object.values(newError).every(e => e === "");
     };
 
     const handleChange = (e) => {
-        setCategory(prev => ({ ...prev, [e.target.name]: e.target.value }));
+        setCountry(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
     const addTask = async () => {
         if (!validation()) {
             return
         }
-        if (category.id) {
-            await updateDocument("Categories", category);
+        if (country.id) {
+            await updateDocument("Countries", country);
         } else {
-            await addDocument("Categories", category);
+            await addDocument("Countries", country);
         }
         handleClose();
-        setCategory(inner);
+        setCountry(inner);
         handleUpdate();
     }
     const Cancel = () => {
         handleClose();
-        setCategory(inner);
+        setCountry(inner);
         setError(inner);
     }
-    console.log(category);
-
     return (
         <Modal
             open={open}
             onClose={handleClose}>
             <Box sx={style}>
-                <Typography variant="h6">Modal Add Category</Typography>
+                <Typography variant="h6">Modal Add Country</Typography>
                 <TextField
-                    value={category.name || ""}
+                    value={country.name || ""}
                     onChange={handleChange}
                     name='name'
                     label="Name"
@@ -65,21 +62,38 @@ export default function ModalCategoty({ open, handleClose, category, setCategory
                     helperText={error.name}
                 />
                 <TextField
-                    value={category.description || ""}
-                    onChange={handleChange}
-                    name='description'
-                    label="Description"
+                    id="outlined-helperText"
                     fullWidth
-                    multiline
-                    rows={3}
+                    type='date'
+                    onChange={handleChange}
+                    value={country.createAt || ""}
+                    name='createAt'
+                    label="Create At"
                     sx={{ mt: 2 }}
-                    error={!!error.description}
-                    helperText={error.description}
+                    InputLabelProps={{ shrink: true }}
                 />
+                <TextField
+                    select
+                    value={country.region || ""}
+                    onChange={handleChange}
+                    name='region'
+                    label="Region"
+                    fullWidth
+                    sx={{ mt: 2 }}
+                    error={!!error.region}
+                    helperText={error.region}
+                >
+                    <MenuItem value="Asia">Asia</MenuItem>
+                    <MenuItem value="Europe">Europe</MenuItem>
+                    <MenuItem value="Africa">Africa</MenuItem>
+                    <MenuItem value="North America">North America</MenuItem>
+                    <MenuItem value="South America">South America</MenuItem>
+                    <MenuItem value="Oceania">Oceania</MenuItem>
+                </TextField>
 
                 <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
                     <Button onClick={addTask} variant="contained">
-                        {category?.id ? "Edit" : "Add"}
+                        {country?.id ? "Edit" : "Add"}
                     </Button>
                     <Button onClick={Cancel} variant="contained" color="error">
                         Cancel
@@ -89,3 +103,5 @@ export default function ModalCategoty({ open, handleClose, category, setCategory
         </Modal>
     );
 }
+
+export default ModalCountry;

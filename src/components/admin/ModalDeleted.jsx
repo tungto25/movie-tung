@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
     Dialog,
     DialogTitle,
@@ -7,20 +6,34 @@ import {
     DialogActions,
     Button,
 } from '@mui/material';
-import axios from 'axios';
+import { deleteDocument } from '../../services/FirebaseService';
 
 export default function ModalDeleted({ openDeleted, handleCloseDel, idDeleted, handleUpdate }) {
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`https://6878a5b463f24f1fdc9ed6fb.mockapi.io/category/${idDeleted}`);
+            await deleteDocument("Categories", idDeleted);
+            handleUpdate();
+            handleCloseDel();
         } catch (error) {
             console.warn("Không xoá được ở Categories:", error.message);
         }
+        try {
+            await deleteDocument("MovieTypes", idDeleted);
+            handleUpdate();
+            handleCloseDel();
+        } catch (error) {
+            console.warn("Không xoá được ở MovieTypes:", error.message);
+        }
+        try {
+            await deleteDocument("Countries", idDeleted);
+            handleUpdate();
+            handleCloseDel();
+        } catch (error) {
+            console.warn("Không xoá được ở Countries:", error.message);
+        }
 
 
-        handleUpdate();
-        handleCloseDel();
     };
 
     return (
