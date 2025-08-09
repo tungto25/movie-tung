@@ -9,12 +9,6 @@ import { addDocument, updateDocument } from '../../../../services/FirebaseServic
 
 export default function ModalCategoty({ open, handleClose, category, setCategory, error, setError, inner, handleUpdate }) {
 
-    useEffect(() => {
-        if (open) {
-            setError({}); // Reset lỗi mỗi lần mở modal
-        }
-    }, [open]);
-
     const validation = () => {
         const newError = {
             name: category.name ? "" : "Please enter name",
@@ -46,8 +40,6 @@ export default function ModalCategoty({ open, handleClose, category, setCategory
         setCategory(inner);
         setError(inner);
     }
-    console.log(category);
-
     return (
         <Modal
             open={open}
