@@ -1,6 +1,6 @@
 import SearchAdmin from '../../../../../src/components/admin/SearchAdmin';
 import TableCategory from './TableCategory';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import ModalCategoty from './ModalCategoty';
 import ModalDeleted from '../../../../components/admin/ModalDeleted';
 

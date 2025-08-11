@@ -14,7 +14,7 @@ function HeaderAdmin(props) {
                     <div>
                         <div className='flex'>
                             <h1 className='text-3xl text-gray-300'>GOOD MORNING,</h1>
-                            <h1 className='text-3xl font-bold'>John Doe</h1>
+                            <h1 className='text-3xl font-bold'>Tan Tung</h1>
                         </div>
                         <h1 className='text-gray-300'>Your performance summary this week</h1>
                     </div>

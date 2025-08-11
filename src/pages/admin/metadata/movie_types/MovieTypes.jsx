@@ -1,11 +1,10 @@
 import SearchAdmin from '../../../../components/admin/SearchAdmin';
 import TableMovieTypes from './TableMovieTypes';
 import ModalMovieTypes from './ModalMovieTypes';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import ModalDeleted from '../../../../components/admin/ModalDeleted';
-import { ContextMovieTypes } from '../../../../contexts/MovieTypeProvider';
 
-const inner = { name: "", description: "", createAt: "" };
+const inner = { name: "", type: "" };
 function MovieTypes(props) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);
@@ -14,19 +13,18 @@ function MovieTypes(props) {
     const [movieType, setMovieType] = useState(inner);
     const [error, setError] = useState(inner);
     const [update, setUpdate] = useState(false);
-    const [filter, setFilter] = useState([]);
     const [search, setSearch] = useState("");
-    const movieTypes = useContext(ContextMovieTypes);
+    const [page, setPage] = useState(1);
 
+    const handleSearch = (a) => {
+        setSearch(a);
+        setPage(1);
+    }
     const handleCloseDel = () => {
         setOpenDeleted(false);
         setIdDeleted(null);
     }
 
-    const handleSearch = (a) => {
-        const result = movieTypes.filter(e => e.name.toLowerCase().includes(a.toLowerCase()));
-        setFilter(result);
-    }
     const handleOpen = () => {
         setOpen(true);
         setMovieType(inner);
@@ -40,12 +38,11 @@ function MovieTypes(props) {
     const handleUpdate = () => {
         setUpdate(!update)
     }
-    const displayData = search ? filter : movieTypes;
 
     return (
         <div>
             <SearchAdmin title="Movie Types" buttonText="MOVIE TYPE" handleOpen={handleOpen} search={search} setSearch={setSearch} handleSearch={handleSearch} />
-            <TableMovieTypes editOpen={editOpen} displayData={displayData} setOpenDeleted={setOpenDeleted} setIdDeleted={setIdDeleted} />
+            <TableMovieTypes editOpen={editOpen} setOpenDeleted={setOpenDeleted} setIdDeleted={setIdDeleted} search={search} page={page} setPage={setPage} />
             <ModalMovieTypes inner={inner} handleUpdate={handleUpdate} open={open} handleClose={handleClose} movieType={movieType} setMovieType={setMovieType} error={error} setError={setError} />
             <ModalDeleted openDeleted={openDeleted} handleCloseDel={handleCloseDel} idDeleted={idDeleted} handleUpdate={handleUpdate} />
         </div>

@@ -16,6 +16,16 @@ function PaginationTable({ data, handleChange, page, rowsPerPage }) {
                     onChange={handleChange}
                     renderItem={(data) => (
                         <PaginationItem
+                            sx={{
+                                color: "white", // màu số & icon mặc định
+                                "&.Mui-selected": {
+                                    backgroundColor: "gray", // nền khi chọn
+                                    color: "white", // màu chữ khi chọn
+                                },
+                                "& .MuiSvgIcon-root": {
+                                    color: "white", // màu icon mũi tên
+                                }
+                            }}
                             slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
                             {...data}
                         />

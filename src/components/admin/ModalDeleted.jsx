@@ -32,6 +32,13 @@ export default function ModalDeleted({ openDeleted, handleCloseDel, idDeleted, h
         } catch (error) {
             console.warn("Không xoá được ở Countries:", error.message);
         }
+        try {
+            await deleteDocument("Authors", idDeleted);
+            handleUpdate();
+            handleCloseDel();
+        } catch (error) {
+            console.warn("Không xoá được ở Authors:", error.message);
+        }
 
 
     };

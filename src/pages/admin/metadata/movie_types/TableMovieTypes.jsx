@@ -1,18 +1,20 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
-import { useState } from 'react';
+import { useContext} from 'react';
 import { MdDeleteForever, MdEdit } from 'react-icons/md';
 import PaginationTable from '../../../../components/admin/PaginationTable';
+import { ContextMovieTypes } from '../../../../contexts/MovieTypeProvider';
 
-function TableMovieTypes({ editOpen, displayData, setIdDeleted, setOpenDeleted }) {
-    const [page, setPage] = useState(1); 
-    const rowsPerPage = 5; 
+function TableMovieTypes({ editOpen, setIdDeleted, setOpenDeleted, search, page, setPage }) {
+    const movieTypes = useContext(ContextMovieTypes);
+    const dataSearch = movieTypes.filter(e => e.name.toLowerCase().includes(search.toLowerCase()));
+    const rowsPerPage = 5;
 
     const handleChange = (event, value) => {
         setPage(value);
     };
 
- 
-    const paginatedData = displayData.slice(
+
+    const paginatedData = dataSearch.slice(
         (page - 1) * rowsPerPage,
         page * rowsPerPage
     );
@@ -35,20 +37,18 @@ function TableMovieTypes({ editOpen, displayData, setIdDeleted, setOpenDeleted }
                         }}>
                             <TableCell>#</TableCell>
                             <TableCell align="right">Name</TableCell>
-                            <TableCell align="right">Decription</TableCell>
-                            <TableCell align="right">Create At</TableCell>
+                            <TableCell align="right">Type</TableCell>
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>
                         {paginatedData.map((e, index) => (
                             <TableRow key={e.id}>
-                                <TableCell>{index + 1}</TableCell>
+                                <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
                                 <TableCell align="right">{e.name}</TableCell>
-                                <TableCell align="right">{e.description}</TableCell>
-                                <TableCell align="right">{e.createAt}</TableCell>
+                                <TableCell align="right">{e.type}</TableCell>
                                 <TableCell >
                                     <div className='flex gap-2 justify-center items-center'>
-                                        <button onClick={() => editOpen(e)} className='bg-blue-600 p-2 rounded-md'><MdEdit /></button>
-                                        <button onClick={() => showModalDeleted(e.id)} className='bg-red-600 p-2 rounded-md'><MdDeleteForever /></button>
+                                        <button onClick={() => editOpen(e)} className='bg-blue-600 p-2 rounded-md text-white'><MdEdit /></button>
+                                        <button onClick={() => showModalDeleted(e.id)} className='bg-red-600 p-2 rounded-md text-white'><MdDeleteForever /></button>
                                     </div>
                                 </TableCell>
                             </TableRow>
@@ -56,7 +56,7 @@ function TableMovieTypes({ editOpen, displayData, setIdDeleted, setOpenDeleted }
                     </TableBody>
                 </Table>
             </TableContainer>
-            <PaginationTable data={displayData} handleChange={handleChange} page={page} rowsPerPage={rowsPerPage}/>
+            <PaginationTable data={dataSearch} handleChange={handleChange} page={page} rowsPerPage={rowsPerPage} />
         </>
 
 

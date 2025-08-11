@@ -1,21 +1,18 @@
 import { MdDeleteForever, MdEdit } from 'react-icons/md';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import PaginationTable from '../../../../components/admin/PaginationTable';
-import { ContextMovies } from '../../../../contexts/MovieProvider';
-import { BiSolidCategory } from "react-icons/bi";
-import { FaUserLarge } from "react-icons/fa6";
+import { ContextCharacters } from '../../../../contexts/CharacterProvider';
 
-
-function TableMovie({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, search }) {
-    const Movies = useContext(ContextMovies);
+function TableCharacter({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, search }) {
+    const Characters = useContext(ContextCharacters);
 
     const rowsPerPage = 5;
 
     const handleChange = (event, value) => {
         setPage(value);
     };
-    const dataSearch = Movies.filter(e => e.name.toLowerCase().includes(search));
+    const dataSearch = Characters.filter(e => e.name.toLowerCase().includes(search));
 
     const paginatedData = dataSearch.slice(
         (page - 1) * rowsPerPage,
@@ -39,33 +36,21 @@ function TableMovie({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sea
                             }
                         }}>
                             <TableCell>#</TableCell>
-                            <TableCell align="right">Image</TableCell>
                             <TableCell align="right">Name</TableCell>
                             <TableCell align="right">Description</TableCell>
-                            <TableCell align="right">Duration</TableCell>
-                            <TableCell align="right">Author</TableCell>
-                            <TableCell align='center'>Categories</TableCell>
-                            <TableCell align='center'>Entities</TableCell>
+                            <TableCell align="right">Image</TableCell>
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>
                         {paginatedData.map((e, index) => (
                             <TableRow key={e.id}>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
-                                <TableCell align="right" sx={{ width: "15px", height: "15px" }}>{e.image}</TableCell>
                                 <TableCell align="right">{e.name}</TableCell>
                                 <TableCell align="right">{e.description}</TableCell>
-                                <TableCell align="right">{e.duration}</TableCell>
-                                <TableCell align="right">{e.author}</TableCell>
-                                <TableCell align='center'>
-                                    <button className='m-auto bg-purple-600 py-2 rounded-md text-white px-8 shadow-xl transition-transform duration-200 hover:scale-110'><BiSolidCategory /></button>
-                                </TableCell>
-                                <TableCell align='center'>
-                                    <button className='m-auto bg-yellow-600 py-2 rounded-md text-white px-8 shadow-xl transition-transform duration-200 hover:scale-110'><FaUserLarge /></button>
-                                </TableCell>
+                                <TableCell align="right">{e.image}</TableCell>
                                 <TableCell >
                                     <div className='flex gap-2 justify-center items-center'>
-                                        <button onClick={() => editOpen(e)} className='bg-blue-600 p-2 rounded-md text-white transition-transform duration-200 hover:scale-110 shadow-md'><MdEdit /></button>
-                                        <button onClick={() => showModalDeleted(e.id)} className='bg-red-600 p-2 rounded-md text-white transition-transform duration-200 hover:scale-110 shadow-md'><MdDeleteForever /></button>
+                                        <button onClick={() => editOpen(e)} className='bg-blue-600 p-2 rounded-md text-white'><MdEdit /></button>
+                                        <button onClick={() => showModalDeleted(e.id)} className='bg-red-600 p-2 rounded-md text-white'><MdDeleteForever /></button>
                                     </div>
                                 </TableCell>
                             </TableRow>
@@ -78,4 +63,4 @@ function TableMovie({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sea
     );
 }
 
-export default TableMovie;
+export default TableCharacter;

@@ -71,7 +71,7 @@ function MenuAdmin(props) {
                     )}
                 </Link>
                 {open && (<h1 className='mt-4  text-white'>User Managemnent</h1>)}
-                <Link to={"/user-management"} className={`flex gap-3 items-center mt-4 rounded-xl py-2  bg-gray-200 hover:bg-gray-600 hover:text-white ${currentPath === "/user-management" ? "text-yellow-500 bg-gray-500 shadow-md shadow-gray-200" : ""}`}>
+                <Link to={"/user-management"} className={`flex gap-3 items-center mt-4 rounded-xl p-2  bg-gray-200 hover:bg-gray-600 hover:text-white ${currentPath === "/user-management" ? "text-yellow-500 bg-gray-500 shadow-md shadow-gray-200" : ""}`}>
                     <FaUsers className='text-xl' />
                     {open && (
                         <div className=" flex-1">

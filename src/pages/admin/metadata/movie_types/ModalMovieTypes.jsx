@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import { useEffect } from 'react';
 import { style } from '../../../../untils/styleContants';
 import { addDocument, updateDocument } from '../../../../services/FirebaseService';
+import { MenuItem } from '@mui/material';
 
 function ModalMovieTypes({ open, handleClose, movieType, setMovieType, error, setError, inner, handleUpdate }) {
     useEffect(() => {
@@ -17,8 +18,7 @@ function ModalMovieTypes({ open, handleClose, movieType, setMovieType, error, se
     const validation = () => {
         const newError = {
             name: movieType.name ? "" : "Please enter name",
-            description: movieType.description ? "" : "Please enter description",
-            creatAt: movieType.createAt ? "" : "Please enter create at",
+            type: movieType.type ? "" : "Please enter type",
         };
         setError(newError);
         return Object.values(newError).every(e => e === "");
@@ -64,28 +64,20 @@ function ModalMovieTypes({ open, handleClose, movieType, setMovieType, error, se
                     helperText={error.name}
                 />
                 <TextField
-                    value={movieType.description || ""}
+                    select
+                    value={movieType.type || ""}
                     onChange={handleChange}
-                    name='description'
-                    label="Description"
+                    name='type'
+                    label="type"
                     fullWidth
-                    multiline
-                    rows={3}
+                    rows={2}
                     sx={{ mt: 2 }}
                     error={!!error.description}
-                    helperText={error.description}
-                />
-                <TextField
-                    id="outlined-helperText"
-                    fullWidth
-                    type='date'
-                    onChange={handleChange}
-                    value={movieType.createAt || ""}
-                    name='createAt'
-                    label="Create At"
-                    sx={{ mt: 2 }}
-                    InputLabelProps={{ shrink: true }}
-                />
+                    helperText={error.description}>
+                    <MenuItem value="series">Series</MenuItem>
+                    <MenuItem value="movie">Movie</MenuItem>
+                </TextField>
+
                 <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
                     <Button onClick={addTask} variant="contained">
                         {movieType?.id ? "Edit" : "Add"}
