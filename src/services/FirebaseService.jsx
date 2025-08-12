@@ -2,11 +2,17 @@
 import { collection, addDoc, getDocs, doc, deleteDoc, updateDoc, onSnapshot, query, where, setDoc, getDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { db } from "../config/firebaseConfig";
+import { uploadImageToCloudinary } from "../config/cloudiaryConfig";
 
 
 // Thêm tài liệu mới vào một bộ sưu tập cụ thể với tùy chọn tải lên hình ảnh
 export const addDocument = async (collectionName, values) => {
   try {
+    // Nếu có ảnh, upload ảnh lên Cloudinary và cập nhật URL ảnh vào values
+        if (values.img) {
+          const imgUrl = await uploadImageToCloudinary(values.img, collectionName);
+          values.img = imgUrl;
+        }
     // Thêm tài liệu vào bộ sưu tập
     const docRef = await addDoc(collection(db, collectionName), values);
 

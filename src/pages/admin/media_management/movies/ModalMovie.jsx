@@ -3,15 +3,20 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { style } from '../../../../untils/styleContants';
+import { style, style1 } from '../../../../untils/styleContants';
 import { addDocument, updateDocument } from '../../../../services/FirebaseService';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Autocomplete, MenuItem } from '@mui/material';
 import { MdCategory } from "react-icons/md";
 import { FaUserAlt } from "react-icons/fa";
 import { FaImage } from "react-icons/fa";
 import ModalCharacter from './ModalCharacter';
 import ModalCategories from './ModalCategories';
+import { ContextAuthors } from '../../../../contexts/AuthorProvider';
+import { ContextCategories } from '../../../../contexts/CategoryProvider';
+import { ContextActors } from '../../../../contexts/ActorProvider';
+import { ContextCharacters } from '../../../../contexts/CharacterProvider';
+import ModalChoose from './ModalChoose';
 
 function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner, handleUpdate }) {
     const [openCrt, setOpenCrt] = useState(false);
@@ -20,6 +25,14 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
     const [openCate, setOpenCate] = useState(false);
     const handleOpenCategories = () => setOpenCate(true);
     const handleCloseCategories = () => setOpenCate(false);
+    const authors = useContext(ContextAuthors);
+    const actors = useContext(ContextActors);
+    const categories = useContext(ContextCategories);
+    const characters = useContext(ContextCharacters);
+    const [dataChoose,setDataChoose] = useState([]);
+    const [openChoosen, setOpenChoosen] = useState(false);
+    const handleOpenChoosen = () => setOpenChoosen(true);
+    const handleCloseChoosen = () => setOpenChoosen(false);
 
     const validation = () => {
         const newError = {
@@ -55,15 +68,26 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
         setMovie(inner);
         setError(inner);
     }
-    const [img, setImg] = useState([])
-    const handleImg = () => {
 
+    const openChoose  = (type) => {
+          switch(type) {
+              case "categories" : 
+              setDataChoose(categories);
+              break;
+              case "actors" :
+                setDataChoose(actors);
+                break;
+              case "characters" :
+                setDataChoose(characters);
+               break;
+          }
+           handleOpenChoosen();
     }
     return (
         <Modal
             open={open}
             onClose={handleClose}>
-            <Box sx={style} >
+            <Box sx={style1} >
                 <div className='flex items-center gap-2 '>
                     <div className='border-r pr-5 '>
                         <Typography variant="h6">Modal Add Movie</Typography>
@@ -101,9 +125,9 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                             type='number'
                         />
                         <Autocomplete
-                            options={[]}
+                            options={authors}
+                            getOptionLabel={(option) => option.name} // Hiển thị tên của tác giả
                             disablePortal
-                            value={movie.author || ""}
                             onChange={handleChange}
                             fullWidth
                             sx={{ mt: 2 }}
@@ -141,10 +165,13 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                         />
 
                     </div>
-                    <div className='p-2'>
+                    <div className='p-2 mb-auto'>
                         <div className='flex items-center gap-2 my-2'>
                             <h1>Categories</h1>
-                            <MdCategory />
+                            <div onClick={() => openChoose("categories")} className='bg-gray-500 text-white py-2 px-4 rounded-md transition-transform duration-300 hover:bg-gray-700 hover:scale-110'>
+                                <MdCategory />
+                            </div>
+                            
                         </div>
                         <div className='flex items-center gap-2 my-2'>
                             <div className='p-1 border rounded-md flex justify-center items-center transition-transform duration-200 hover:scale-105 shadow-2xl bg-gray-300'>Musical</div>
@@ -153,19 +180,24 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                             <div className='p-1 border rounded-md flex justify-center items-center transition-transform duration-200 hover:scale-105 shadow-2xl bg-gray-300'>Thriller</div>
                         </div>
                         <div className='flex items-center gap-2 my-2'>
-                            <h1>Actor</h1>
-                            <FaUserAlt />
+                            <h1>Actors</h1>
+                            <div onClick={() => openChoose("actors")} className='bg-gray-500 text-white py-2 px-4 rounded-md transition-transform duration-300 hover:bg-gray-700 hover:scale-110'>
+                                <FaUserAlt />
+                            </div>
+                            
                         </div>
                         <div className='flex flex-col items-center gap-1 w-fit rounded-md shadow-2xl mt-4 bg-blue-500 hover:bg-blue-700 cursor-pointer'>
-                            <Button onClick={handleOpenCategories}><FaImage className='text-white text-xl' /></Button>
+                            <Button ><FaImage className='text-white text-xl' /></Button>
                         </div>
 
                         <div className='flex items-center gap-2 my-2'>
                             <h1>Character</h1>
-                            <FaUserAlt />
+                            <div onClick={() => openChoose("characters")} className='bg-gray-500 text-white py-2 px-4 rounded-md transition-transform duration-300 hover:bg-gray-700 hover:scale-110'>
+                                <FaUserAlt />
+                            </div>
                         </div>
                         <div className='flex flex-col items-center gap-1 w-fit rounded-md shadow-2xl mt-4 bg-blue-500 hover:bg-blue-700 cursor-pointer'>
-                            <Button onClick={handleOpenCharacter}><FaImage className='text-white text-xl' /></Button>
+                            <Button ><FaImage className='text-white text-xl' /></Button>
                         </div>
                     </div>
                 </div>
@@ -177,8 +209,7 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                         Cancel
                     </Button>
                 </Box>
-                <ModalCharacter openCrt={openCrt} handleCloseCharacter={handleCloseCharacter}></ModalCharacter>
-                <ModalCategories openCate={openCate} handleCloseCategories={handleCloseCategories}></ModalCategories>
+                <ModalChoose dataChoose={dataChoose} openChoosen={openChoosen} handleCloseChoosen={handleCloseChoosen}></ModalChoose>
             </Box>
         </Modal>
 
