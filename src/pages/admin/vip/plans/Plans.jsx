@@ -4,7 +4,7 @@ import ModalDeleted from '../../../../components/admin/ModalDeleted';
 import TablePlan from './TablePlan';
 import ModalPlan from './ModalPlan';
 
-const inner = { level: "", price: "" }
+const inner = { level: "", price: "",title:"" }
 function Plans(props) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);

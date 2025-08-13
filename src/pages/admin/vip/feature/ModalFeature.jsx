@@ -5,9 +5,42 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { style } from '../../../../untils/styleContants';
 import { addDocument, updateDocument } from '../../../../services/FirebaseService';
-import { MenuItem } from '@mui/material';
+import { Autocomplete, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { useContext } from 'react';
+import { ContextPlans } from '../../../../contexts/PlanProvider';
+import { getOjectById } from '../../../../services/reponsitory';
+import { useRadioGroup } from '@mui/material/RadioGroup';
+import { styled } from '@mui/system';
 
+const StyledFormControlLabel = styled((props) => <FormControlLabel {...props} />)(
+    ({ theme }) => ({
+        variants: [
+            {
+                props: { checked: true },
+                style: {
+                    '.MuiFormControlLabel-label': {
+                        color: theme.palette.primary,
+                    },
+                },
+            },
+        ],
+    }),
+);
 function ModalFeature({ open, handleClose, feature, setFeature, error, setError, inner, handleUpdate }) {
+    const plans = useContext(ContextPlans);
+
+    function MyFormControlLabel(props) {
+        const radioGroup = useRadioGroup();
+
+        let checked = false;
+
+        if (radioGroup) {
+            checked = radioGroup.value === props.value;
+        }
+
+        return <StyledFormControlLabel checked={checked} {...props} />;
+    }
+
     const validation = () => {
         const newError = {
             plan: feature.plan ? "" : "Please enter plan",
@@ -48,20 +81,25 @@ function ModalFeature({ open, handleClose, feature, setFeature, error, setError,
             <Box sx={style}>
                 <Typography variant="h6">Modal Add Features</Typography>
 
-                <TextField
-                    select
-                    value={feature.plan || ""}
-                    onChange={handleChange}
-                    name='plan'
-                    label="plan"
+                <Autocomplete
+                    options={plans}
+                    getOptionLabel={(option) => option.title}
+                    disablePortal
                     fullWidth
                     sx={{ mt: 2 }}
-                    error={!!error.plan}
-                    helperText={error.plan}>
-                    <MenuItem value="Family">Family</MenuItem>
-                    <MenuItem value="Personal">Personal</MenuItem>
-                    <MenuItem value="Student">Student</MenuItem>
-                </TextField>
+                    value={getOjectById(plans, feature.plan)}
+                    onChange={(event, value) =>
+                        setFeature(prev => ({ ...prev, plan: value?.id || "" }))
+                    }
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="Find the plan"
+                            error={!!error.plan}
+                            helperText={error.plan}
+                        />
+                    )}
+                />
 
                 <TextField
                     value={feature.text || ""}
@@ -69,20 +107,16 @@ function ModalFeature({ open, handleClose, feature, setFeature, error, setError,
                     name='text'
                     label="text"
                     fullWidth
+                    multiline
+                    rows={3}
                     sx={{ mt: 2 }}
                     error={!!error.text}
                     helperText={error.text}
                 />
-                <TextField
-                    value={feature.available || ""}
-                    onChange={handleChange}
-                    name='available'
-                    label="available"
-                    fullWidth
-                    sx={{ mt: 2 }}
-                    error={!!error.available}
-                    helperText={error.available}
-                />
+                <RadioGroup name="available" onChange={handleChange} defaultValue="yes" >
+                    <MyFormControlLabel  value="yes" label="Yes" control={<Radio />} />
+                    <MyFormControlLabel value="no" label="No" control={<Radio />} />
+                </RadioGroup>
 
                 <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
                     <Button onClick={addTask} variant="contained">

@@ -3,10 +3,12 @@ import { Avatar, Paper, Table, TableBody, TableCell, TableContainer, TableRow } 
 import { useContext } from 'react';
 import PaginationTable from '../../../../components/admin/PaginationTable';
 import { ContextPackages } from '../../../../contexts/PackageProvider';
+import { ContextPlans } from '../../../../contexts/PlanProvider';
+import { getOjectById } from '../../../../services/reponsitory';
 
-function TablePackage({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, search }) {
+function TablePackage({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, search,packageData }) {
     const packages = useContext(ContextPackages);
-
+    const plans = useContext(ContextPlans);
     const rowsPerPage = 5;
 
     const handleChange = (event, value) => {
@@ -23,6 +25,8 @@ function TablePackage({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, s
         setOpenDeleted(true);
         setIdDeleted(id);
     }
+
+
     return (
         <>
             <TableContainer component={Paper}>
@@ -36,19 +40,17 @@ function TablePackage({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, s
                             }
                         }}>
                             <TableCell>#</TableCell>
-                            <TableCell align="center">Discount</TableCell>
                             <TableCell align="center">Plan</TableCell>
+                            <TableCell align="center">Discount</TableCell>
                             <TableCell align='center'>Time</TableCell>
-                            <TableCell align='center'>Coupon</TableCell>
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>
                         {paginatedData.map((e, index) => (
                             <TableRow key={e.id}>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
+                                <TableCell align="center">{getOjectById(plans, e.plan)?.title}</TableCell>
                                 <TableCell align="center">{e.discount}</TableCell>
-                                <TableCell align="center">{e.plan}</TableCell>
                                 <TableCell align="center">{e.time}</TableCell>
-                                <TableCell align="center">{e.coupon}</TableCell>
                                 <TableCell >
                                     <div className='flex gap-2 justify-center items-center'>
                                         <button onClick={() => editOpen(e)} className='bg-blue-600 p-2 rounded-md text-white'><MdEdit /></button>

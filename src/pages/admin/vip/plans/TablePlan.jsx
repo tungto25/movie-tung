@@ -36,6 +36,7 @@ function TablePlan({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sear
                             }
                         }}>
                             <TableCell>#</TableCell>
+                            <TableCell align="center">Title</TableCell>
                             <TableCell align="center">Level</TableCell>
                             <TableCell align='center'>Price</TableCell>
                             <TableCell align='center'>Action</TableCell>
@@ -43,6 +44,7 @@ function TablePlan({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sear
                         {paginatedData.map((e, index) => (
                             <TableRow key={e.id}>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
+                                <TableCell align="center">{e.title}</TableCell>
                                 <TableCell align="center">{e.level}</TableCell>
                                 <TableCell align="center">{e.price}</TableCell>
                                 <TableCell >

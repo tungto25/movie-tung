@@ -12,6 +12,7 @@ function ModalPlan({ open, handleClose, plan, setPlan, error, setError, inner, h
         const newError = {
             level: plan.level ? "" : "Please enter level",
             price: plan.price ? "" : "Please enter price",
+            title: plan.title ? "" : "Please enter title"
         };
         setError(newError);
         return Object.values(newError).every(e => e === "");
@@ -46,6 +47,16 @@ function ModalPlan({ open, handleClose, plan, setPlan, error, setError, inner, h
             onClose={handleClose}>
             <Box sx={style}>
                 <Typography variant="h6">Modal Add Plans</Typography>
+                <TextField
+                    value={plan.title || ""}
+                    onChange={handleChange}
+                    name='title'
+                    label="title"
+                    fullWidth
+                    sx={{ mt: 2 }}
+                    error={!!error.title}
+                    helperText={error.title}>
+                </TextField>
 
                 <TextField
                     value={plan.level || ""}

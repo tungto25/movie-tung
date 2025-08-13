@@ -3,9 +3,12 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@m
 import { useContext } from 'react';
 import PaginationTable from '../../../../components/admin/PaginationTable';
 import { ContextFeatures } from '../../../../contexts/FeatureProvider';
+import { ContextPlans } from '../../../../contexts/PlanProvider';
+import { getOjectById } from '../../../../services/reponsitory';
 
 function TableFeature({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, search }) {
     const features = useContext(ContextFeatures);
+    const plans = useContext(ContextPlans);
 
     const rowsPerPage = 5;
 
@@ -44,7 +47,7 @@ function TableFeature({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, s
                         {paginatedData.map((e, index) => (
                             <TableRow key={e.id}>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
-                                <TableCell align="center">{e.plan}</TableCell>
+                                <TableCell align="center">{getOjectById(plans, e.plan)?.title}</TableCell>
                                 <TableCell align="center">{e.text}</TableCell>
                                 <TableCell align="center">{e.available}</TableCell>
                                 <TableCell >

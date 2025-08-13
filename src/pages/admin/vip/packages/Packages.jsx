@@ -4,7 +4,7 @@ import TablePackage from './TablePackage';
 import SearchAdmin from '../../../../components/admin/SearchAdmin';
 import ModalDeleted from '../../../../components/admin/ModalDeleted';
 
-const inner = { discount: "", plan: "", time: "", coupon: "" }
+const inner = { discount: "", plan: "", time: ""}
 function Packages(props) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);
@@ -30,10 +30,10 @@ function Packages(props) {
         setpackageData(inner);
         setError(inner);
     }
-    const editOpen = (items) => {
+    const editOpen = (item) => {
         setError(inner);
         setOpen(true);
-        setpackageData(items);
+        setpackageData(item);
     }
     const handleUpdate = () => {
         setUpdate(!update)
@@ -42,7 +42,7 @@ function Packages(props) {
         <div>
             <div>
                 <SearchAdmin title="Packages" buttonText="PACKAGE" handleOpen={handleOpen} search={search} setSearch={setSearch} handleSearch={handleSearch} />
-                <TablePackage editOpen={editOpen} setOpenDeleted={setOpenDeleted} setIdDeleted={setIdDeleted} page={page} setPage={setPage} search={search} />
+                <TablePackage packageData={packageData} editOpen={editOpen} setOpenDeleted={setOpenDeleted} setIdDeleted={setIdDeleted} page={page} setPage={setPage} search={search} />
                 <ModalPackage inner={inner} handleUpdate={handleUpdate} open={open} handleClose={handleClose} packageData={packageData} setpackageData={setpackageData} error={error} setError={setError} />
                 <ModalDeleted openDeleted={openDeleted} handleCloseDel={handleCloseDel} idDeleted={idDeleted} handleUpdate={handleUpdate} />
             </div>

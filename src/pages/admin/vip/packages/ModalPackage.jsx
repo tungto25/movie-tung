@@ -5,15 +5,19 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { style } from '../../../../untils/styleContants';
 import { addDocument, updateDocument } from '../../../../services/FirebaseService';
-import { MenuItem } from '@mui/material';
+import { Autocomplete} from '@mui/material';
+import { ContextPlans } from '../../../../contexts/PlanProvider';
+import { useContext } from 'react';
+import { getOjectById } from '../../../../services/reponsitory';
 
 function ModalPackage({ open, handleClose, packageData, setpackageData, error, setError, inner, handleUpdate }) {
+    const plans = useContext(ContextPlans);
+    
     const validation = () => {
         const newError = {
             discount: packageData.discount ? "" : "Please enter discount",
             plan: packageData.plan ? "" : "Please enter plan",
             time: packageData.time ? "" : "Please enter time",
-            coupon: packageData.coupon ? "" : "Please enter coupon",
         };
         setError(newError);
         return Object.values(newError).every(e => e === "");
@@ -41,16 +45,7 @@ function ModalPackage({ open, handleClose, packageData, setpackageData, error, s
         setpackageData(inner);
         setError(inner);
     }
-    const handleImg = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setpackageData({ ...packageData, img: reader.result });
-            };
-            reader.readAsDataURL(file);
-        }
-    }
+    
     return (
         <Modal
             open={open}
@@ -61,47 +56,43 @@ function ModalPackage({ open, handleClose, packageData, setpackageData, error, s
                     value={packageData.discount || ""}
                     onChange={handleChange}
                     name='discount'
-                    label="discount"
+                    label="Discount"
                     fullWidth
                     sx={{ mt: 2 }}
                     error={!!error.discount}
                     helperText={error.discount}
+                    type='number'
                 />
-                <TextField
-                    select
-                    value={packageData.plan || ""}
-                    onChange={handleChange}
-                    name='plan'
-                    label="plan"
+                <Autocomplete
+                    options={plans}
+                    getOptionLabel={(option) => option.title}
+                    disablePortal
                     fullWidth
                     sx={{ mt: 2 }}
-                    error={!!error.plan}
-                    helperText={error.plan}>
-                    <MenuItem value="Family">Family</MenuItem>
-                    <MenuItem value="Personal">Personal</MenuItem>
-                    <MenuItem value="Student">Student</MenuItem>
-                </TextField>
+                    value={getOjectById(plans,packageData.plan)}
+                    onChange={(event, value) =>
+                        setpackageData(prev => ({ ...prev, plan: value?.id || "" }))
+                    }
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="Find the plan"
+                            error={!!error.plan}
+                            helperText={error.plan}
+                        />
+                    )}
+                />
 
                 <TextField
                     value={packageData.time || ""}
                     onChange={handleChange}
                     name='time'
-                    label="time"
+                    label="Time"
                     fullWidth
                     sx={{ mt: 2 }}
                     error={!!error.time}
                     helperText={error.time}
                     type='number'
-                />
-                <TextField
-                    value={packageData.coupon || ""}
-                    onChange={handleChange}
-                    name='coupon'
-                    label="coupon"
-                    fullWidth
-                    sx={{ mt: 2 }}
-                    error={!!error.coupon}
-                    helperText={error.coupon}
                 />
 
 
