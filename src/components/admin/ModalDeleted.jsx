@@ -39,6 +39,49 @@ export default function ModalDeleted({ openDeleted, handleCloseDel, idDeleted, h
         } catch (error) {
             console.warn("Không xoá được ở Authors:", error.message);
         }
+        try {
+            await deleteDocument("Actors", idDeleted);
+            handleUpdate();
+            handleCloseDel();
+        } catch (error) {
+            console.warn("Không xoá được ở Actors:", error.message);
+        }
+        try {
+            await deleteDocument("Characters", idDeleted);
+            handleUpdate();
+            handleCloseDel();
+        } catch (error) {
+            console.warn("Không xoá được ở Characters:", error.message);
+        }
+        try {
+            await deleteDocument("Movies", idDeleted);
+            handleUpdate();
+            handleCloseDel();
+        } catch (error) {
+            console.warn("Không xoá được ở Movies:", error.message);
+        }
+        try {
+            await deleteDocument("Packages", idDeleted);
+            handleUpdate();
+            handleCloseDel();
+        } catch (error) {
+            console.warn("Không xoá được ở Packages:", error.message);
+        }
+        try {
+            await deleteDocument("Plans", idDeleted);
+            handleUpdate();
+            handleCloseDel();
+        } catch (error) {
+            console.warn("Không xoá được ở Plans:", error.message);
+        }
+        try {
+            await deleteDocument("Features", idDeleted);
+            handleUpdate();
+            handleCloseDel();
+        } catch (error) {
+            console.warn("Không xoá được ở Features:", error.message);
+        }
+
 
 
     };

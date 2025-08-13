@@ -15,6 +15,7 @@ function Actor(props) {
     const [update, setUpdate] = useState(false);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
+
     const handleSearch = (a) => {
         setSearch(a);
         setPage(1);

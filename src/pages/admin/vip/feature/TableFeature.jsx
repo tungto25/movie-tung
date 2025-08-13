@@ -1,18 +1,18 @@
 import { MdDeleteForever, MdEdit } from 'react-icons/md';
-import { Avatar, Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
-import { useContext, useState } from 'react';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
+import { useContext } from 'react';
 import PaginationTable from '../../../../components/admin/PaginationTable';
-import { ContextActors } from '../../../../contexts/ActorProvider';
+import { ContextFeatures } from '../../../../contexts/FeatureProvider';
 
-function TableActor({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, search }) {
-    const actors = useContext(ContextActors);
+function TableFeature({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, search }) {
+    const features = useContext(ContextFeatures);
 
     const rowsPerPage = 5;
 
     const handleChange = (event, value) => {
         setPage(value);
     };
-    const dataSearch = actors.filter(e => e.name.toLowerCase().includes(search));
+    const dataSearch = features.filter(e => e.plan.toLowerCase().includes(search));
 
     const paginatedData = dataSearch.slice(
         (page - 1) * rowsPerPage,
@@ -36,23 +36,17 @@ function TableActor({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sea
                             }
                         }}>
                             <TableCell>#</TableCell>
-                            <TableCell align="center">Image</TableCell>
-                            <TableCell align="right">Name</TableCell>
-                            <TableCell align="right">Description</TableCell>
+                            <TableCell align="center">Plan</TableCell>
+                            <TableCell align='center'>Text</TableCell>
+                            <TableCell align='center'>Available</TableCell>
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>
                         {paginatedData.map((e, index) => (
                             <TableRow key={e.id}>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
-                                <TableCell align="right">
-                                    <Avatar
-                                        src={e.img}
-                                        alt="Auhtor Image"
-                                        sx={{ width: 50, height: 50, margin: ' auto' }}
-                                    />
-                                </TableCell>
-                                <TableCell align="right">{e.name}</TableCell>
-                                <TableCell align="right">{e.description}</TableCell>
+                                <TableCell align="center">{e.plan}</TableCell>
+                                <TableCell align="center">{e.text}</TableCell>
+                                <TableCell align="center">{e.available}</TableCell>
                                 <TableCell >
                                     <div className='flex gap-2 justify-center items-center'>
                                         <button onClick={() => editOpen(e)} className='bg-blue-600 p-2 rounded-md text-white'><MdEdit /></button>
@@ -69,4 +63,4 @@ function TableActor({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sea
     );
 }
 
-export default TableActor;
+export default TableFeature;

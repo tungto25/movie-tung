@@ -22,3 +22,15 @@ export const style1 = {
     p: 4,
     borderRadius: "15px",
 };
+export const style2 = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: "fit-content",
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 3,
+    borderRadius: "15px",
+};

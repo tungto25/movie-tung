@@ -1,9 +1,51 @@
-import React from 'react';
+import { useState } from 'react';
+import ModalFeature from './ModalFeature';
+import SearchAdmin from '../../../../components/admin/SearchAdmin';
+import ModalDeleted from '../../../../components/admin/ModalDeleted';
+import TableFeature from './TableFeature';
 
+const inner = { plan: "", text: "", available: "" }
 function Features(props) {
+    const [openDeleted, setOpenDeleted] = useState(false);
+    const [idDeleted, setIdDeleted] = useState(null);
+    const [open, setOpen] = useState(false);
+    const handleClose = () => setOpen(false);
+    const [feature, setFeature] = useState(inner);
+    const [error, setError] = useState(inner);
+    const [update, setUpdate] = useState(false);
+    const [search, setSearch] = useState("");
+    const [page, setPage] = useState(1);
+
+    const handleSearch = (a) => {
+        setSearch(a);
+        setPage(1);
+    }
+    const handleCloseDel = () => {
+        setOpenDeleted(false);
+        setIdDeleted(null);
+    }
+
+    const handleOpen = () => {
+        setOpen(true);
+        setFeature(inner);
+        setError(inner);
+    }
+    const editOpen = (items) => {
+        setError(inner);
+        setOpen(true);
+        setFeature(items);
+    }
+    const handleUpdate = () => {
+        setUpdate(!update)
+    }
     return (
         <div>
-            fe
+            <div>
+                <SearchAdmin title="Features" buttonText="FEATURE" handleOpen={handleOpen} search={search} setSearch={setSearch} handleSearch={handleSearch} />
+                <TableFeature editOpen={editOpen} setOpenDeleted={setOpenDeleted} setIdDeleted={setIdDeleted} page={page} setPage={setPage} search={search} />
+                <ModalFeature inner={inner} handleUpdate={handleUpdate} open={open} handleClose={handleClose} feature={feature} setFeature={setFeature} error={error} setError={setError} />
+                <ModalDeleted openDeleted={openDeleted} handleCloseDel={handleCloseDel} idDeleted={idDeleted} handleUpdate={handleUpdate} />
+            </div>
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import { MdDeleteForever, MdEdit } from 'react-icons/md';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
+import { Avatar, Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 import { useContext } from 'react';
 import PaginationTable from '../../../../components/admin/PaginationTable';
 import { ContextCharacters } from '../../../../contexts/CharacterProvider';
@@ -36,17 +36,23 @@ function TableCharacter({ editOpen, setIdDeleted, setOpenDeleted, page, setPage,
                             }
                         }}>
                             <TableCell>#</TableCell>
+                            <TableCell align="center">Image</TableCell>
                             <TableCell align="right">Name</TableCell>
                             <TableCell align="right">Description</TableCell>
-                            <TableCell align="right">Image</TableCell>
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>
                         {paginatedData.map((e, index) => (
                             <TableRow key={e.id}>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
+                                <TableCell align="right">
+                                    <Avatar
+                                        src={e.img}
+                                        alt="Character Image"
+                                        sx={{ width: 50, height: 50, margin: ' auto' }}
+                                    />
+                                </TableCell>
                                 <TableCell align="right">{e.name}</TableCell>
                                 <TableCell align="right">{e.description}</TableCell>
-                                <TableCell align="right">{e.image}</TableCell>
                                 <TableCell >
                                     <div className='flex gap-2 justify-center items-center'>
                                         <button onClick={() => editOpen(e)} className='bg-blue-600 p-2 rounded-md text-white'><MdEdit /></button>

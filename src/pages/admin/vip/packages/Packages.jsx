@@ -1,16 +1,16 @@
-import SearchAdmin from '../../../../components/admin/SearchAdmin';
 import { useState } from 'react';
+import ModalPackage from './ModalPackage';
+import TablePackage from './TablePackage';
+import SearchAdmin from '../../../../components/admin/SearchAdmin';
 import ModalDeleted from '../../../../components/admin/ModalDeleted';
-import TableAuthor from './TableAuthor';
-import ModalAuthor from './ModalAuthor';
 
-const inner = { name: "", description: "", img: "" };
-function Authors(props) {
+const inner = { discount: "", plan: "", time: "", coupon: "" }
+function Packages(props) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
-    const [author, setAuthor] = useState(inner);
+    const [packageData, setpackageData] = useState(inner);
     const [error, setError] = useState(inner);
     const [update, setUpdate] = useState(false);
     const [search, setSearch] = useState("");
@@ -27,13 +27,13 @@ function Authors(props) {
 
     const handleOpen = () => {
         setOpen(true);
-        setAuthor(inner);
+        setpackageData(inner);
         setError(inner);
     }
     const editOpen = (items) => {
         setError(inner);
         setOpen(true);
-        setAuthor(items);
+        setpackageData(items);
     }
     const handleUpdate = () => {
         setUpdate(!update)
@@ -41,13 +41,13 @@ function Authors(props) {
     return (
         <div>
             <div>
-                <SearchAdmin title="Authors" buttonText="AUTHOR" handleOpen={handleOpen} search={search} setSearch={setSearch} handleSearch={handleSearch} />
-                <TableAuthor editOpen={editOpen} setOpenDeleted={setOpenDeleted} setIdDeleted={setIdDeleted} page={page} setPage={setPage} search={search} />
-                <ModalAuthor inner={inner} handleUpdate={handleUpdate} open={open} handleClose={handleClose} author={author} setAuthor={setAuthor} error={error} setError={setError} />
+                <SearchAdmin title="Packages" buttonText="PACKAGE" handleOpen={handleOpen} search={search} setSearch={setSearch} handleSearch={handleSearch} />
+                <TablePackage editOpen={editOpen} setOpenDeleted={setOpenDeleted} setIdDeleted={setIdDeleted} page={page} setPage={setPage} search={search} />
+                <ModalPackage inner={inner} handleUpdate={handleUpdate} open={open} handleClose={handleClose} packageData={packageData} setpackageData={setpackageData} error={error} setError={setError} />
                 <ModalDeleted openDeleted={openDeleted} handleCloseDel={handleCloseDel} idDeleted={idDeleted} handleUpdate={handleUpdate} />
             </div>
         </div>
     );
 }
 
-export default Authors;
+export default Packages;

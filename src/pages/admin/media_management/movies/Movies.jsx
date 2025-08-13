@@ -4,7 +4,7 @@ import TableMovie from "./TableMovie";
 import ModalMovie from './ModalMovie';
 import ModalDeleted from '../../../../components/admin/ModalDeleted';
 
-const inner = { name: "", description: "", img: "", author: "", duration: "", planid: "", rent: "" };
+const inner = { name: "", description: "", img: "", author: "", duration: "", plan: "", rent: "" };
 function Movies(props) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);

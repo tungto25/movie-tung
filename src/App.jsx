@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import './App.css'
-import HomeRouters from './routers/HomeRouters'
 import MenuAdmin from './components/admin/MenuAdmin'
 import HeaderAdmin from './components/admin/HeaderAdmin'
+import AdminRouters from './routers/AdminRouters'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -12,7 +12,7 @@ function App() {
       <MenuAdmin />
       <div className="flex-1 p-3 bg-gray-600 text-white min-h-max">
         <HeaderAdmin />
-        <HomeRouters />
+        <AdminRouters />
       </div>
     </div>
   )

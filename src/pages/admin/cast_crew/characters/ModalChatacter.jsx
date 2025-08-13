@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import { style } from '../../../../untils/styleContants';
 import { addDocument, updateDocument } from '../../../../services/FirebaseService';
 import { useState } from 'react';
+import { Avatar } from '@mui/material';
 
 function ModalChatacter({ open, handleClose, character, setCharacter, error, setError, inner, handleUpdate }) {
     const validation = () => {
@@ -39,9 +40,15 @@ function ModalChatacter({ open, handleClose, character, setCharacter, error, set
         setCharacter(inner);
         setError(inner);
     }
-    const [img, setImg] = useState([])
-    const handleImg = () => {
-
+    const handleImg = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setCharacter({ ...character, img: reader.result });
+            };
+            reader.readAsDataURL(file);
+        }
     }
     return (
         <Modal
@@ -80,6 +87,11 @@ function ModalChatacter({ open, handleClose, character, setCharacter, error, set
                         onChange={handleImg}
                     />
                 </label>
+                <Avatar
+                    src={character?.img}
+                    alt="Auhtor Image"
+                    sx={{ width: 150, height: 150, margin: '10px auto' }}
+                />
 
                 <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
                     <Button onClick={addTask} variant="contained">

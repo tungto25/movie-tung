@@ -29,11 +29,11 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
     const actors = useContext(ContextActors);
     const categories = useContext(ContextCategories);
     const characters = useContext(ContextCharacters);
-    const [dataChoose,setDataChoose] = useState([]);
+    const [dataChoose, setDataChoose] = useState([]);
     const [openChoosen, setOpenChoosen] = useState(false);
     const handleOpenChoosen = () => setOpenChoosen(true);
     const handleCloseChoosen = () => setOpenChoosen(false);
-
+    const [modalType, setModalType] = useState("");
     const validation = () => {
         const newError = {
             name: movie.name ? "" : "Please enter name",
@@ -69,27 +69,28 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
         setError(inner);
     }
 
-    const openChoose  = (type) => {
-          switch(type) {
-              case "categories" : 
-              setDataChoose(categories);
-              break;
-              case "actors" :
+    const openChoose = (type) => {
+        switch (type) {
+            case "categories":
+                setDataChoose(categories);
+                break;
+            case "actors":
                 setDataChoose(actors);
                 break;
-              case "characters" :
+            case "characters":
                 setDataChoose(characters);
-               break;
-          }
-           handleOpenChoosen();
+                break;
+        }
+        handleOpenChoosen();
+        setModalType(type);
     }
     return (
         <Modal
             open={open}
             onClose={handleClose}>
             <Box sx={style1} >
-                <div className='flex items-center gap-2 '>
-                    <div className='border-r pr-5 '>
+                <div className='flex items-center gap-2 flex-col md:flex-row'>
+                    <div className='md:border-r md:pr-5 '>
                         <Typography variant="h6">Modal Add Movie</Typography>
                         <TextField
                             value={movie.name || ""}
@@ -142,9 +143,9 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                         />
                         <TextField
                             select
-                            value={movie.planid || ""}
+                            value={movie.plan || ""}
                             onChange={handleChange}
-                            name='planid'
+                            name='plan'
                             label="Plan Id"
                             fullWidth
                             sx={{ mt: 2 }}
@@ -171,7 +172,7 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                             <div onClick={() => openChoose("categories")} className='bg-gray-500 text-white py-2 px-4 rounded-md transition-transform duration-300 hover:bg-gray-700 hover:scale-110'>
                                 <MdCategory />
                             </div>
-                            
+
                         </div>
                         <div className='flex items-center gap-2 my-2'>
                             <div className='p-1 border rounded-md flex justify-center items-center transition-transform duration-200 hover:scale-105 shadow-2xl bg-gray-300'>Musical</div>
@@ -184,7 +185,7 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                             <div onClick={() => openChoose("actors")} className='bg-gray-500 text-white py-2 px-4 rounded-md transition-transform duration-300 hover:bg-gray-700 hover:scale-110'>
                                 <FaUserAlt />
                             </div>
-                            
+
                         </div>
                         <div className='flex flex-col items-center gap-1 w-fit rounded-md shadow-2xl mt-4 bg-blue-500 hover:bg-blue-700 cursor-pointer'>
                             <Button ><FaImage className='text-white text-xl' /></Button>
@@ -201,7 +202,7 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                         </div>
                     </div>
                 </div>
-                <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
+                <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end", }}>
                     <Button onClick={addTask} variant="contained">
                         {movie?.id ? "Edit" : "Add"}
                     </Button>
@@ -209,7 +210,7 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                         Cancel
                     </Button>
                 </Box>
-                <ModalChoose dataChoose={dataChoose} openChoosen={openChoosen} handleCloseChoosen={handleCloseChoosen}></ModalChoose>
+                <ModalChoose modalType={modalType} dataChoose={dataChoose} openChoosen={openChoosen} handleCloseChoosen={handleCloseChoosen}></ModalChoose>
             </Box>
         </Modal>
 

@@ -13,11 +13,11 @@ import ProFile from '../pages/admin/profile/ProFile';
 import UserManagement from '../pages/admin/user_management/UserManagement';
 import UserPages from '../pages/admin/user_pages/UserPages';
 import Features from '../pages/admin/vip/feature/Features';
-import Packeges from '../pages/admin/vip/packages/Packeges';
+import Packages from '../pages/admin/vip/packages/Packages';
 import Plans from '../pages/admin/vip/plans/Plans';
 import { Routes, Route } from 'react-router-dom';
 
-function HomeRouters(props) {
+function AdminRouters(props) {
     const routers = [
         {
             path: "/",
@@ -41,7 +41,7 @@ function HomeRouters(props) {
         },
         {
             path: "vip/packages",
-            element: <Packeges />
+            element: <Packages />
         },
         {
             path: "vip/features",
@@ -99,4 +99,4 @@ function HomeRouters(props) {
     );
 }
 
-export default HomeRouters;
+export default AdminRouters;

@@ -10,27 +10,36 @@ import { AuthorProvider } from './contexts/AuthorProvider';
 import { CharacterProvider } from './contexts/CharacterProvider';
 import { ActorProvider } from './contexts/ActorProvider';
 import { MovieProvider } from './contexts/MovieProvider';
+import { PackageProvider } from './contexts/PackageProvider';
+import { FeatureProvider } from './contexts/FeatureProvider';
+import { PlanProvider } from './contexts/PlanProvider';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <MovieProvider>
-        <ActorProvider>
-          <CharacterProvider>
-            <AuthorProvider>
-              <CountryProvider>
-                <MovieTypeProvider>
-                  <CategoriesProvider>
-                    <App />
-                  </CategoriesProvider>
-                </MovieTypeProvider>
-              </CountryProvider>
-            </AuthorProvider>
-          </CharacterProvider>
-        </ActorProvider>
-      </MovieProvider>
+      <PlanProvider>
+        <FeatureProvider>
+          <PackageProvider>
+            <MovieProvider>
+              <ActorProvider>
+                <CharacterProvider>
+                  <AuthorProvider>
+                    <CountryProvider>
+                      <MovieTypeProvider>
+                        <CategoriesProvider>
+                          <App />
+                        </CategoriesProvider>
+                      </MovieTypeProvider>
+                    </CountryProvider>
+                  </AuthorProvider>
+                </CharacterProvider>
+              </ActorProvider>
+            </MovieProvider>
+          </PackageProvider>
+        </FeatureProvider>
+      </PlanProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

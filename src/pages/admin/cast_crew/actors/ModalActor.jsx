@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import { style } from '../../../../untils/styleContants';
 import { addDocument, updateDocument } from '../../../../services/FirebaseService';
 import { useState } from 'react';
+import { Avatar } from '@mui/material';
 
 function ModalActor({ open, handleClose, actor, setActor, error, setError, inner, handleUpdate }) {
     const validation = () => {
@@ -39,9 +40,15 @@ function ModalActor({ open, handleClose, actor, setActor, error, setError, inner
         setActor(inner);
         setError(inner);
     }
-    const [img, setImg] = useState([])
-    const handleImg = () => {
-
+    const handleImg = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setActor({ ...actor, img: reader.result });
+            };
+            reader.readAsDataURL(file);
+        }
     }
     return (
         <Modal
@@ -80,8 +87,13 @@ function ModalActor({ open, handleClose, actor, setActor, error, setError, inner
                         onChange={handleImg}
                     />
                 </label>
+                <Avatar
+                    src={actor?.img}
+                    alt="Actor Image"
+                    sx={{ width: 150, height: 150, margin: '10px auto' }}
+                />
 
-                <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
+                <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
                     <Button onClick={addTask} variant="contained">
                         {actor?.id ? "Edit" : "Add"}
                     </Button>
