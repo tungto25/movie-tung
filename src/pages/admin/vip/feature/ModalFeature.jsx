@@ -113,8 +113,8 @@ function ModalFeature({ open, handleClose, feature, setFeature, error, setError,
                     error={!!error.text}
                     helperText={error.text}
                 />
-                <RadioGroup name="available" onChange={handleChange} defaultValue="yes" >
-                    <MyFormControlLabel  value="yes" label="Yes" control={<Radio />} />
+                <RadioGroup name="available" onChange={handleChange} defaultValue="yes" value={feature.available}>
+                    <MyFormControlLabel value="yes" label="Yes" control={<Radio />} />
                     <MyFormControlLabel value="no" label="No" control={<Radio />} />
                 </RadioGroup>
 

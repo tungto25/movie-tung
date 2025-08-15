@@ -4,7 +4,7 @@ import ModalMovieTypes from './ModalMovieTypes';
 import { useState } from 'react';
 import ModalDeleted from '../../../../components/admin/ModalDeleted';
 
-const inner = { name: "", type: "" };
+const inner = { name: "", type: "", description: ""};
 function MovieTypes(props) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);

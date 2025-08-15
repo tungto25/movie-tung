@@ -36,7 +36,6 @@ function TableAuthor({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, se
                             }
                         }}>
                             <TableCell>#</TableCell>
-                            <TableCell align="center">Image</TableCell>
                             <TableCell align="right">Name</TableCell>
                             <TableCell align="right">Description</TableCell>
                             <TableCell align='center'>Action</TableCell>
@@ -44,13 +43,6 @@ function TableAuthor({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, se
                         {paginatedData.map((e, index) => (
                             <TableRow key={e.id}>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
-                                <TableCell align='center'>
-                                    <Avatar
-                                        src={e.img}
-                                        alt="Auhtor Image"
-                                        sx={{ width: 50, height: 50, margin: ' auto' }}
-                                    />
-                                </TableCell>
                                 <TableCell align="right">{e.name}</TableCell>
                                 <TableCell align="right">{e.description}</TableCell>
                                 <TableCell >

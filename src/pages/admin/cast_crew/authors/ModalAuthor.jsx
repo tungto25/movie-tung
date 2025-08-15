@@ -79,21 +79,7 @@ function ModalAuthor({ open, handleClose, author, setAuthor, error, setError, in
                     helperText={error.description}
                 />
 
-                <label className='flex flex-col items-center rounded-3xl p-1 border-2 mt-4 w-full bg-gray-500 text-white hover:bg-gray-700'>
-                    <p className='whitespace-nowrap'>Choosen Image</p>
-                    <input
-                        type="file"
-                        className='hidden'
-                        onChange={handleImg}
-                    />
-                </label>
-                <Avatar
-                    src={author?.img}
-                    alt="Auhtor Image"
-                    sx={{ width: 150, height: 150, margin: '10px auto' }}
-                />
-
-                <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
+                <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
                     <Button onClick={addTask} variant="contained">
                         {author?.id ? "Edit" : "Add"}
                     </Button>

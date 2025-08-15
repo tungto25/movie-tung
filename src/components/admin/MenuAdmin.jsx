@@ -28,7 +28,7 @@ function MenuAdmin(props) {
                     ${open ? "" : "rotate-90"} transition-transform duration-200 hover:scale-120`} />
                 {open && (
                     <div className='flex'>
-                        <h1 className='font-bold text-2xl text-white'> WatchTV</h1>
+                        <h1 className='font-bold text-2xl text-white'>Tfilm</h1>
                         <h1 className='font-bold text-2xl text-yellow-400'>Admin</h1>
                     </div>
                 )}

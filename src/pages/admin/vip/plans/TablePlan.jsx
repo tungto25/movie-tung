@@ -46,7 +46,7 @@ function TablePlan({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sear
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
                                 <TableCell align="center">{e.title}</TableCell>
                                 <TableCell align="center">{e.level}</TableCell>
-                                <TableCell align="center">{e.price}</TableCell>
+                                <TableCell align="center"> {Number(e.price).toLocaleString('vi-VN')} <span>đ/tháng</span></TableCell>
                                 <TableCell >
                                     <div className='flex gap-2 justify-center items-center'>
                                         <button onClick={() => editOpen(e)} className='bg-blue-600 p-2 rounded-md text-white'><MdEdit /></button>

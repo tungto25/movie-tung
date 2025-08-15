@@ -8,7 +8,10 @@ import {
     Typography,
     MenuItem,
     Autocomplete,
-    Box
+    Box,
+    Avatar,
+    Badge,
+    IconButton
 } from '@mui/material';
 import { MdCategory } from "react-icons/md";
 import { FaUserAlt, FaImage } from "react-icons/fa";
@@ -19,16 +22,21 @@ import { ContextCategories } from '../../../../contexts/CategoryProvider';
 import { ContextActors } from '../../../../contexts/ActorProvider';
 import { ContextCharacters } from '../../../../contexts/CharacterProvider';
 import ModalChoose from './ModalChoose';
+import { getOjectById } from '../../../../services/reponsitory';
+import { ContextPlans } from '../../../../contexts/PlanProvider';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner, handleUpdate }) {
     const authors = useContext(ContextAuthors);
     const actors = useContext(ContextActors);
     const categories = useContext(ContextCategories);
     const characters = useContext(ContextCharacters);
-
     const [dataChoose, setDataChoose] = useState([]);
     const [openChoosen, setOpenChoosen] = useState(false);
     const [modalType, setModalType] = useState("");
+
+    const plans = useContext(ContextPlans);
+    console.log(authors);
 
     const handleOpenChoosen = () => setOpenChoosen(true);
     const handleCloseChoosen = () => setOpenChoosen(false);
@@ -39,6 +47,7 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
             description: movie.description ? "" : "Please enter description",
             duration: movie.duration ? "" : "Please enter duration",
             author: movie.author ? "" : "Please enter author",
+            plan: movie.plan ? "" : "Please enter plan",
             rent: movie.author ? "" : "Please enter rent",
         };
         setError(newError);
@@ -83,7 +92,30 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
         handleOpenChoosen();
         setModalType(type);
     };
+    const [selectCate, setSelectCate] = useState([]);
+    const [selectActor, setSelectActor] = useState([]);
+    const [selectCrt, setSelectCrt] = useState([]);
+    const handleChoose = (type, items) => {
+        switch (type) {
+            case "categories":
+                setSelectCate(e => [...e, ...items]);
+                break;
+            case "actors":
+                setSelectActor(e => [...e, ...items]);
+                break;
+            case "characters":
+                setSelectCrt(e => [...e, ...items]);
+                break;
+        }
+        handleCloseChoosen();
+    }
+    const selectPlans = plans.find(e => e.id == movie.plan)
+    const handleRemove = (id) => {
+        setSelectCate((e) => e.filter(f => f.id != id));
+        setSelectActor((e) => e.filter(f => f.id != id));
+        setSelectCrt((e) => e.filter(f => f.id != id));
 
+    }
     return (
         <>
             <Dialog
@@ -139,8 +171,9 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                                 disablePortal
                                 fullWidth
                                 sx={{ mt: 2 }}
+                                value={getOjectById(authors, movie.author)}
                                 onChange={(event, value) =>
-                                    setMovie(prev => ({ ...prev, author: value?.name || "" }))
+                                    setMovie(prev => ({ ...prev, author: value?.id || "" }))
                                 }
                                 renderInput={(params) => (
                                     <TextField
@@ -151,29 +184,37 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                                     />
                                 )}
                             />
-                            <TextField
-                                select
-                                value={movie.plan || ""}
-                                onChange={handleChange}
-                                name='plan'
-                                label="Plan Id"
+                            <Autocomplete
+                                options={plans}
+                                getOptionLabel={(option) => option.title}
+                                disablePortal
                                 fullWidth
                                 sx={{ mt: 2 }}
-                            >
-                                <MenuItem value="Family">Family</MenuItem>
-                                <MenuItem value="Personal">Personal</MenuItem>
-                                <MenuItem value="Student">Student</MenuItem>
-                            </TextField>
-                            <TextField
-                                value={movie.rent || ""}
-                                onChange={handleChange}
-                                name='rent'
-                                label="Rent"
-                                fullWidth
-                                sx={{ mt: 2 }}
-                                error={!!error.rent}
-                                helperText={error.rent}
+                                value={getOjectById(plans, movie.plan)}
+                                onChange={(event, value) =>
+                                    setMovie(prev => ({ ...prev, plan: value?.id || "" }))
+                                }
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Find the plan"
+                                        error={!!error.plan}
+                                        helperText={error.plan}
+                                    />
+                                )}
                             />
+                            {selectPlans?.level > 1 &&
+                                (<TextField
+                                    value={movie.rent || ""}
+                                    onChange={handleChange}
+                                    name='rent'
+                                    label="Rent"
+                                    fullWidth
+                                    sx={{ mt: 2 }}
+                                    error={!!error.rent}
+                                    helperText={error.rent}
+                                />)}
+
                         </div>
 
                         {/* Cột phải */}
@@ -183,17 +224,54 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                                 <h1>Categories</h1>
                                 <div
                                     onClick={() => openChoose("categories")}
-                                    className='bg-gray-500 text-white py-2 px-4 rounded-md transition-transform duration-300 hover:bg-gray-700 hover:scale-110'
+                                    className='bg-gray-500 text-white py-2 px-4 rounded-md transition-transform duration-300
+                                     hover:bg-gray-700 hover:scale-110'
                                 >
                                     <MdCategory />
                                 </div>
                             </div>
+                            <div className='flex items-center gap-2 my-2 flex-wrap mt-4'>
+                                {selectCate.map((e) => (
+                                    <Badge
+                                        key={e.id}
+                                        overlap="rectangular"
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
 
-                            <div className='flex items-center gap-2 my-2 flex-wrap'>
-                                <div className='p-1 border rounded-md shadow-2xl bg-gray-300 hover:scale-105 transition-transform'>Musical</div>
-                                <div className='p-1 border rounded-md shadow-2xl bg-gray-300 hover:scale-105 transition-transform'>Actions</div>
-                                <div className='p-1 border rounded-md shadow-2xl bg-gray-300 hover:scale-105 transition-transform'>Drama</div>
-                                <div className='p-1 border rounded-md shadow-2xl bg-gray-300 hover:scale-105 transition-transform'>Thriller</div>
+                                        sx={{
+                                            '& .MuiBadge-badge': {
+                                                transform: 'translate(50%, -50%)',
+                                                backgroundColor: 'transparent',
+                                                color: 'white',
+                                                borderRadius: '50%',
+                                                height: 20,
+                                                minWidth: 20,
+                                            },
+                                            textAlign: "center"
+                                        }}
+                                        badgeContent={
+                                            <IconButton
+                                                size="small"
+                                                sx={{
+                                                    bgcolor: 'white',
+                                                    p: 0,
+                                                    boxShadow: 1,
+                                                    '&:hover': { bgcolor: 'grey.200' },
+                                                    color: "red",
+                                                    scale: 1.2
+                                                }}
+                                            >
+                                                <CancelIcon onClick={() => handleRemove(e.id)} fontSize="inherit" />
+                                            </IconButton>
+
+                                        }
+                                    >
+                                        <div className='px-2 py-1 border rounded-md shadow-2xl bg-gray-300 hover:scale-105 transition-transform'>
+                                            {e.name}
+                                        </div>
+                                    </Badge>))}
                             </div>
 
                             {/* Actors */}
@@ -201,15 +279,69 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                                 <h1>Actors</h1>
                                 <div
                                     onClick={() => openChoose("actors")}
-                                    className='bg-gray-500 text-white py-2 px-4 rounded-md transition-transform duration-300 hover:bg-gray-700 hover:scale-110'
+                                    className='bg-gray-500 text-white py-2 px-4 rounded-md transition-transform duration-300
+                                     hover:bg-gray-700 hover:scale-110'
                                 >
                                     <FaUserAlt />
                                 </div>
                             </div>
 
-                            {/* Upload actor image */}
-                            <div className='flex flex-col items-center gap-1 w-fit rounded-md shadow-2xl mt-4 bg-blue-500 hover:bg-blue-700 cursor-pointer'>
-                                <Button><FaImage className='text-white text-xl' /></Button>
+                            <div className='flex items-center gap-2 my-2 flex-wrap'>
+                                {selectActor.map((e, idx) => (
+                                    <div
+                                        onClick={() => handleSelected(e)}
+                                        key={idx}
+                                        className="cursor-pointer rounded-full
+                                transition-transform duration-200 hover:scale-105
+                                flex flex-col items-center"
+
+                                    >
+                                        <Badge
+                                            color="secondary"
+                                            overlap="circular"
+                                            anchorOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            sx={{
+                                                '& .MuiBadge-badge': {
+                                                    backgroundColor: 'transparent',
+                                                    boxShadow: 'none',
+                                                    padding: 0,
+                                                },
+                                                textAlign: "center"
+                                            }}
+                                            badgeContent={
+                                                <IconButton
+                                                    size="small"
+                                                    sx={{
+                                                        bgcolor: 'white',
+                                                        p: 0,
+                                                        boxShadow: 1,
+                                                        '&:hover': { bgcolor: 'grey.200' },
+                                                        color: "red",
+                                                        scale: 1.2
+                                                    }}
+                                                >
+                                                    <CancelIcon onClick={() => handleRemove(e.id)} fontSize="inherit" />
+                                                </IconButton>
+                                            }
+                                        >
+                                            <Avatar
+                                                src={e.img}
+                                                alt="author Image"
+                                                sx={{
+                                                    width: 50,
+                                                    height: 50,
+                                                    margin: 'auto',
+                                                }}
+                                            />
+                                        </Badge>
+
+                                        <h1 className='text-center '>{e.name}</h1>
+                                    </div>
+                                ))}
+
                             </div>
 
                             {/* Characters */}
@@ -217,15 +349,69 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                                 <h1>Character</h1>
                                 <div
                                     onClick={() => openChoose("characters")}
-                                    className='bg-gray-500 text-white py-2 px-4 rounded-md transition-transform duration-300 hover:bg-gray-700 hover:scale-110'
+                                    className='bg-gray-500 text-white py-2 px-4 rounded-md transition-transform duration-300
+                                     hover:bg-gray-700 hover:scale-110'
                                 >
                                     <FaUserAlt />
                                 </div>
                             </div>
 
                             {/* Upload character image */}
-                            <div className='flex flex-col items-center gap-1 w-fit rounded-md shadow-2xl mt-4 bg-blue-500 hover:bg-blue-700 cursor-pointer'>
-                                <Button><FaImage className='text-white text-xl' /></Button>
+                            <div className='flex items-center gap-2 my-2 flex-wrap'>
+                                {selectCrt.map((e, idx) => (
+                                    <div
+                                        onClick={() => handleSelected(e)}
+                                        key={idx}
+                                        className="cursor-pointer rounded-full
+                                transition-transform duration-200 hover:scale-105
+                                flex flex-col items-center"
+
+                                    >
+                                        <Badge
+                                            color="secondary"
+                                            overlap="circular"
+                                            anchorOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            sx={{
+                                                '& .MuiBadge-badge': {
+                                                    backgroundColor: 'transparent',
+                                                    boxShadow: 'none',
+                                                    padding: 0,
+                                                },
+                                                textAlign: "center"
+                                            }}
+                                            badgeContent={
+                                                <IconButton
+                                                    size="small"
+                                                    sx={{
+                                                        bgcolor: 'white',
+                                                        p: 0,
+                                                        boxShadow: 1,
+                                                        '&:hover': { bgcolor: 'grey.200' },
+                                                        color: "red",
+                                                        scale: 1.2
+                                                    }}
+                                                >
+                                                    <CancelIcon onClick={() => handleRemove(e.id)} fontSize="inherit" />
+                                                </IconButton>
+                                            }
+                                        >
+                                            <Avatar
+                                                src={e.img}
+                                                alt="author Image"
+                                                sx={{
+                                                    width: 50,
+                                                    height: 50,
+                                                    margin: 'auto',
+                                                }}
+                                            />
+                                        </Badge>
+
+                                        <h1 className='text-center '>{e.name}</h1>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -243,6 +429,7 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
 
             {/* Modal choose category/actor/character */}
             <ModalChoose
+                handleChoose={handleChoose}
                 modalType={modalType}
                 dataChoose={dataChoose}
                 openChoosen={openChoosen}

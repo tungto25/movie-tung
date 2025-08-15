@@ -1,5 +1,5 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
-import { useContext} from 'react';
+import { useContext } from 'react';
 import { MdDeleteForever, MdEdit } from 'react-icons/md';
 import PaginationTable from '../../../../components/admin/PaginationTable';
 import { ContextMovieTypes } from '../../../../contexts/MovieTypeProvider';
@@ -37,6 +37,7 @@ function TableMovieTypes({ editOpen, setIdDeleted, setOpenDeleted, search, page,
                         }}>
                             <TableCell>#</TableCell>
                             <TableCell align="right">Name</TableCell>
+                            <TableCell align="right">Description</TableCell>
                             <TableCell align="right">Type</TableCell>
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>
@@ -44,6 +45,7 @@ function TableMovieTypes({ editOpen, setIdDeleted, setOpenDeleted, search, page,
                             <TableRow key={e.id}>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
                                 <TableCell align="right">{e.name}</TableCell>
+                                <TableCell align="right">{e.description}</TableCell>
                                 <TableCell align="right">{e.type}</TableCell>
                                 <TableCell >
                                     <div className='flex gap-2 justify-center items-center'>

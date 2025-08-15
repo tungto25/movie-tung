@@ -19,6 +19,7 @@ function ModalMovieTypes({ open, handleClose, movieType, setMovieType, error, se
         const newError = {
             name: movieType.name ? "" : "Please enter name",
             type: movieType.type ? "" : "Please enter type",
+            description: movieType.description ? "" : "Please enter description",
         };
         setError(newError);
         return Object.values(newError).every(e => e === "");
@@ -64,11 +65,23 @@ function ModalMovieTypes({ open, handleClose, movieType, setMovieType, error, se
                     helperText={error.name}
                 />
                 <TextField
+                    value={movieType.name || ""}
+                    onChange={handleChange}
+                    name='description'
+                    label="Description"
+                    fullWidth
+                    sx={{ mt: 2 }}
+                    multiline
+                    rows={3}
+                    error={!!error.description}
+                    helperText={error.description}
+                />
+                <TextField
                     select
                     value={movieType.type || ""}
                     onChange={handleChange}
                     name='type'
-                    label="type"
+                    label="Type"
                     fullWidth
                     rows={2}
                     sx={{ mt: 2 }}
@@ -78,7 +91,7 @@ function ModalMovieTypes({ open, handleClose, movieType, setMovieType, error, se
                     <MenuItem value="movie">Movie</MenuItem>
                 </TextField>
 
-                <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
+                <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
                     <Button onClick={addTask} variant="contained">
                         {movieType?.id ? "Edit" : "Add"}
                     </Button>

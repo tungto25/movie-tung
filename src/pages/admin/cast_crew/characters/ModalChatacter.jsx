@@ -93,7 +93,7 @@ function ModalChatacter({ open, handleClose, character, setCharacter, error, set
                     sx={{ width: 150, height: 150, margin: '10px auto' }}
                 />
 
-                <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
+                <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
                     <Button onClick={addTask} variant="contained">
                         {character?.id ? "Edit" : "Add"}
                     </Button>
