@@ -4,7 +4,11 @@ import TableMovie from "./TableMovie";
 import ModalMovie from './ModalMovie';
 import ModalDeleted from '../../../../components/admin/ModalDeleted';
 
-const inner = { name: "", description: "", img: "", author: "", duration: "", plan: "", rent: "" };
+const inner = {
+    name: "", description: "", imgUrl: "https://png.pngtree.com/png-vector/20211023/ourmid/pngtree-salon-logo-png-image_4004444.png",
+    author: "", duration: "", plan: "", rent: "",
+    listCate: [], listActor: [], listCharacter: []
+};
 function Movies(props) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);
@@ -15,6 +19,13 @@ function Movies(props) {
     const [update, setUpdate] = useState(false);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
+
+
+    //   setMovie(pre => {
+    //      return {...pre, listCate : [...pre.listCate , id]}
+    //   } )
+    
+    
     const handleSearch = (a) => {
         setSearch(a);
         setPage(1);

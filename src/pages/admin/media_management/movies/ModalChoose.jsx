@@ -14,30 +14,13 @@ import { IoIosSearch } from 'react-icons/io';
 import { useEffect, useState } from 'react';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-function ModalChoose({ openChoosen, handleCloseChoosen, dataChoose, modalType, handleChoose }) {
+function ModalChoose({ openChoosen, handleCloseChoosen, dataChoose, modalType, handleChoose, getChoose }) {
     const [search, setSearch] = useState("");
     const dataSearch = dataChoose.filter(a => a.name.toLowerCase().includes(search.toLowerCase()));
-    const [selected, setSelected] = useState([]);
-    const handleSelected = (item) => {
-        setSelected(prev => {
-            if (prev.some(d => d.id === item.id)) {
-                return prev.filter(e => e.id !== item.id);
-            }
-            return [...prev, item];
-        });
-    };
-
-    useEffect(() => {
-        if (!openChoosen) {
-            setSelected([])
-        }
-    }, [openChoosen]);
-
-    const handleAdd = () => {
-        handleChoose(modalType, selected);
+    console.log(getChoose);
+    const selected = (id) => {
+        return getChoose.includes(id);
     }
-
-
 
     return (
         <Dialog
@@ -65,24 +48,10 @@ function ModalChoose({ openChoosen, handleCloseChoosen, dataChoose, modalType, h
 
             <DialogContent dividers>
                 <div className='flex flex-wrap gap-3'>
-                    {modalType === "categories" &&
+                    {
                         dataSearch.map((e, idx) => (
-                            <h1
-                                onClick={() => handleSelected(e)}
-                                key={idx}
-                                className={` px-3 py-1 
-                                rounded text-sm cursor-pointer flex items-center p-2 border
-                                transition-transform duration-200 hover:scale-105 
-                                ${selected.some(i => i.id == e.id) ? "border-green-500 text-green-500" : "border-gray-500 text-gray-500"}`}
-                            >
-                                {e.name}
-                            </h1>
-                        ))
-                    }
-                    {modalType === "actors" &&
-                        dataSearch.map((e, idx) => (
-                            <div
-                                onClick={() => handleSelected(e)}
+                            modalType !== "categories" ? <div
+                                onClick={() => handleChoose(modalType, e.id)}
                                 key={idx}
                                 className="cursor-pointer rounded-full
                                 transition-transform duration-200 hover:scale-105
@@ -104,7 +73,7 @@ function ModalChoose({ openChoosen, handleCloseChoosen, dataChoose, modalType, h
                                         },
                                         textAlign: "center"
                                     }}
-                                    badgeContent={selected.some(i => i.id == e.id) ?
+                                    badgeContent={selected(e.id) ?
                                         (<IconButton
                                             size="small"
                                             sx={{
@@ -132,72 +101,26 @@ function ModalChoose({ openChoosen, handleCloseChoosen, dataChoose, modalType, h
 
                                 <h1 className='text-center '>{e.name}</h1>
                             </div>
-                        ))
-                    }
-                    {modalType === "characters" &&
-                        dataSearch.map((e, idx) => (
-                            <div
-                                onClick={() => handleSelected(e)}
-                                key={idx}
-                                className="cursor-pointer rounded-full
-                                transition-transform duration-200 hover:scale-105
-                                flex flex-col items-center"
-
-                            >
-                                <Badge
-                                    color="secondary"
-                                    overlap="circular"
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                    sx={{
-                                        '& .MuiBadge-badge': {
-                                            backgroundColor: 'transparent',
-                                            boxShadow: 'none',
-                                            padding: 0,
-                                        },
-                                        textAlign: "center"
-                                    }}
-                                    badgeContent={selected.some(i => i.id == e.id) ?
-                                        (<IconButton
-                                            size="small"
-                                            sx={{
-                                                bgcolor: 'white',
-                                                p: 0,
-                                                boxShadow: 1,
-                                                '&:hover': { bgcolor: 'grey.200' },
-                                                color: "green"
-                                            }}
-                                        >
-                                            <CheckCircleIcon fontSize="inherit" />
-                                        </IconButton>) : ""
-                                    }
+                                : <h1
+                                    onClick={() => handleChoose(modalType, e.id)}
+                                    key={idx}
+                                    className={` px-3 py-1 
+                                rounded text-sm cursor-pointer flex items-center p-2 border
+                                transition-transform duration-200 hover:scale-105 
+                                ${selected(e.id) ? "border-green-500 text-green-500" : "border-gray-500 text-gray-500"}`}
                                 >
-                                    <Avatar
-                                        src={e.img}
-                                        alt="author Image"
-                                        sx={{
-                                            width: 50,
-                                            height: 50,
-                                            margin: 'auto',
-                                        }}
-                                    />
-                                </Badge>
-
-                                <h1 className='text-center '>{e.name}</h1>
-                            </div>
+                                    {e.name}
+                                </h1>
                         ))
                     }
                 </div>
             </DialogContent>
-
-            <DialogActions>
-                <Button variant="contained" onClick={handleAdd}>Add</Button>
+            {/* <DialogActions>
+                <Button variant="contained" >Add</Button>
                 <Button onClick={handleCloseChoosen} variant="contained" color="error">
                     Cancel
                 </Button>
-            </DialogActions>
+            </DialogActions> */}
         </Dialog >
     );
 }

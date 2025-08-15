@@ -34,9 +34,7 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
     const [dataChoose, setDataChoose] = useState([]);
     const [openChoosen, setOpenChoosen] = useState(false);
     const [modalType, setModalType] = useState("");
-
     const plans = useContext(ContextPlans);
-    console.log(authors);
 
     const handleOpenChoosen = () => setOpenChoosen(true);
     const handleCloseChoosen = () => setOpenChoosen(false);
@@ -92,29 +90,52 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
         handleOpenChoosen();
         setModalType(type);
     };
-    const [selectCate, setSelectCate] = useState([]);
-    const [selectActor, setSelectActor] = useState([]);
-    const [selectCrt, setSelectCrt] = useState([]);
-    const handleChoose = (type, items) => {
+
+    const handleChoose = (type, item) => {
         switch (type) {
             case "categories":
-                setSelectCate(e => [...e, ...items]);
+                setMovie(pre => {
+                    return { ...pre, listCate: toggleSelect(pre.listCate, item) }
+                })
                 break;
             case "actors":
-                setSelectActor(e => [...e, ...items]);
+                setMovie(pre => {
+                    return { ...pre, listActor: toggleSelect(pre.listActor, item) }
+                })
                 break;
             case "characters":
-                setSelectCrt(e => [...e, ...items]);
+                setMovie(pre => {
+                    return { ...pre, listCharacter: toggleSelect(pre.listCharacter, item) }
+                })
                 break;
         }
-        handleCloseChoosen();
+    }
+
+    const toggleSelect = (items, id) => {
+        return items.includes(id) ? items.filter(e => e !== id) : [...items, id];
+
     }
     const selectPlans = plans.find(e => e.id == movie.plan)
-    const handleRemove = (id) => {
-        setSelectCate((e) => e.filter(f => f.id != id));
-        setSelectActor((e) => e.filter(f => f.id != id));
-        setSelectCrt((e) => e.filter(f => f.id != id));
 
+    const getDataChoose = () => {
+        switch (modalType) {
+            case "categories":
+                return movie.listCate;
+            case "actors":
+                return movie.listActor;
+            case "characters":
+                return movie.listCharacter;
+        }
+    }
+    const handleImg = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setMovie({ ...movie, imgUrl: reader.result });
+            };
+            reader.readAsDataURL(file);
+        }
     }
     return (
         <>
@@ -231,7 +252,7 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                                 </div>
                             </div>
                             <div className='flex items-center gap-2 my-2 flex-wrap mt-4'>
-                                {selectCate.map((e) => (
+                                {movie.listCate.map((e) => (
                                     <Badge
                                         key={e.id}
                                         overlap="rectangular"
@@ -263,15 +284,16 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                                                     scale: 1.2
                                                 }}
                                             >
-                                                <CancelIcon onClick={() => handleRemove(e.id)} fontSize="inherit" />
+                                                <CancelIcon onClick={() => handleChoose("categories", e)} fontSize="inherit" />
                                             </IconButton>
 
                                         }
                                     >
                                         <div className='px-2 py-1 border rounded-md shadow-2xl bg-gray-300 hover:scale-105 transition-transform'>
-                                            {e.name}
+                                            {getOjectById(categories, e)?.name}
                                         </div>
                                     </Badge>))}
+
                             </div>
 
                             {/* Actors */}
@@ -287,7 +309,7 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                             </div>
 
                             <div className='flex items-center gap-2 my-2 flex-wrap'>
-                                {selectActor.map((e, idx) => (
+                                {movie.listActor.map((e, idx) => (
                                     <div
                                         onClick={() => handleSelected(e)}
                                         key={idx}
@@ -323,12 +345,12 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                                                         scale: 1.2
                                                     }}
                                                 >
-                                                    <CancelIcon onClick={() => handleRemove(e.id)} fontSize="inherit" />
+                                                    <CancelIcon onClick={() => handleChoose("actors", e)} fontSize="inherit" />
                                                 </IconButton>
                                             }
                                         >
                                             <Avatar
-                                                src={e.img}
+                                                src={getOjectById(actors, e)?.img}
                                                 alt="author Image"
                                                 sx={{
                                                     width: 50,
@@ -358,7 +380,7 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
 
                             {/* Upload character image */}
                             <div className='flex items-center gap-2 my-2 flex-wrap'>
-                                {selectCrt.map((e, idx) => (
+                                {movie.listCharacter.map((e, idx) => (
                                     <div
                                         onClick={() => handleSelected(e)}
                                         key={idx}
@@ -394,17 +416,18 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                                                         scale: 1.2
                                                     }}
                                                 >
-                                                    <CancelIcon onClick={() => handleRemove(e.id)} fontSize="inherit" />
+                                                    <CancelIcon onClick={() => handleChoose("characters", e)} fontSize="inherit" />
                                                 </IconButton>
                                             }
                                         >
+
                                             <Avatar
-                                                src={e.img}
+                                                src={getOjectById(characters, e)?.img}
                                                 alt="author Image"
                                                 sx={{
                                                     width: 50,
                                                     height: 50,
-                                                    margin: 'auto',
+                                                    margin: '10px auto',
                                                 }}
                                             />
                                         </Badge>
@@ -413,7 +436,23 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                                     </div>
                                 ))}
                             </div>
+                            <div>
+                                <label className='flex flex-col items-center rounded-3xl p-1 border-2 mt-4 w-full bg-gray-500 text-white hover:bg-gray-700'>
+                                    <p className='whitespace-nowrap'>Choosen Image</p>
+                                    <input
+                                        type="file"
+                                        className='hidden'
+                                        onChange={handleImg}
+                                    />
+                                </label>
+                                <Avatar
+                                    src={movie?.imgUrl}
+                                    alt="Actor Image"
+                                    sx={{ width: 150, height: 150, margin: '10px auto' }}
+                                />
+                            </div>
                         </div>
+
                     </div>
                 </DialogContent>
 
@@ -434,6 +473,7 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                 dataChoose={dataChoose}
                 openChoosen={openChoosen}
                 handleCloseChoosen={handleCloseChoosen}
+                getChoose={getDataChoose()}
             />
         </>
     );
