@@ -13,33 +13,39 @@ import { MovieProvider } from './contexts/MovieProvider';
 import { PackageProvider } from './contexts/PackageProvider';
 import { FeatureProvider } from './contexts/FeatureProvider';
 import { PlanProvider } from './contexts/PlanProvider';
+import { EpisodeProvider } from './contexts/EpisodeProvider';
+import { TrailerProvider } from './contexts/TrailerProvider';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <PlanProvider>
-        <FeatureProvider>
-          <PackageProvider>
-            <MovieProvider>
-              <ActorProvider>
-                <CharacterProvider>
-                  <AuthorProvider>
-                    <CountryProvider>
-                      <MovieTypeProvider>
-                        <CategoriesProvider>
-                          <App />
-                        </CategoriesProvider>
-                      </MovieTypeProvider>
-                    </CountryProvider>
-                  </AuthorProvider>
-                </CharacterProvider>
-              </ActorProvider>
-            </MovieProvider>
-          </PackageProvider>
-        </FeatureProvider>
-      </PlanProvider>
+      <TrailerProvider>
+        <EpisodeProvider>
+          <PlanProvider>
+            <FeatureProvider>
+              <PackageProvider>
+                <MovieProvider>
+                  <ActorProvider>
+                    <CharacterProvider>
+                      <AuthorProvider>
+                        <CountryProvider>
+                          <MovieTypeProvider>
+                            <CategoriesProvider>
+                              <App />
+                            </CategoriesProvider>
+                          </MovieTypeProvider>
+                        </CountryProvider>
+                      </AuthorProvider>
+                    </CharacterProvider>
+                  </ActorProvider>
+                </MovieProvider>
+              </PackageProvider>
+            </FeatureProvider>
+          </PlanProvider>
+        </EpisodeProvider>
+      </TrailerProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

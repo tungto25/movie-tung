@@ -20,12 +20,6 @@ function Movies(props) {
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
 
-
-    //   setMovie(pre => {
-    //      return {...pre, listCate : [...pre.listCate , id]}
-    //   } )
-    
-    
     const handleSearch = (a) => {
         setSearch(a);
         setPage(1);

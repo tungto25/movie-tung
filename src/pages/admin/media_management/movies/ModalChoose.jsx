@@ -1,17 +1,13 @@
 import {
     Avatar,
-    Box,
-    Button,
     Dialog,
     DialogTitle,
     DialogContent,
-    DialogActions,
-    Typography,
     Badge,
     IconButton
 } from '@mui/material';
 import { IoIosSearch } from 'react-icons/io';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 function ModalChoose({ openChoosen, handleCloseChoosen, dataChoose, modalType, handleChoose, getChoose }) {
@@ -59,47 +55,83 @@ function ModalChoose({ openChoosen, handleCloseChoosen, dataChoose, modalType, h
 
                             >
                                 <Badge
-                                    color="secondary"
                                     overlap="circular"
                                     anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
+                                        vertical: "top",
+                                        horizontal: "right",
                                     }}
                                     sx={{
-                                        '& .MuiBadge-badge': {
-                                            backgroundColor: 'transparent',
-                                            boxShadow: 'none',
+                                        "& .MuiBadge-badge": {
+                                            backgroundColor: "transparent",
+                                            boxShadow: "none",
                                             padding: 0,
+                                            transform: "translate(0px, 0px)"
                                         },
-                                        textAlign: "center"
                                     }}
-                                    badgeContent={selected(e.id) ?
-                                        (<IconButton
+                                    badgeContent={selected(e.id) ? (
+                                        <IconButton
                                             size="small"
                                             sx={{
-                                                bgcolor: 'white',
+                                                bgcolor: "white",
                                                 p: 0,
                                                 boxShadow: 1,
-                                                '&:hover': { bgcolor: 'grey.200' },
-                                                color: "green"
+                                                "&:hover": { bgcolor: "grey.200" },
+                                                color: "green",
                                             }}
                                         >
                                             <CheckCircleIcon fontSize="inherit" />
-                                        </IconButton>) : ""
-                                    }
+                                        </IconButton>
+                                    ) : ""}
                                 >
-                                    <Avatar
-                                        src={e.img}
-                                        alt="actors Image"
-                                        sx={{
-                                            width: 50,
-                                            height: 50,
-                                            margin: 'auto',
-                                        }}
-                                    />
+                                    <div style={{ position: "relative", width: 80, height: 80 }}>
+                                        {/* Avatar ở giữa */}
+                                        <Avatar
+                                            src={e.img}
+                                            alt="actors Image"
+                                            sx={{
+                                                width: 50,
+                                                height: 50,
+                                                margin: "auto",
+                                                position: "absolute",
+                                                top: "50%",
+                                                left: "50%",
+                                                transform: "translate(-50%, -50%)",
+                                            }}
+                                        />
+
+                                        {/* Text SVG vòng quanh */}
+                                        <svg
+                                            viewBox="0 0 200 200"
+                                            width="100%"
+                                            height="100%"
+                                            style={{ position: "absolute", top: 0, left: 0, transform: "rotate(-90deg)" }}
+                                        >
+                                            <defs>
+                                                <path
+                                                    id={`circlePath-${e.id}`}
+                                                    d="M 100,100 m -80,0 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0"
+                                                />
+                                            </defs>
+
+                                            <text
+                                                fill="black"
+                                                fontSize="28"
+                                                fontWeight="bold"
+                                                letterSpacing="2"
+                                            >
+                                                <textPath
+                                                    href={`#circlePath-${e.id}`}
+                                                    startOffset="50%"
+                                                    textAnchor="middle"
+                                                >
+                                                    {e.name}
+                                                </textPath>
+                                            </text>
+                                        </svg>
+
+                                    </div>
                                 </Badge>
 
-                                <h1 className='text-center '>{e.name}</h1>
                             </div>
                                 : <h1
                                     onClick={() => handleChoose(modalType, e.id)}

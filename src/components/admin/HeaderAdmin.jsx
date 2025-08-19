@@ -4,20 +4,47 @@ import { IoIosMail } from "react-icons/io";
 import { FaBell } from "react-icons/fa";
 import Avatar from '@mui/material/Avatar';
 import { deepOrange, deepPurple } from '@mui/material/colors';
+import SplitText from "./Text";
 
 function HeaderAdmin(props) {
     const [open, setOpen] = useState(false);
+    const handleAnimationComplete = () => {
+        console.log('All letters have animated!');
+    };
     return (
         <div>
             <div className='p-3'>
                 <div className='flex justify-between items-center '>
-                    <div>
-                        <div className='flex'>
-                            <h1 className='text-3xl text-gray-300'>GOOD MORNING,</h1>
-                            <h1 className='text-3xl font-bold'>Tan Tung</h1>
-                        </div>
-                        <h1 className='text-gray-300'>Your performance summary this week</h1>
+                    <div className="flex flex-col">
+                        <SplitText
+                            text="Good Morning, Tung"
+                            className=" text-2xl font-semibold"
+                            delay={100}
+                            duration={0.6}
+                            ease="power3.out"
+                            splitType="chars"
+                            from={{ opacity: 0, y: 40 }}
+                            to={{ opacity: 1, y: 0 }}
+                            threshold={0.1}
+                            rootMargin="-100px"
+                            onLetterAnimationComplete={handleAnimationComplete}
+                        />
+
+                        <SplitText
+                            text="Your performance summary this week"
+                            className=" text-xl font-medium"
+                            delay={200}
+                            duration={0.6}
+                            ease="power3.out"
+                            splitType="chars"
+                            from={{ opacity: 0, y: 40 }}
+                            to={{ opacity: 1, y: 0 }}
+                            threshold={0.1}
+                            rootMargin="-100px"
+                            onLetterAnimationComplete={handleAnimationComplete}
+                        />
                     </div>
+
                     <div className='flex justify-center items-center gap-3 relative '>
                         <MdOutlineSearch className='text-xl transition-transform duration-150 hover:scale-120' />
                         <IoIosMail className='text-xl transition-transform duration-150 hover:scale-120' />
@@ -36,7 +63,6 @@ function HeaderAdmin(props) {
                     </div>
                 </div>
             </div>
-
         </div>
     );
 }

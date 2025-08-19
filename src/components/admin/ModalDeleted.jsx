@@ -81,6 +81,14 @@ export default function ModalDeleted({ openDeleted, handleCloseDel, idDeleted, h
         } catch (error) {
             console.warn("Không xoá được ở Features:", error.message);
         }
+        try {
+            await deleteDocument("Episodes", idDeleted);
+            handleUpdate();
+            handleCloseDel();
+        } catch (error) {
+            console.warn("Không xoá được ở Episodes:", error.message);
+        }
+
 
 
 

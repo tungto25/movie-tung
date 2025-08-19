@@ -150,9 +150,9 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                 </DialogTitle>
 
                 <DialogContent dividers>
-                    <div className='flex items-center gap-2 flex-col md:flex-row'>
+                    <div className='flex items-center gap-2 flex-col md:flex-row '>
                         {/* Cột trái */}
-                        <div className='md:border-r md:pr-5 w-full'>
+                        <div className='md:border-r md:pr-5 w-full mb-auto'>
                             <TextField
                                 value={movie.name || ""}
                                 onChange={handleChange}

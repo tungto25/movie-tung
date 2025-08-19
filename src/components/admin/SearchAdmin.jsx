@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { IoIosSearch } from "react-icons/io";
+import StarBorder from './StarBorder '
 
 function SearchAdmin({ handleOpen, search, handleSearch, setSearch, title, buttonText }) {
 
@@ -22,7 +22,15 @@ function SearchAdmin({ handleOpen, search, handleSearch, setSearch, title, butto
                     className="w-full focus:outline-none"
                 />
             </div>
-            <button onClick={handleOpen} className="rounded-lg shadow-md py-3 px-4 bg-blue-500 hover:bg-blue-600">ADD {buttonText}</button>
+            <StarBorder
+                onClick={handleOpen}
+                as="button"
+                className="custom-class"
+                color="white"
+                speed="5s"
+            >
+                ADD {buttonText}
+            </StarBorder>
         </div>
     );
 }

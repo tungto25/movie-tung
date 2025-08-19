@@ -1,1 +1,31 @@
 @import "tailwindcss";
+
+/* custom animation cho StarBorder */
+@keyframes star-movement-top {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(250%);
+    }
+}
+
+@keyframes star-movement-bottom {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-250%);
+    }
+}
+
+/* Tạo class utility */
+.animate-star-movement-top {
+    animation: star-movement-top linear infinite;
+}
+
+.animate-star-movement-bottom {
+    animation: star-movement-bottom linear infinite;
+}

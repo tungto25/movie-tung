@@ -1,5 +1,5 @@
 import { MdDeleteForever, MdEdit } from 'react-icons/md';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
+import { Avatar, Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 import { useContext, useState } from 'react';
 import PaginationTable from '../../../../components/admin/PaginationTable';
 import { ContextMovies } from '../../../../contexts/MovieProvider';
@@ -26,36 +26,52 @@ function TableMovie({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sea
         setOpenDeleted(true);
         setIdDeleted(id);
     }
+
     return (
         <>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                     <TableBody>
                         <TableRow sx={{
-                            backgroundColor: "gray",
+                            backgroundColor: "rgba(3, 7, 18, 0.8)",
                             "& .MuiTableCell-root": {
                                 fontWeight: "bold",
                                 color: "white" // nếu muốn chữ trắng
                             }
                         }}>
                             <TableCell>#</TableCell>
-                            <TableCell align="right">Image</TableCell>
-                            <TableCell align="right">Name</TableCell>
-                            <TableCell align="right">Description</TableCell>
-                            <TableCell align="right">Duration</TableCell>
-                            <TableCell align="right">Author</TableCell>
+                            <TableCell align="center">Image</TableCell>
+                            <TableCell align="center">Name</TableCell>
+                            <TableCell align="center">Duration</TableCell>
+                            <TableCell align="center">Author</TableCell>
                             <TableCell align='center'>Categories</TableCell>
+                            <TableCell align="center">Description</TableCell>
                             <TableCell align='center'>Entities</TableCell>
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>
                         {paginatedData.map((e, index) => (
-                            <TableRow key={e.id}>
+                            <TableRow key={e.id} sx={{
+                                background: "rgba(31, 41, 55, 0.8)",
+                                "& .MuiTableCell-root": {
+                                    color: "white" // nếu muốn chữ trắng
+                                }
+                            }}>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
-                                <TableCell align="right" sx={{ width: "15px", height: "15px" }}>{e.image}</TableCell>
-                                <TableCell align="right">{e.name}</TableCell>
-                                <TableCell align="right">{e.description}</TableCell>
-                                <TableCell align="right">{e.duration}</TableCell>
-                                <TableCell align="right">{e.author}</TableCell>
+                                <TableCell align="center" sx={{ width: "15px", height: "15px" }}>
+                                    <Avatar
+                                        src={e.imgUrl}
+                                        alt="movie Image"
+                                        sx={{
+                                            width: 50,
+                                            height: 50,
+                                            margin: 'auto',
+                                        }}
+                                    />
+                                </TableCell>
+                                <TableCell align="center">{e.name}</TableCell>
+                                <TableCell align="center">{e.duration}</TableCell>
+                                <TableCell align="center">{e.author}</TableCell>
+                                <TableCell align="center">{e.description}</TableCell>
                                 <TableCell align='center'>
                                     <button className='m-auto bg-purple-600 py-2 rounded-md text-white px-8 shadow-xl transition-transform duration-200 hover:scale-110'><BiSolidCategory /></button>
                                 </TableCell>

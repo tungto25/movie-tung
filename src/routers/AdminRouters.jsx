@@ -90,11 +90,14 @@ function AdminRouters(props) {
     ]
     return (
         <div>
-            <Routes>
-                {routers.map((e, i) =>
-                    <Route key={i} path={e.path} element={e.element} />
-                )}
-            </Routes>
+            <div>
+                <Routes>
+                    {routers.map((e, i) =>
+                        <Route key={i} path={e.path} element={e.element} />
+                    )}
+                </Routes>
+
+            </div>
         </div>
     );
 }
