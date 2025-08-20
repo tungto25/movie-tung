@@ -3,6 +3,7 @@ import { Avatar, Paper, Table, TableBody, TableCell, TableContainer, TableRow } 
 import { useContext, useState } from 'react';
 import PaginationTable from '../../../../components/admin/PaginationTable';
 import { ContextAuthors } from '../../../../contexts/AuthorProvider';
+import { truncateText } from '../../../../services/reponsitory';
 
 function TableAuthor({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, search }) {
     const Authors = useContext(ContextAuthors);
@@ -44,7 +45,7 @@ function TableAuthor({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, se
                             <TableRow key={e.id}>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
                                 <TableCell align="right">{e.name}</TableCell>
-                                <TableCell align="right">{e.description}</TableCell>
+                                <TableCell align="right">{truncateText(e.description)}</TableCell>
                                 <TableCell >
                                     <div className='flex gap-2 justify-center items-center'>
                                         <button onClick={() => editOpen(e)} className='bg-blue-600 p-2 rounded-md text-white'><MdEdit /></button>

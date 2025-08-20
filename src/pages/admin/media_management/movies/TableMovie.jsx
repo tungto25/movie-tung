@@ -5,17 +5,26 @@ import PaginationTable from '../../../../components/admin/PaginationTable';
 import { ContextMovies } from '../../../../contexts/MovieProvider';
 import { BiSolidCategory } from "react-icons/bi";
 import { FaUserLarge } from "react-icons/fa6";
-
+import { getOjectById, truncateText } from '../../../../services/reponsitory';
+import { ContextAuthors } from '../../../../contexts/AuthorProvider';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import { ContextCategories } from '../../../../contexts/CategoryProvider';
+import { ContextActors } from '../../../../contexts/ActorProvider';
+import { ContextCharacters } from '../../../../contexts/CharacterProvider';
 
 function TableMovie({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, search }) {
-    const Movies = useContext(ContextMovies);
-
+    const movies = useContext(ContextMovies);
+    const authors = useContext(ContextAuthors);
+    const categories = useContext(ContextCategories);
+    const actors = useContext(ContextActors);
+    const characters = useContext(ContextCharacters);
     const rowsPerPage = 5;
 
     const handleChange = (event, value) => {
         setPage(value);
     };
-    const dataSearch = Movies.filter(e => e.name.toLowerCase().includes(search));
+    const dataSearch = movies.filter(e => e.name.toLowerCase().includes(search));
 
     const paginatedData = dataSearch.slice(
         (page - 1) * rowsPerPage,
@@ -25,6 +34,20 @@ function TableMovie({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sea
     const showModalDeleted = (id) => {
         setOpenDeleted(true);
         setIdDeleted(id);
+    }
+
+    const ShowTooltip = ({ data, dataFilter }) => {   
+        return data.map(a => (
+                <Avatar
+                    src={getOjectById(dataFilter, a)?.img}
+                    alt="Actor Image"
+                    sx={{
+                        width: 30,
+                        height: 30,
+                        margin: 'auto',
+                    }}
+                />
+        ))
     }
 
     return (
@@ -44,8 +67,8 @@ function TableMovie({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sea
                             <TableCell align="center">Name</TableCell>
                             <TableCell align="center">Duration</TableCell>
                             <TableCell align="center">Author</TableCell>
-                            <TableCell align='center'>Categories</TableCell>
                             <TableCell align="center">Description</TableCell>
+                            <TableCell align='center'>Categories</TableCell>
                             <TableCell align='center'>Entities</TableCell>
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>
@@ -70,13 +93,25 @@ function TableMovie({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sea
                                 </TableCell>
                                 <TableCell align="center">{e.name}</TableCell>
                                 <TableCell align="center">{e.duration}</TableCell>
-                                <TableCell align="center">{e.author}</TableCell>
-                                <TableCell align="center">{e.description}</TableCell>
+                                <TableCell align="center">{getOjectById(authors, e.author)?.name}</TableCell>
+                                <TableCell align="center">{truncateText(e.description)}</TableCell>
                                 <TableCell align='center'>
-                                    <button className='m-auto bg-purple-600 py-2 rounded-md text-white px-8 shadow-xl transition-transform duration-200 hover:scale-110'><BiSolidCategory /></button>
+                                    <Tooltip title={e.listCate.map(a => (
+                                        getOjectById(categories, a)?.name + ", "
+                                    ))} placement="top" disableInteractive >
+                                        <Button sx={{ margin: "auto", background: "purple", paddingY: 1, paddingX: 4, borderRadius: "6px", color: "white" }} className=' shadow-xl transition-transform duration-200 hover:scale-110'><BiSolidCategory /></Button>
+                                    </Tooltip>
                                 </TableCell>
                                 <TableCell align='center'>
-                                    <button className='m-auto bg-yellow-600 py-2 rounded-md text-white px-8 shadow-xl transition-transform duration-200 hover:scale-110'><FaUserLarge /></button>
+                                    <Tooltip title={
+                                        <div className='flex gap-2'>
+                                         <ShowTooltip data={e.listActor} dataFilter={actors} />
+                                         <ShowTooltip data={e.listCharacter} dataFilter={characters}/>
+                                         </div>
+                                    } placement="top" disableInteractive >
+                                        <Button sx={{ margin: "auto", background: "yellow", paddingY: 1, paddingX: 4, borderRadius: "6px", color: "white" }} className=' shadow-xl transition-transform duration-200 hover:scale-110'><FaUserLarge /></Button>
+                                    </Tooltip>
+
                                 </TableCell>
                                 <TableCell >
                                     <div className='flex gap-2 justify-center items-center'>
@@ -88,7 +123,7 @@ function TableMovie({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sea
                         ))}
                     </TableBody>
                 </Table>
-            </TableContainer>
+            </TableContainer >
             <PaginationTable data={dataSearch} handleChange={handleChange} page={page} rowsPerPage={rowsPerPage} />
         </>
     );
