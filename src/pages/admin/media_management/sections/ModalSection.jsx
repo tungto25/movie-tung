@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { useContext, useEffect } from 'react';
 import { style } from '../../../../untils/styleContants';
 import { addDocument, updateDocument } from '../../../../services/FirebaseService';
-import { Autocomplete, MenuItem } from '@mui/material';
+import { Autocomplete, Avatar, MenuItem } from '@mui/material';
 import { ContextMovies } from '../../../../contexts/MovieProvider';
 import { getOjectById } from '../../../../services/reponsitory';
 
@@ -50,7 +50,16 @@ function ModalSection({ open, handleClose, section, setSection, error, setError,
         setSection(inner);
         setError(inner);
     }
-
+    const handleImg = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setSection({ ...movie, imgUrl: reader.result });
+            };
+            reader.readAsDataURL(file);
+        }
+    }
     return (
         <Modal
             open={open}
@@ -86,18 +95,21 @@ function ModalSection({ open, handleClose, section, setSection, error, setError,
                         />
                     )}
                 />
-                <TextField
-                    value={section.type || ""}
-                    onChange={handleChange}
-                    name='type'
-                    label="Type"
-                    fullWidth
-                    rows={2}
-                    sx={{ mt: 2 }}
-                    error={!!error.type}
-                    helperText={error.type}>
-                </TextField>
-
+                <div>
+                    <label className='flex flex-col items-center rounded-3xl p-1 border-2 mt-4 w-full bg-gray-500 text-white hover:bg-gray-700'>
+                        <p className='whitespace-nowrap'>Choosen Image</p>
+                        <input
+                            type="file"
+                            className='hidden'
+                            onChange={handleImg}
+                        />
+                    </label>
+                    <Avatar
+                        src={section?.imgUrl}
+                        alt="Image"
+                        sx={{ width: 150, height: 150, margin: '10px auto' }}
+                    />
+                </div>
                 <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
                     <Button onClick={Cancel} variant="contained" color="error">
                         Cancel

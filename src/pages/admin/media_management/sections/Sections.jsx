@@ -5,7 +5,7 @@ import TableSection from './TableSection';
 import ModalSection from './ModalSection';
 import { ContextMovies } from '../../../../contexts/MovieProvider';
 
-const inner = { title: "", type: "", movieId: "" };
+const inner = { title: "", imgUrl: "", movieId: "" };
 function Sections(props) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);

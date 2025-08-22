@@ -43,7 +43,7 @@ function TableEpisodes({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, 
                             <TableCell align="right">Description</TableCell>
                             <TableCell align="right">Episodes Number</TableCell>
                             <TableCell align="right">Video Url</TableCell>
-                            <TableCell align="right">Movie ID</TableCell>
+                            <TableCell align="right">Movie</TableCell>
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>
                         {paginatedData.map((e, index) => (
