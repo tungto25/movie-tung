@@ -32,7 +32,7 @@ function TableEpisodes({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, 
                 <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                     <TableBody>
                         <TableRow sx={{
-                            backgroundColor: "gray",
+                            backgroundColor: "rgba(3, 7, 18, 0.8)",
                             "& .MuiTableCell-root": {
                                 fontWeight: "bold",
                                 color: "white" // nếu muốn chữ trắng
@@ -42,15 +42,23 @@ function TableEpisodes({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, 
                             <TableCell align="right">Title</TableCell>
                             <TableCell align="right">Description</TableCell>
                             <TableCell align="right">Episodes Number</TableCell>
+                            <TableCell align="right">Video Url</TableCell>
                             <TableCell align="right">Movie ID</TableCell>
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>
                         {paginatedData.map((e, index) => (
-                            <TableRow key={e.id}>
+                            <TableRow key={e.id}
+                                sx={{
+                                    background: "rgba(31, 41, 55, 0.8)",
+                                    "& .MuiTableCell-root": {
+                                        color: "white" // nếu muốn chữ trắng
+                                    }
+                                }}>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
                                 <TableCell align="right">{e.title}</TableCell>
                                 <TableCell align="right">{e.description}</TableCell>
                                 <TableCell align="right">{e.episodeNumber}</TableCell>
+                                <TableCell align="right">{e.videoUrl}</TableCell>
                                 <TableCell align="right">{getOjectById(movies, e.movieId)?.name || ""}</TableCell>
                                 <TableCell >
                                     <div className='flex gap-2 justify-center items-center'>

@@ -29,7 +29,7 @@ function TablePlan({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sear
                 <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                     <TableBody>
                         <TableRow sx={{
-                            backgroundColor: "gray",
+                            backgroundColor: "rgba(3, 7, 18, 0.8)",
                             "& .MuiTableCell-root": {
                                 fontWeight: "bold",
                                 color: "white" // nếu muốn chữ trắng
@@ -42,7 +42,13 @@ function TablePlan({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sear
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>
                         {paginatedData.map((e, index) => (
-                            <TableRow key={e.id}>
+                            <TableRow key={e.id}
+                                sx={{
+                                    background: "rgba(31, 41, 55, 0.8)",
+                                    "& .MuiTableCell-root": {
+                                        color: "white" // nếu muốn chữ trắng
+                                    }
+                                }}>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
                                 <TableCell align="center">{e.title}</TableCell>
                                 <TableCell align="center">{e.level}</TableCell>

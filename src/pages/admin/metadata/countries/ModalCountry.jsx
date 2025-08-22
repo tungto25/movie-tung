@@ -9,7 +9,7 @@ import { addDocument, updateDocument } from '../../../../services/FirebaseServic
 import { MenuItem } from '@mui/material';
 
 function ModalCountry({ open, handleClose, country, setCountry, error, setError, inner, handleUpdate }) {
-   
+
     const validation = () => {
         const newError = {
             name: country.name ? "" : "Please enter name",
@@ -69,31 +69,13 @@ function ModalCountry({ open, handleClose, country, setCountry, error, setError,
                     error={!!error.description}
                     helperText={error.description}
                 />
-                <TextField
-                    select
-                    value={country.region || ""}
-                    onChange={handleChange}
-                    name='region'
-                    label="Region"
-                    fullWidth
-                    sx={{ mt: 2 }}
-                    error={!!error.region}
-                    helperText={error.region}
-                >
-                    <MenuItem value="Asia">Asia</MenuItem>
-                    <MenuItem value="Europe">Europe</MenuItem>
-                    <MenuItem value="Africa">Africa</MenuItem>
-                    <MenuItem value="North America">North America</MenuItem>
-                    <MenuItem value="South America">South America</MenuItem>
-                    <MenuItem value="Oceania">Oceania</MenuItem>
-                </TextField>
 
-                <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
-                    <Button onClick={addTask} variant="contained">
-                        {country?.id ? "Edit" : "Add"}
-                    </Button>
+                <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
                     <Button onClick={Cancel} variant="contained" color="error">
                         Cancel
+                    </Button>
+                    <Button onClick={addTask} variant="contained">
+                        {country?.id ? "Edit" : "Add"}
                     </Button>
                 </Box>
             </Box>

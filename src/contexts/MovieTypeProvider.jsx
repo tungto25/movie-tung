@@ -4,12 +4,12 @@ import { fetchDocumentsRealtime } from "../services/FirebaseService";
 export const ContextMovieTypes = createContext([]);
 
 export const MovieTypeProvider = ({ children }) => {
-    const [movieTypes, setMovieTypes] = useState([]);
+    const [movietypes, setMovieTypes] = useState([]);
 
     useEffect(() => {
         // Sử dụng fetchDocumentsRealtime để lắng nghe dữ liệu realtime
-        const unsubscribe = fetchDocumentsRealtime("MovieTypes", (movieTypeslist) => {
-            setMovieTypes(movieTypeslist);
+        const unsubscribe = fetchDocumentsRealtime("MovieTypes", (movietypelist) => {
+            setMovieTypes(movietypelist);
         });
 
         // Hủy lắng nghe khi component bị unmount
@@ -17,7 +17,7 @@ export const MovieTypeProvider = ({ children }) => {
     }, []);
 
     return (
-        <ContextMovieTypes.Provider value={movieTypes}>
+        <ContextMovieTypes.Provider value={movietypes}>
             {children}
         </ContextMovieTypes.Provider>
     );

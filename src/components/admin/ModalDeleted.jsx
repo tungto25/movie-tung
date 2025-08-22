@@ -88,7 +88,13 @@ export default function ModalDeleted({ openDeleted, handleCloseDel, idDeleted, h
         } catch (error) {
             console.warn("Không xoá được ở Episodes:", error.message);
         }
-
+        try {
+            await deleteDocument("Sections", idDeleted);
+            handleUpdate();
+            handleCloseDel();
+        } catch (error) {
+            console.warn("Không xoá được ở Sections:", error.message);
+        }
 
 
 
@@ -100,7 +106,7 @@ export default function ModalDeleted({ openDeleted, handleCloseDel, idDeleted, h
                 <DialogTitle>Confirm Delete ?</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Are you sure you want to delete this {idDeleted} item? This action cannot be undone.
+                        Are you sure you want to delete this item? This action cannot be undone.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

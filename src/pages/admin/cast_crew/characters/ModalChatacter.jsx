@@ -45,11 +45,13 @@ function ModalChatacter({ open, handleClose, character, setCharacter, error, set
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
-                setCharacter({ ...character, img: reader.result });
+                setCharacter(prev => ({ ...prev, img: reader.result })); 
             };
             reader.readAsDataURL(file);
+        } else {
+            setCharacter(prev => ({ ...prev, img: "" }));
         }
-    }
+    };
     return (
         <Modal
             open={open}
@@ -94,11 +96,11 @@ function ModalChatacter({ open, handleClose, character, setCharacter, error, set
                 />
 
                 <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
-                    <Button onClick={addTask} variant="contained">
-                        {character?.id ? "Edit" : "Add"}
-                    </Button>
                     <Button onClick={Cancel} variant="contained" color="error">
                         Cancel
+                    </Button>
+                    <Button onClick={addTask} variant="contained">
+                        {character?.id ? "Edit" : "Add"}
                     </Button>
                 </Box>
             </Box>

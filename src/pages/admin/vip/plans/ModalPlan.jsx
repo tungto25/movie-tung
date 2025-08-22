@@ -82,11 +82,12 @@ function ModalPlan({ open, handleClose, plan, setPlan, error, setError, inner, h
                 />
 
                 <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
-                    <Button onClick={addTask} variant="contained">
-                        {plan?.id ? "Edit" : "Add"}
-                    </Button>
+                    
                     <Button onClick={Cancel} variant="contained" color="error">
                         Cancel
+                    </Button>
+                    <Button onClick={addTask} variant="contained">
+                        {plan?.id ? "Edit" : "Add"}
                     </Button>
                 </Box>
             </Box>

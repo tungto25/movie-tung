@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { CategoriesProvider } from './contexts/CategoryProvider';
-import { MovieTypeProvider } from './contexts/MovieTypeProvider';
+import { SectionProvider } from './contexts/SectionProvider';
 import { CountryProvider } from './contexts/CountryProvider';
 import { AuthorProvider } from './contexts/AuthorProvider';
 import { CharacterProvider } from './contexts/CharacterProvider';
@@ -14,14 +14,14 @@ import { PackageProvider } from './contexts/PackageProvider';
 import { FeatureProvider } from './contexts/FeatureProvider';
 import { PlanProvider } from './contexts/PlanProvider';
 import { EpisodeProvider } from './contexts/EpisodeProvider';
-import { TrailerProvider } from './contexts/TrailerProvider';
+import { MovieTypeProvider } from './contexts/MovieTypeProvider';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <TrailerProvider>
+      <MovieTypeProvider>
         <EpisodeProvider>
           <PlanProvider>
             <FeatureProvider>
@@ -31,11 +31,11 @@ root.render(
                     <CharacterProvider>
                       <AuthorProvider>
                         <CountryProvider>
-                          <MovieTypeProvider>
+                          <SectionProvider>
                             <CategoriesProvider>
                               <App />
                             </CategoriesProvider>
-                          </MovieTypeProvider>
+                          </SectionProvider>
                         </CountryProvider>
                       </AuthorProvider>
                     </CharacterProvider>
@@ -45,7 +45,7 @@ root.render(
             </FeatureProvider>
           </PlanProvider>
         </EpisodeProvider>
-      </TrailerProvider>
+      </MovieTypeProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

@@ -8,8 +8,9 @@ import { MdDeleteForever, MdEdit } from 'react-icons/md';
 import PaginationTable from "../../../../../src/components/admin/PaginationTable";
 import { useContext, useState } from 'react';
 import { ContextCategories } from '../../../../contexts/CategoryProvider';
+import { truncateText } from '../../../../services/reponsitory';
 
-export default function TableCategory({ editOpen, setIdDeleted, setOpenDeleted, search,page,setPage }) {
+export default function TableCategory({ editOpen, setIdDeleted, setOpenDeleted, search, page, setPage }) {
     const categories = useContext(ContextCategories);
     // Bắt đầu từ 1
     const rowsPerPage = 5; // Số item mỗi trang
@@ -17,7 +18,7 @@ export default function TableCategory({ editOpen, setIdDeleted, setOpenDeleted, 
     const handleChange = (event, value) => {
         setPage(value);
     };
-   const dataSearch = categories.filter(e => e.name.toLowerCase().includes(search));
+    const dataSearch = categories.filter(e => e.name.toLowerCase().includes(search));
 
     // Cắt dữ liệu để hiển thị
     const paginatedData = dataSearch.slice(
@@ -34,7 +35,7 @@ export default function TableCategory({ editOpen, setIdDeleted, setOpenDeleted, 
                 <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                     <TableBody>
                         <TableRow sx={{
-                            backgroundColor: "gray",
+                            backgroundColor: "rgba(3, 7, 18, 0.8)",
                             "& .MuiTableCell-root": {
                                 fontWeight: "bold",
                                 color: "white" // nếu muốn chữ trắng
@@ -46,10 +47,16 @@ export default function TableCategory({ editOpen, setIdDeleted, setOpenDeleted, 
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>
                         {paginatedData.map((e, index) => (
-                            <TableRow key={e.id}>
+                            <TableRow key={e.id}
+                                sx={{
+                                    background: "rgba(31, 41, 55, 0.8)",
+                                    "& .MuiTableCell-root": {
+                                        color: "white" // nếu muốn chữ trắng
+                                    }
+                                }}>
                                 <TableCell>{index + 1}</TableCell>
                                 <TableCell align="right">{e.name}</TableCell>
-                                <TableCell align="right">{e.description}</TableCell>
+                                <TableCell align="right">{truncateText(e.description)}</TableCell>
                                 <TableCell >
                                     <div className='flex gap-2 justify-center items-center'>
                                         <button onClick={() => editOpen(e)} className='bg-blue-600 p-2 rounded-md text-white'><MdEdit /></button>

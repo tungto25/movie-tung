@@ -119,11 +119,12 @@ function ModalFeature({ open, handleClose, feature, setFeature, error, setError,
                 </RadioGroup>
 
                 <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
-                    <Button onClick={addTask} variant="contained">
-                        {feature?.id ? "Edit" : "Add"}
-                    </Button>
+
                     <Button onClick={Cancel} variant="contained" color="error">
                         Cancel
+                    </Button>
+                    <Button onClick={addTask} variant="contained">
+                        {feature?.id ? "Edit" : "Add"}
                     </Button>
                 </Box>
             </Box>

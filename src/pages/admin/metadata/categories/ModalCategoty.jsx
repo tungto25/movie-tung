@@ -69,12 +69,12 @@ export default function ModalCategoty({ open, handleClose, category, setCategory
                     helperText={error.description}
                 />
 
-                <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
-                    <Button onClick={addTask} variant="contained">
-                        {category?.id ? "Edit" : "Add"}
-                    </Button>
+                <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
                     <Button onClick={Cancel} variant="contained" color="error">
                         Cancel
+                    </Button>
+                    <Button onClick={addTask} variant="contained">
+                        {category?.id ? "Edit" : "Add"}
                     </Button>
                 </Box>
             </Box>

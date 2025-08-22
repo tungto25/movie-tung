@@ -3,6 +3,7 @@ import { Avatar, Paper, Table, TableBody, TableCell, TableContainer, TableRow } 
 import { useContext } from 'react';
 import PaginationTable from '../../../../components/admin/PaginationTable';
 import { ContextCharacters } from '../../../../contexts/CharacterProvider';
+import { truncateText } from '../../../../services/reponsitory';
 
 function TableCharacter({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, search }) {
     const Characters = useContext(ContextCharacters);
@@ -29,7 +30,7 @@ function TableCharacter({ editOpen, setIdDeleted, setOpenDeleted, page, setPage,
                 <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                     <TableBody>
                         <TableRow sx={{
-                            backgroundColor: "gray",
+                            backgroundColor: "rgba(3, 7, 18, 0.8)",
                             "& .MuiTableCell-root": {
                                 fontWeight: "bold",
                                 color: "white" // nếu muốn chữ trắng
@@ -42,7 +43,13 @@ function TableCharacter({ editOpen, setIdDeleted, setOpenDeleted, page, setPage,
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>
                         {paginatedData.map((e, index) => (
-                            <TableRow key={e.id}>
+                            <TableRow key={e.id}
+                                sx={{
+                                    background: "rgba(31, 41, 55, 0.8)",
+                                    "& .MuiTableCell-root": {
+                                        color: "white" // nếu muốn chữ trắng
+                                    }
+                                }}>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
                                 <TableCell align="right">
                                     <Avatar
@@ -52,7 +59,7 @@ function TableCharacter({ editOpen, setIdDeleted, setOpenDeleted, page, setPage,
                                     />
                                 </TableCell>
                                 <TableCell align="right">{e.name}</TableCell>
-                                <TableCell align="right">{e.description}</TableCell>
+                                <TableCell align="right">{truncateText(e.description)}</TableCell>
                                 <TableCell >
                                     <div className='flex gap-2 justify-center items-center'>
                                         <button onClick={() => editOpen(e)} className='bg-blue-600 p-2 rounded-md text-white'><MdEdit /></button>

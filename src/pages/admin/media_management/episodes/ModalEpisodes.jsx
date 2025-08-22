@@ -110,25 +110,26 @@ function ModalEpisodes({ open, handleClose, episode, setEpisode, error, setError
                     disablePortal
                     fullWidth
                     sx={{ mt: 2 }}
-                    value={getOjectById(movies, episode.movieId)}
+                    value={getOjectById(movies, episode.title)}
                     onChange={(event, value) =>
                         setEpisode(prev => ({ ...prev, movieId: value?.id || "" }))
                     }
                     renderInput={(params) => (
                         <TextField
                             {...params}
-                            label="Find the author"
+                            label="Find the movie"
                             error={!!error.movieId}
                             helperText={error.movieId}
                         />
                     )}
                 />
                 <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
-                    <Button onClick={addTask} variant="contained">
-                        {episode?.id ? "Edit" : "Add"}
-                    </Button>
+
                     <Button onClick={Cancel} variant="contained" color="error">
                         Cancel
+                    </Button>
+                    <Button onClick={addTask} variant="contained">
+                        {episode?.id ? "Edit" : "Add"}
                     </Button>
                 </Box>
             </Box>

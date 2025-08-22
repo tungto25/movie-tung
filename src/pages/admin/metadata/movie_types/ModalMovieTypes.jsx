@@ -18,7 +18,6 @@ function ModalMovieTypes({ open, handleClose, movieType, setMovieType, error, se
     const validation = () => {
         const newError = {
             name: movieType.name ? "" : "Please enter name",
-            type: movieType.type ? "" : "Please enter type",
             description: movieType.description ? "" : "Please enter description",
         };
         setError(newError);
@@ -65,7 +64,7 @@ function ModalMovieTypes({ open, handleClose, movieType, setMovieType, error, se
                     helperText={error.name}
                 />
                 <TextField
-                    value={movieType.name || ""}
+                    value={movieType.description || ""}
                     onChange={handleChange}
                     name='description'
                     label="Description"
@@ -76,27 +75,13 @@ function ModalMovieTypes({ open, handleClose, movieType, setMovieType, error, se
                     error={!!error.description}
                     helperText={error.description}
                 />
-                <TextField
-                    select
-                    value={movieType.type || ""}
-                    onChange={handleChange}
-                    name='type'
-                    label="Type"
-                    fullWidth
-                    rows={2}
-                    sx={{ mt: 2 }}
-                    error={!!error.description}
-                    helperText={error.description}>
-                    <MenuItem value="series">Series</MenuItem>
-                    <MenuItem value="movie">Movie</MenuItem>
-                </TextField>
 
                 <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
-                    <Button onClick={addTask} variant="contained">
-                        {movieType?.id ? "Edit" : "Add"}
-                    </Button>
                     <Button onClick={Cancel} variant="contained" color="error">
                         Cancel
+                    </Button>
+                    <Button onClick={addTask} variant="contained">
+                        {movieType?.id ? "Edit" : "Add"}
                     </Button>
                 </Box>
             </Box>

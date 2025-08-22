@@ -8,7 +8,7 @@ export const menus = [
     {
         id: 1,
         title: "Media Management",
-        icon: <GoFileMedia/>,
+        icon: <GoFileMedia />,
         items: [
             {
                 id: 1,
@@ -22,16 +22,16 @@ export const menus = [
             },
             {
                 id: 3,
-                title: "Trailers",
-                path: "media_management/Trailer"
+                title: "Sections",
+                path: "media_management/Section"
             }
         ]
     },
     {
-        id:2,
-        title:"Vip",
-        icon:<RiVipCrownFill/>,
-        items:[
+        id: 2,
+        title: "Vip",
+        icon: <RiVipCrownFill />,
+        items: [
             {
                 id: 1,
                 title: "Packages",

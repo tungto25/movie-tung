@@ -1,21 +1,24 @@
 import SearchAdmin from '../../../../components/admin/SearchAdmin';
-import TableMovieTypes from './TableMovieTypes';
-import ModalMovieTypes from './ModalMovieTypes';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import ModalDeleted from '../../../../components/admin/ModalDeleted';
+import TableSection from './TableSection';
+import ModalSection from './ModalSection';
+import { ContextMovies } from '../../../../contexts/MovieProvider';
 
-const inner = { name: "", description: "" };
-function MovieTypes(props) {
+const inner = { title: "", type: "", movieId: "" };
+function Sections(props) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
-    const [movieType, setMovieType] = useState(inner);
+    const [section, setSection] = useState(inner);
     const [error, setError] = useState(inner);
     const [update, setUpdate] = useState(false);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
-
+    const movies = useContext(ContextMovies);
+    console.log(movies);
+    
     const handleSearch = (a) => {
         setSearch(a);
         setPage(1);
@@ -27,13 +30,13 @@ function MovieTypes(props) {
 
     const handleOpen = () => {
         setOpen(true);
-        setMovieType(inner);
+        setSection(inner);
         setError(inner);
     }
     const editOpen = (items) => {
         setError(inner);
         setOpen(true);
-        setMovieType(items);
+        setSection(items);
     }
     const handleUpdate = () => {
         setUpdate(!update)
@@ -41,12 +44,12 @@ function MovieTypes(props) {
 
     return (
         <div>
-            <SearchAdmin title="Movie Types" buttonText="MOVIE TYPE" handleOpen={handleOpen} search={search} setSearch={setSearch} handleSearch={handleSearch} />
-            <TableMovieTypes editOpen={editOpen} setOpenDeleted={setOpenDeleted} setIdDeleted={setIdDeleted} search={search} page={page} setPage={setPage} />
-            <ModalMovieTypes inner={inner} handleUpdate={handleUpdate} open={open} handleClose={handleClose} movieType={movieType} setMovieType={setMovieType} error={error} setError={setError} />
+            <SearchAdmin title="Section" buttonText="SECTION" handleOpen={handleOpen} search={search} setSearch={setSearch} handleSearch={handleSearch} />
+            <TableSection movies={movies} editOpen={editOpen} setOpenDeleted={setOpenDeleted} setIdDeleted={setIdDeleted} search={search} page={page} setPage={setPage} />
+            <ModalSection movies={movies} inner={inner} handleUpdate={handleUpdate} open={open} handleClose={handleClose} section={section} setSection={setSection} error={error} setError={setError} />
             <ModalDeleted openDeleted={openDeleted} handleCloseDel={handleCloseDel} idDeleted={idDeleted} handleUpdate={handleUpdate} />
         </div>
     );
 }
 
-export default MovieTypes;
+export default Sections;

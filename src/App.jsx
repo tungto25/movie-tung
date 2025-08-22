@@ -5,7 +5,6 @@ import HeaderAdmin from './components/admin/HeaderAdmin'
 import AdminRouters from './routers/AdminRouters'
 import Background from "./components/admin/Background";
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <div className='relative flex flex-col md:flex-row min-h-max'>

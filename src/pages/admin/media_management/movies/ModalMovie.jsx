@@ -26,15 +26,13 @@ import { getOjectById } from '../../../../services/reponsitory';
 import { ContextPlans } from '../../../../contexts/PlanProvider';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner, handleUpdate }) {
-    const authors = useContext(ContextAuthors);
-    const actors = useContext(ContextActors);
-    const categories = useContext(ContextCategories);
-    const characters = useContext(ContextCharacters);
+function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner, handleUpdate, authors, actors, categories, characters, plans, countries }) {
+
     const [dataChoose, setDataChoose] = useState([]);
     const [openChoosen, setOpenChoosen] = useState(false);
     const [modalType, setModalType] = useState("");
-    const plans = useContext(ContextPlans);
+    console.log(authors);
+
 
     const handleOpenChoosen = () => setOpenChoosen(true);
     const handleCloseChoosen = () => setOpenChoosen(false);
@@ -186,56 +184,77 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                                 helperText={error.duration}
                                 type='number'
                             />
-                            <Autocomplete
-                                options={authors}
-                                getOptionLabel={(option) => option.name}
-                                disablePortal
-                                fullWidth
-                                sx={{ mt: 2 }}
-                                value={getOjectById(authors, movie.author)}
-                                onChange={(event, value) =>
-                                    setMovie(prev => ({ ...prev, author: value?.id || "" }))
-                                }
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Find the author"
-                                        error={!!error.author}
-                                        helperText={error.author}
-                                    />
-                                )}
-                            />
-                            <Autocomplete
-                                options={plans}
-                                getOptionLabel={(option) => option.title}
-                                disablePortal
-                                fullWidth
-                                sx={{ mt: 2 }}
-                                value={getOjectById(plans, movie.plan)}
-                                onChange={(event, value) =>
-                                    setMovie(prev => ({ ...prev, plan: value?.id || "" }))
-                                }
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Find the plan"
-                                        error={!!error.plan}
-                                        helperText={error.plan}
-                                    />
-                                )}
-                            />
-                            {selectPlans?.level > 1 &&
-                                (<TextField
-                                    value={movie.rent || ""}
-                                    onChange={handleChange}
-                                    name='rent'
-                                    label="Rent"
+                            <div className='flex gap-3'>
+                                <Autocomplete
+                                    options={authors}
+                                    getOptionLabel={(option) => option.name}
+                                    disablePortal
                                     fullWidth
                                     sx={{ mt: 2 }}
-                                    error={!!error.rent}
-                                    helperText={error.rent}
-                                />)}
+                                    value={getOjectById(authors, movie.author)}
+                                    onChange={(event, value) =>
+                                        setMovie(prev => ({ ...prev, author: value?.id || "" }))
+                                    }
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label="Find the author"
+                                            error={!!error.author}
+                                            helperText={error.author}
+                                        />
+                                    )}
+                                />
+                                <Autocomplete
+                                    options={plans}
+                                    getOptionLabel={(option) => option.title}
+                                    disablePortal
+                                    fullWidth
+                                    sx={{ mt: 2 }}
+                                    value={getOjectById(plans, movie.plan)}
+                                    onChange={(event, value) =>
+                                        setMovie(prev => ({ ...prev, plan: value?.id || "" }))
+                                    }
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label="Find the plan"
+                                            error={!!error.plan}
+                                            helperText={error.plan}
+                                        />
+                                    )}
+                                />
+                                {selectPlans?.level > 1 &&
+                                    (<TextField
+                                        value={movie.rent || ""}
+                                        onChange={handleChange}
+                                        name='rent'
+                                        label="Rent"
+                                        fullWidth
+                                        sx={{ mt: 2 }}
+                                        error={!!error.rent}
+                                        helperText={error.rent}
+                                    />)}
 
+                            </div>
+                            <Autocomplete
+                                options={countries}
+                                getOptionLabel={(option) => option?.name || ""}
+                                disablePortal
+                                fullWidth
+                                sx={{ mt: 2 }}
+                                value={getOjectById(countries, movie.country) || null}
+                                onChange={(event, value) =>
+                                    setMovie((prev) => ({ ...prev, country: value?.id || "" }))
+                                }
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Find the country"
+                                        error={!!error.country}
+                                        helperText={error.country}
+                                    />
+                                )}
+                            />
                         </div>
 
                         {/* Cột phải */}
@@ -457,11 +476,11 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                 </DialogContent>
 
                 <DialogActions>
-                    <Button onClick={addTask} variant="contained">
-                        {movie?.id ? "Edit" : "Add"}
-                    </Button>
                     <Button onClick={Cancel} variant="contained" color="error">
                         Cancel
+                    </Button>
+                    <Button onClick={addTask} variant="contained">
+                        {movie?.id ? "Edit" : "Add"}
                     </Button>
                 </DialogActions>
             </Dialog>

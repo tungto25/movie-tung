@@ -1,15 +1,15 @@
 import React, { createContext, useState, useEffect } from "react";
 import { fetchDocumentsRealtime } from "../services/FirebaseService";
 
-export const ContextTrailers = createContext([]);
+export const ContextSections = createContext([]);
 
-export const TrailerProvider = ({ children }) => {
-    const [trailers, setTrailers] = useState([]);
+export const SectionProvider = ({ children }) => {
+    const [sections, setSections] = useState([]);
 
     useEffect(() => {
         // Sử dụng fetchDocumentsRealtime để lắng nghe dữ liệu realtime
-        const unsubscribe = fetchDocumentsRealtime("Trailers", (trailerlist) => {
-            setTrailers(trailerlist);
+        const unsubscribe = fetchDocumentsRealtime("Sections", (sectionlist) => {
+            setSections(sectionlist);
         });
 
         // Hủy lắng nghe khi component bị unmount
@@ -17,8 +17,8 @@ export const TrailerProvider = ({ children }) => {
     }, []);
 
     return (
-        <ContextTrailers.Provider value={trailers}>
+        <ContextSections.Provider value={sections}>
             {children}
-        </ContextTrailers.Provider>
+        </ContextSections.Provider>
     );
 };

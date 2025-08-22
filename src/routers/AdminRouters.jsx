@@ -5,7 +5,7 @@ import Characters from '../pages/admin/cast_crew/characters/Characters';
 import DashBoard from '../pages/admin/dashboard/DashBoard';
 import Episodes from '../pages/admin/media_management/episodes/Episodes';
 import Movies from '../pages/admin/media_management/movies/Movies';
-import Trailers from '../pages/admin/media_management/trailers/Trailers';
+import Sections from '../pages/admin/media_management/sections/Sections';
 import Categories from '../pages/admin/metadata/categories/Categories';
 import Countries from '../pages/admin/metadata/countries/Countries';
 import MovieTypes from '../pages/admin/metadata/movie_types/MovieTypes';
@@ -36,8 +36,8 @@ function AdminRouters(props) {
             element: <Episodes />
         },
         {
-            path: "media_management/Trailer",
-            element: <Trailers />
+            path: "media_management/Section",
+            element: <Sections />
         },
         {
             path: "vip/packages",
