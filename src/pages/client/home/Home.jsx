@@ -13,8 +13,8 @@ function Home(props) {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
     return (
-        <div className="flex flex-col min-h-screen relative overflow-hidden relative bg-gray-900">
-            <header className={`fixed top-0 left-0 w-full z-50 transition-colors duration-300 ${scrolled ? "bg-gray-900/80" : "bg-gray-900/20"}`}>
+        <div className="flex flex-col min-h-screen overflow-hidden relative bg-gray-900">
+            <header className={`md:fixed top-0 left-0 w-full z-50 transition-colors duration-300 ${scrolled ? "bg-gray-950" : "bg-gray-900/20"}`}>
                 <Header />
             </header>
 
