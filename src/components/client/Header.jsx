@@ -8,7 +8,7 @@ import { ContextCountries } from "../../contexts/CountryProvider";
 import { FaUser } from "react-icons/fa";
 import { HiMenu, HiX } from "react-icons/hi";
 
-function Header() {
+function Header({ handleOpenLogin }) {
     const [openSearch, setOpenSearch] = useState(false)
     const [openDrop, setOpenDrop] = useState(null);
     const categories = useContext(ContextCategories);
@@ -101,7 +101,7 @@ function Header() {
             </div>
             <button type="button" className="hidden lg:flex items-center gap-1 rounded-full bg-white text-black px-3 py-2 transition-transform duration-100 active:scale-95" >
                 <FaUser />
-                <span className="whitespace-nowrap">Thành Viên</span>
+                <span onClick={handleOpenLogin} className="whitespace-nowrap">Thành Viên</span>
             </button>
 
             {openMenu && (
@@ -112,7 +112,7 @@ function Header() {
                          block transition-transform duration-100 active:scale-95"
                     >
                         <FaUser />
-                        <span className="whitespace-nowrap">Thành Viên</span>
+                        <span  className="whitespace-nowrap">Thành Viên</span>
                     </button>
                     <div className="grid grid-cols-2 mt-3 gap-2">
                         {menus.map((e, id) => e.title ? (

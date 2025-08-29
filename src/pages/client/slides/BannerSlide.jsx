@@ -41,7 +41,7 @@ function BannerSlide(props) {
 
                         <div className="absolute left-1/2 -translate-x-1/2 top-1/2
                         md:top-2/3 md:-translate-y-1/2 md:left-1/3 md:-translate-x-1/2
-                        lg:top-1/2 lg:left-1/4 lg:-translate-x-1/2 lg:-translate-y-1/4
+                        lg:top-1/2 lg:left-1/4 lg:-translate-x-1/2 lg:-translate-y-1/2
                          text-white font-bold ">
                             <img
                                 src="public/images/logo-thanh-guom-diet-quy.png"

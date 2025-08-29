@@ -183,13 +183,13 @@ export default function SectionSlide() {
                     {/* Custom Buttons */}
                     <button
                         ref={nextRef}
-                        className="absolute top-1/4 left-0 -translate-x-1/2 -translate-y-1 z-30 p-2 bg-white text-black rounded-full shadow"
+                        className="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 z-30 p-2 bg-white text-black rounded-full shadow"
                     >
                         <MdOutlineArrowBackIos />
                     </button>
                     <button
                         ref={prevRef}
-                        className="absolute top-1/4 right-0 translate-x-1/2 -translate-y-1 z-10 p-2 bg-white text-black rounded-full shadow"
+                        className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 z-10 p-2 bg-white text-black rounded-full shadow"
                     >
                         <MdArrowForwardIos />
                     </button>
