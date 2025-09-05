@@ -2,16 +2,19 @@ import { useState, useContext } from "react";
 import { FaFacebookF, FaGooglePlusG, FaTwitter, FaEnvelope, FaLock } from 'react-icons/fa';
 import { addDocument, updateDocument } from "../../../services/FirebaseService";
 import { ContextAccount } from "../../../contexts/AccountProvider";
+import { ContextAuth } from "../../../contexts/AuthProvider";
 
 const inner = {
     email: "",
     password: "",
 };
 
-export default function LoginModal({ openLogin, handleCloseLogin, setFormSign }) {
+export default function LoginModal({ handleCloseLogin, setFormSign }) {
     const [form, setForm] = useState(inner);
     const [error, setError] = useState(inner);
     const accounts = useContext(ContextAccount);
+    const { handleLogin } = useContext(ContextAuth);
+    
 
     const validation = () => {
         const newError = {
@@ -20,19 +23,6 @@ export default function LoginModal({ openLogin, handleCloseLogin, setFormSign })
         };
         setError(newError);
         return Object.values(newError).every(e => e === "");
-    };
-
-    const handleAdd = async () => {
-        if (!validation()) return;
-
-        if (form.id) {
-            await updateDocument("Accounts", form);
-        } else {
-            await addDocument("Accounts", form);
-        }
-
-        handleCloseLogin();
-        setForm(inner);
     };
 
     const handleChange = (e) => {
@@ -56,6 +46,7 @@ export default function LoginModal({ openLogin, handleCloseLogin, setFormSign })
         }
 
         console.log("Đăng nhập thành công", account);
+        handleLogin(account);
         handleCloseLogin();
         setForm(inner);
     };

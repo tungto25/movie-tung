@@ -17,7 +17,7 @@ import { PlanProvider } from './contexts/PlanProvider';
 import { EpisodeProvider } from './contexts/EpisodeProvider';
 import { MovieTypeProvider } from './contexts/MovieTypeProvider';
 import { AccountProvider } from './contexts/AccountProvider';
-
+import { AuthProvider } from "./contexts/AuthProvider";
 const providers = [
   AccountProvider,
   MovieTypeProvider,
@@ -32,6 +32,7 @@ const providers = [
   CountryProvider,
   SectionProvider,
   CategoriesProvider,
+  AuthProvider,
 ];
 
 const ComposeProviders = ({ providers, children }) =>

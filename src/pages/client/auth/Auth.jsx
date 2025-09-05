@@ -68,7 +68,7 @@ export default function AuthModal({ openLogin, handleCloseLogin }) {
                     <div className="flex flex-row h-full w-full justify-center items-center">
                         <div className="flex-1 relative z-20">
                             {formSign ? (
-                                <LoginModal setFormSign={setFormSign} />
+                                <LoginModal setFormSign={setFormSign} handleCloseLogin={handleCloseLogin}/>
                             ) : (
                                 <RegisterModal setFormSign={setFormSign} />
                             )}
@@ -87,3 +87,4 @@ export default function AuthModal({ openLogin, handleCloseLogin }) {
         </Modal>
     );
 }
+

@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import { fetchDocumentsRealtime } from "../services/FirebaseService";
 
-export const ContextAuthors = createContext([]);
+export const ContextAuthors = createContext();
 
 export const AuthorProvider = ({ children }) => {
     const [authors, setAuthors] = useState([]);

@@ -2,13 +2,16 @@ import { IoIosSearch } from "react-icons/io";
 import { menus } from "../../untils/ConstantsClient";
 import { Link, useLocation } from "react-router-dom";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { useContext, useState } from "react";
+import { use, useContext, useState } from "react";
 import { ContextCategories } from "../../contexts/CategoryProvider";
 import { ContextCountries } from "../../contexts/CountryProvider";
 import { FaUser } from "react-icons/fa";
 import { HiMenu, HiX } from "react-icons/hi";
+import { ContextAuth } from "../../contexts/AuthProvider";
+import Avatar from "@mui/material/Avatar";
 
 function Header({ handleOpenLogin }) {
+    const [openAva, setOpenAva] = useState(false);
     const [openSearch, setOpenSearch] = useState(false)
     const [openDrop, setOpenDrop] = useState(null);
     const categories = useContext(ContextCategories);
@@ -19,6 +22,7 @@ function Header({ handleOpenLogin }) {
     }
     const location = useLocation();
     const currentPath = location.pathname;
+    const { isLogin, handleLogout } = useContext(ContextAuth);
 
     return (
         <div className="flex items-center bg-gray-900/20 text-white p-2 py-3 gap-2 text-sm justify-between 2xl:text-xl">
@@ -51,12 +55,36 @@ function Header({ handleOpenLogin }) {
                 onClick={() => setOpenSearch(!openSearch)}>
                 {openSearch ? <HiX size={22} /> : <IoIosSearch size={22} />}
             </div>
-            <div className="hidden lg:flex items-center gap-3 ml-5">
+            <div className={`min-sm:flex p-3 items-center rounded-xl gap-3 ml-5 max-sm:grid max-sm:grid-cols-2 max-sm:absolute max-sm: top-[62px] max-sm:w-[70vw] max-sm:bg-gray-700 ${openMenu ? "" : "max-sm:hidden"}`}>
+                { !isLogin ? (
+                    <button className="col-span-2 min-sm:order-1 flex items-center gap-1 rounded-full bg-white text-black px-3 py-2 transition-transform duration-100 active:scale-95">
+                        <FaUser />
+                        <span onClick={handleOpenLogin} className="whitespace-nowrap">Thành Viên</span>
+                    </button>
+                ) : (
+                    <>
+                        <div onClick={(e) => setOpenAva(!openAva)} className='bg-amber-300 rounded-full h-10 w-10 transition-transform duration-150 hover:scale-110 min-sm:order-1'>
+                            <Avatar sx={{ bgcolor:"red" }}></Avatar>
+                        </div>
+                        {openAva && (
+                            <div className="absolute mt-8 w-48 bg-gray-600 rounded-md shadow-lg z-50 top-9 right-1 ">
+                                <ul className="p-3 text-white ">
+                                    <p>{isLogin?.name}</p>
+                                    <li className="py-2 hover:text-yellow-400 cursor-pointer">👤 Profile</li>
+                                    <li className="py-2 hover:text-yellow-400 cursor-pointer">⚙️ Settings</li>
+                                    <li onClick={handleLogout} className="py-2 hover:text-yellow-400 cursor-pointer text-red-500">🚪 Logout</li>
+                                </ul>
+                            </div>
+                        )}
+                    </>
+                )}
+
+
                 {menus.map((e, id) => (
                     <div className="relative group">
                         {(e.title == "Thể Loại" || e.title == "Quốc Gia") ? (
                             <div onClick={() => handleOpenDrop(e.title)}>
-                                <div className="hover:text-yellow-500 flex items-center">
+                                <div className="hover:text-yellow-500 flex items-center ">
                                     {e.title}
                                     <IoMdArrowDropdown className="ml-1" />
                                 </div>
@@ -89,8 +117,8 @@ function Header({ handleOpenLogin }) {
                             <Link
                                 onClick={() => setOpenDrop(null)}
                                 to={e.path}
-                                className={`flex items-center px-2 hover:text-yellow-500 
-                                    ${currentPath === e.path ? "text-yellow-500 shadow-gray-200 text-2xl" : ""}`}
+                                className={`flex items-center hover:text-yellow-500 
+                                    ${currentPath === e.path ? "text-yellow-500 shadow-gray-200" : ""}`}
                             >
                                 {e.title}
                             </Link>
@@ -99,72 +127,6 @@ function Header({ handleOpenLogin }) {
                     </div>
                 ))}
             </div>
-            <button type="button" className="hidden lg:flex items-center gap-1 rounded-full bg-white text-black px-3 py-2 transition-transform duration-100 active:scale-95" >
-                <FaUser />
-                <span onClick={handleOpenLogin} className="whitespace-nowrap">Thành Viên</span>
-            </button>
-
-            {openMenu && (
-                <div className="absolute top-12 left-1/2 -translate-x-1/2  w-11/12 bg-gray-600 p-5 gap-3 lg:hidden z-40 rounded-2xl ">
-                    <button
-                        type="button"
-                        className="flex items-center gap-1 rounded-full bg-white text-black px-3 py-2 mt-2 w-full
-                         block transition-transform duration-100 active:scale-95"
-                    >
-                        <FaUser />
-                        <span onClick={handleOpenLogin} className="whitespace-nowrap">Thành Viên</span>
-                    </button>
-                    <div className="grid grid-cols-2 mt-3 gap-2">
-                        {menus.map((e, id) => e.title ? (
-                            <div className="relative ">
-                                {(e.title == "Thể Loại" || e.title == "Quốc Gia") ? (
-                                    <div onClick={() => handleOpenDrop(e.title)}>
-                                        <div className="hover:text-yellow-500 flex items-center">
-                                            {e.title}
-                                            <IoMdArrowDropdown className="ml-1" />
-                                        </div>
-                                        {openDrop == e.title && (
-                                            <div className="absolute bg-gray-800/80  top-5 right-0 gap-2  w-max rounded-2xl p-2 shadow-xl z-100">
-                                                {openDrop === "Thể Loại" && (
-                                                    <div className="grid grid-cols-3 ">
-                                                        {categories.map((a) => (
-                                                            <div className="p-2 hover:text-yellow-500 hover:text-shadow-md ">
-                                                                {a.name}
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                                {openDrop === "Quốc Gia" && (
-                                                    <div className="grid grid-cols-2">
-                                                        {countries.map((a) => (
-                                                            <div className="p-2 hover:text-yellow-500 hover:text-shadow-md ">
-                                                                {a.name}
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        )}
-
-                                    </div>
-
-                                ) : (
-                                    <Link
-                                        to={e.path}
-                                        className={`flex items-center px-2 hover:text-yellow-500 ${currentPath === e.path ? "text-yellow-500 shadow-gray-200 " : ""}`}
-                                        onClick={() => setOpenMenu(false)}
-                                    >
-                                        {e.title}
-                                    </Link>
-                                )}
-
-                            </div>
-                        ) : null)}
-                    </div>
-
-                </div>
-            )}
-
         </div >
 
     );

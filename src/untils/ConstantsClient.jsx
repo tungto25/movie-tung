@@ -1,7 +1,7 @@
 export const menus = [
     {
         id: 1,
-        title: "",
+        title: "Home",
         path: "/"
     },
     {
