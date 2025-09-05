@@ -19,7 +19,7 @@ function Header({ handleOpenLogin }) {
     }
     const location = useLocation();
     const currentPath = location.pathname;
-    
+
     return (
         <div className="flex items-center bg-gray-900/20 text-white p-2 py-3 gap-2 text-sm justify-between 2xl:text-xl">
             {/* nút moblie */}
@@ -112,7 +112,7 @@ function Header({ handleOpenLogin }) {
                          block transition-transform duration-100 active:scale-95"
                     >
                         <FaUser />
-                        <span  className="whitespace-nowrap">Thành Viên</span>
+                        <span onClick={handleOpenLogin} className="whitespace-nowrap">Thành Viên</span>
                     </button>
                     <div className="grid grid-cols-2 mt-3 gap-2">
                         {menus.map((e, id) => e.title ? (

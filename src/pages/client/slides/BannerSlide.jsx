@@ -3,6 +3,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
+import SwiperCore, { Navigation, Thumbs } from "swiper";
+SwiperCore.use([Navigation, Thumbs]);
 
 import { ContextMovies } from "../../../contexts/MovieProvider";
 import { ContextCategories } from "../../../contexts/CategoryProvider";
@@ -21,7 +23,7 @@ function BannerSlide(props) {
     return (
         <div className="w-full relative">
             <Swiper
-                thumbs={thumbsSwiper ? { swiper: thumbsSwiper } : undefined}
+                thumbs={{ swiper: thumbsSwiper }}
                 onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
                 className="w-full"
             >
@@ -102,7 +104,8 @@ function BannerSlide(props) {
                         1024: { spaceBetween: 6 },  // PC vừa
                         1280: { spaceBetween: 8 },  // màn hình lớn
                     }}
-                    watchSlidesProgress
+                    watchSlidesProgress={true}
+                    slideToClickedSlide={true}
                     className="h-20"
                 >
                     {movies.map((e, i) => (

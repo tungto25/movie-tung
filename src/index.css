@@ -29,3 +29,8 @@
 .animate-star-movement-bottom {
     animation: star-movement-bottom linear infinite;
 }
+
+.perspective {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}

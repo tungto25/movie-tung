@@ -37,8 +37,8 @@ function Footer(props) {
                     />
                     <p>Hoàng Sa & Trường Sa là của Việt Nam</p>
                 </div>
-                <div className='flex items-center mt-5 flex-col md:flex-row justify-center'>
-                    <Link className='flex items-center ' >
+                <div className='flex items-center mt-5 flex-col md:flex-row justify-center md:justify-start'>
+                    <Link className='flex items-center'>
                         <img src="/images/logo.png" alt="Tfilm" className='h-15' />
                         <div className='flex flex-col bg-gradient-to-r from-blue-500 via-blue-700 to-purple-600 bg-clip-text text-transparent'>
                             <h1 className='font-bold font-serif text-3xl'>TFILM</h1>

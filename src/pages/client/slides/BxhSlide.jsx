@@ -5,8 +5,7 @@ import TopSeries from './TopSerie';
 function BxhSlide(props) {
     return (
         <div>
-            <TopMoviesCarousel />
-            <TopSeries />
+           
         </div>
     );
 }
