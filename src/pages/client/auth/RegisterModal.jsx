@@ -55,7 +55,7 @@ export default function RegisterModal({ setFormSign }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className='flex flex-col text-center basis-2/3 m-auto w-2/3 p-6'>
+        <form onSubmit={handleSubmit} className='flex flex-col text-center basis-2/3 m-auto max-sm:w-full w-2/3 p-6'>
             <h1 className="text-yellow-600 text-sm font-bold sm:text-4xl mb-3 sm:mb-6">Register</h1>
 
             <div className="flex items-center bg-gray-100 rounded-full px-4 py-2 mb-2 sm:mb-4 mt-3">
@@ -100,8 +100,8 @@ export default function RegisterModal({ setFormSign }) {
             {error.confirmPassword && <p className="text-red-500 text-xs mb-2">{error.confirmPassword}</p>}
 
             <div className="flex items-center gap-2 m-auto mb-2 sm:mb-3">
-                <span className="text-[7px] sm:text-base text-gray-400 border-b border-gray-300">Already have account?</span>
-                <button type="button" className="text-blue-500 text-[7px] sm:text-base" onClick={() => setFormSign(true)}>Login</button>
+                <span className="text-[7px] sm:text-base text-gray-400 border-gray-300">Already have account?</span>
+                <button type="button" className="text-blue-500 text-[7px] sm:text-base" onClick={() => setFormSign(false)}>Login</button>
             </div>
 
             <button type="submit" className="bg-gradient-to-r from-yellow-600 to-yellow-400 text-white py-2 px-12 rounded-full shadow-lg hover:opacity-90 transition text-[8px] sm:text-base active:scale-98">

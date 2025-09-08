@@ -16,7 +16,6 @@ import { IoIosInformationCircle } from "react-icons/io";
 function BannerSlide(props) {
     const movies = useContext(ContextMovies);
     const categories = useContext(ContextCategories);
-    console.log(movies);
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
 
