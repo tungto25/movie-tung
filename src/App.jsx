@@ -5,8 +5,7 @@ import Home from './pages/client/home/Home'
 import { AccountProvider } from './contexts/AccountProvider'
 function App() {
   const accounts = useContext(AccountProvider);
-  console.log(accounts);
-  
+
   return (
     //  <HomeAdmin />
     <Home />

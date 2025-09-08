@@ -31,9 +31,9 @@ function Home(props) {
             </header>
 
             <div className="flex-grow relative z-10">
-                <ClientRouters />
+                {/* <ClientRouters /> */}
             </div>
-            {/* <DetailMovie /> */}
+            <DetailMovie />
             {/* <PlayMovie /> */}
             <Footer className="relative z-10" />
             {/* <LoginModal openLogin={openLogin} handleCloseLogin={handleCloseLogin} /> */}
