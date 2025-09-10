@@ -14,16 +14,15 @@ const actor = [
         img: "https://i.redd.it/have-yall-appreciate-col-miles-stephen-lang-lately-dudes-72-v0-z9iat14tx0od1.jpg?width=452&format=pjpg&auto=webp&s=53024cc02ba4c46384fb7a66135d9b2af0d9bf39"
     },
 ]
-function InforMovie() {
+function InforMovie({ movieShow }) {
     return (
         <div className="text-white w-[35%] p-2">
             <img
-                src="https://upload.wikimedia.org/wikipedia/vi/e/e0/Avatar_D%C3%B2ng_ch%E1%BA%A3y_c%E1%BB%A7a_n%C6%B0%E1%BB%9Bc_-_Poster_ch%C3%ADnh_th%E1%BB%A9c.jpg"
+                src={movieShow?.imgUrl}
                 alt=""
-                className="w-[150px] h-auto object-contain rounded-md"
+                className="w-[150px] h-[210px] object-cover rounded-md"
             />
-            <h1 className="text-2xl mt-2">Avatar</h1>
-            <p className="text-yellow-400">Avatar</p>
+            <h1 className="text-2xl mt-2">{movieShow?.name}</h1>
             <div className="flex items-center gap-2 mt-5">
                 <div className="bg-white text-black text-center rounded p-1">Phần 1</div>
                 <div className="border text-center rounded p-1">Phần 2</div>

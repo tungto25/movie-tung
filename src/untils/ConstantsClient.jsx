@@ -45,21 +45,21 @@ export const lists = [
     {
         id: 1,
         title: "Tập Phim",
-        path: "/detail/:id/episode"
+        path: ""
     },
     {
         id: 2,
         title: "Trailer",
-        path: "/detail/:id/trailer"
+        path: "trailer"
     },
     {
         id: 3,
         title: "Diễn Viên",
-        path: "/detail/:id/movieactors"
+        path: "movieactors"
     },
     {
         id: 4,
         title: "Đề Xuất",
-        path: "/detail/:id/recommend"
+        path: "recommend"
     },
 ]

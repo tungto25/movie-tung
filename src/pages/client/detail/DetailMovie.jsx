@@ -3,27 +3,39 @@ import { FaHeart } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { FaShare } from "react-icons/fa";
 import { BiSolidCommentDetail } from "react-icons/bi";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, Outlet, useParams } from "react-router-dom";
 import { lists } from "../../../untils/ConstantsClient";
-import MovieRouters from "../../../routers/MovieRouters";
 import InforMovie from "./InforMovie";
 import Comment from "./Comment";
+import { useContext } from "react";
+import { ContextMovies } from "../../../contexts/MovieProvider";
 
-function DetailMovie({ handleOpenLogin }) {
+function DetailMovie() {
+    const { id } = useParams();
     const [currentChoose, setCurrentChoose] = useState(1);
+    const [movieShow, setMovieShow] = useState({});
+    const movies = useContext(ContextMovies);
+    useEffect(() => {
+        console.log(movies);
+        console.log("id", id);
+        const movieFound = movies.find(e => e.id === id);
+        setMovieShow(movieFound);
+    }, [movies, id]);
+    console.log(movieShow);
+
     return (
         <div>
             <div className="w-full">
                 <div className="relative">
                     <img
-                        src="https://cdnmedia.baotintuc.vn/Upload/DmtgOUlHWBO5POIHzIwr1A/files/2022/12/26/review-avatar-2-26122022.jpg"
+                        src={movieShow?.imgUrl}
                         alt=""
-                        className="w-full h-[400px] object-cover"
+                        className="w-full h-[550px] object-cover"
                     />
                     <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-gray-900 to-transparent"></div>                </div>
                 <div className="p-5 flex ">
-                    <InforMovie />
+                    <InforMovie movieShow={movieShow} />
                     <div className="flex-1 ">
                         <div className="flex items-center justify-between w-full">
                             <button
@@ -61,7 +73,7 @@ function DetailMovie({ handleOpenLogin }) {
                             {lists.map(e => (
                                 <Link
                                     key={e.id}
-                                    to={e.path}
+                                    to={`/detail/${id}/${e.path}`}
                                     onClick={() => setCurrentChoose(e.id)}
                                     className={`hover:text-yellow-500 ${currentChoose === e.id ?
                                         "text-yellow-500 border-b-2 border-yellow-500 pb-2" : "hover:text-yellow-500"}`}
@@ -73,9 +85,8 @@ function DetailMovie({ handleOpenLogin }) {
                         <hr className="text-gray-600" />
 
                         <div className="text-white ">
-                            <MovieRouters />
+                          <Outlet />
                         </div>
-
                         <Comment />
 
                     </div>

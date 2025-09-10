@@ -8,9 +8,14 @@ import Actor from '../pages/client/actor/Actor';
 import ShowTime from '../pages/client/showtime/ShowTime';
 import Topics from '../pages/client/topic/Topics';
 import DetailMovie from '../pages/client/detail/DetailMovie';
+import Episodes from '../pages/admin/media_management/episodes/Episodes';
+import Trailer from '../pages/client/detail/Trailer';
+import MovieActors from '../pages/client/detail/MovieActors';
+import Recommend from '../pages/client/detail/Recommend';
+import EpisodeMovie from '../pages/client/detail/EpisodeMovie';
 
 function ClientRouters(props) {
-    const routers = [
+    const routes = [
         {
             path: "/",
             element: <Main />
@@ -44,16 +49,40 @@ function ClientRouters(props) {
             element: <Topics />
         },
         {
-            path: "/detail/:id/*",
-            element: <DetailMovie />
+            path: "/detail/:id",
+            element: <DetailMovie />,
+            subRoutes: [
+                {
+                    path: "",
+                    element: <EpisodeMovie />
+                },
+                {
+                    path: "trailer",
+                    element: <Trailer />
+                },
+                {
+                    path: "movieactors",
+                    element: <MovieActors />
+                },
+                {
+                    path: "recommend",
+                    element: <Recommend />
+                },
+            ]
         },
     ]
+// Recursive function to render both top-level and nested routes
+function renderRoutes(routeArray) {
+    return routeArray.map((route, index) => (
+        <Route key={index} path={route.path} element={route.element}>
+            {route.subRoutes && renderRoutes(route.subRoutes)}
+        </Route>
+    ));
+}
     return (
         <div>
             <Routes>
-                {routers.map((e, i) =>
-                    <Route key={i} path={e.path} element={e.element} />
-                )}
+               {renderRoutes(routes)}
             </Routes>
         </div>
 

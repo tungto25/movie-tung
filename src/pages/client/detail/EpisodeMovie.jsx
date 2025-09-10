@@ -4,7 +4,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { CgMenuLeft } from "react-icons/cg";
 import { MdOutlineSubtitles } from "react-icons/md";
 
-function Episodes() {
+function EpisodeMovie() {
     const [selected, setSelected] = useState("Phần 1");
     const [open, setOpen] = useState(false);
 
@@ -62,4 +62,4 @@ function Episodes() {
     );
 }
 
-export default Episodes;
+export default EpisodeMovie;

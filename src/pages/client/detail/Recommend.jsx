@@ -100,7 +100,7 @@ function Recommend() {
                         onMouseLeave={handleMouseLeave}
                         className="h-[230px]"
                     >
-                        <img src={e.img} alt="" className="h-[180px] w-[130px]" />
+                        <img src={e.img} alt="" className="h-[180px] w-[130px] rounded-xl"/>
                         <div className="text-center max-w-[130px]">
                             <p className="text-sm">{e.name}</p>
                             <p className="text-xs">{e.subtitle}</p>

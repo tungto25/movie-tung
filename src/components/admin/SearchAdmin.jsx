@@ -1,7 +1,7 @@
 import { IoIosSearch } from "react-icons/io";
 import StarBorder from './StarBorder '
 
-function SearchAdmin({ handleOpen, search, handleSearch, setSearch, title, buttonText }) {
+function SearchAdmin({ handleOpen, search, handleSearch, setSearch, title, buttonText, handleFileUpload,addToExcel }) {
 
     const inputValue = (e) => {
         const value = e.target.value;
@@ -20,8 +20,10 @@ function SearchAdmin({ handleOpen, search, handleSearch, setSearch, title, butto
                     type="text"
                     placeholder="Enter keyWords..."
                     className="w-full focus:outline-none"
-                />
+                />              
             </div>
+             <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
+             <button onClick={addToExcel}>Add to Excel</button>
             <StarBorder
                 onClick={handleOpen}
                 as="button"
