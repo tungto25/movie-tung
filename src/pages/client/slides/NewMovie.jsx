@@ -11,224 +11,27 @@ import { IoIosInformationCircle } from "react-icons/io";
 import { GoDotFill } from "react-icons/go";
 
 import GradientText from "../../../components/client/GradientText";
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { createPortal } from "react-dom";
-import { ContextMovies } from "../../../contexts/MovieProvider";
-import { ContextCountries } from "../../../contexts/CountryProvider";
-import { getOjectById } from "../../../services/reponsitory";
+import { Link } from "react-router-dom";
 
 // Kích hoạt module
 SwiperCore.use([Navigation, Thumbs]);
 
-// const movieData = [
-//     {
-//         category: "Phim Hàn Quốc mới",
-//         movies: [
-//             {
-//                 name: "Ngôi Sao Rắc Rối của Tôi",
-//                 subtitle: "My Troublesome Star",
-//                 img: "https://vnpt.com.vn/Media/Images/20012021/2020012001.jpg",
-//                 eps: 3,
-//                 tm: 2,
-//             },
-//             {
-//                 name: "Thử Thách Thần Tượng",
-//                 subtitle: "Running Man",
-//                 img: "https://vnpt.com.vn/Media/Images/20012021/2020012001.jpg",
-//                 eps: 766,
-//             },
-//             {
-//                 name: "Thử Thách Thần Tượng",
-//                 subtitle: "Running Man",
-//                 img: "https://vnpt.com.vn/Media/Images/20012021/2020012001.jpg",
-//                 eps: 766,
-//             },
-//             {
-//                 name: "Thử Thách Thần Tượng",
-//                 subtitle: "Running Man",
-//                 img: "https://vnpt.com.vn/Media/Images/20012021/2020012001.jpg",
-//                 eps: 766,
-//             },
-//             {
-//                 name: "Thử Thách Thần Tượng",
-//                 subtitle: "Running Man",
-//                 img: "https://vnpt.com.vn/Media/Images/20012021/2020012001.jpg",
-//                 eps: 766,
-//             },
-//             {
-//                 name: "Thử Thách Thần Tượng",
-//                 subtitle: "Running Man",
-//                 img: "https://vnpt.com.vn/Media/Images/20012021/2020012001.jpg",
-//                 eps: 766,
-//             },
-//             {
-//                 name: "Thử Thách Thần Tượng",
-//                 subtitle: "Running Man",
-//                 img: "https://vnpt.com.vn/Media/Images/20012021/2020012001.jpg",
-//                 eps: 766,
-//             },
-//             {
-//                 name: "Thử Thách Thần Tượng",
-//                 subtitle: "Running Man",
-//                 img: "https://vnpt.com.vn/Media/Images/20012021/2020012001.jpg",
-//                 eps: 766,
-//             },
-//         ],
-//     },
-//     {
-//         category: "Phim Trung Quốc mới",
-//         movies: [
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//         ],
-//     },
-//     {
-//         category: "Phim US-UK mới",
-//         movies: [
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//             {
-//                 name: "Minh Nguyệt Nhập Khanh Hoài",
-//                 subtitle: "A Forbidden Marriage",
-//                 img: "https://cdn.9pay.vn/tin-tuc/dai-chua-te-hoat-hinh-trung-quoc-3d-1696405633.jpg",
-//                 eps: 24,
-//                 tm: 24,
-//             },
-//         ],
-//     },
-// ];
-export default function NewMovie({data, title}) {
+export default function NewMovie({ data, title }) {
     const prevRefs = useRef([]);
     const nextRefs = useRef([]);
     const [hoveredMovie, setHoveredMovie] = useState(null);
     const openTimer = useRef(null);
     const closeTimer = useRef(null);
 
-   
-   
-
-    const handleMouseEnter = (movie, idx, e) => {
+    const handleMouseEnter = (movie, i, e) => {
         const rect = e.currentTarget.getBoundingClientRect();
         clearTimeout(closeTimer.current);
         clearTimeout(openTimer.current);
         openTimer.current = setTimeout(() => {
-            setHoveredMovie({ movie, idx, rect });
+            setHoveredMovie({ ...movie, i, rect });
         }, 700);
     };
 
@@ -240,7 +43,7 @@ export default function NewMovie({data, title}) {
         }, 150);
     };
     return (
-        <div className="space-y-10 p-6 bg-gray-800 from-gray-700 via-gray-700/30 to-gray-900 bg-gradient-to-b text-white w-[96%] m-auto mt-5 rounded-2xl">
+        <div className="">
 
             <div className="flex gap-4 relative flex-col md:flex-row">
                 <div className="flex flex-row md:flex-col items-center md:items-start justify-around md:justify-around gap-4">
@@ -249,7 +52,7 @@ export default function NewMovie({data, title}) {
                         showBorder={false}
                         className="custom-class text-lg md:text-xl lg:text-2xl"
                     >
-                       {title}
+                        Phim {title} mới
                     </GradientText>
                     <button className="text-sm text-gray-400 hover:underline flex items-center">
                         <span>Xem toàn bộ</span>
@@ -282,13 +85,13 @@ export default function NewMovie({data, title}) {
                             swiper.params.navigation.prevEl = prevRefs.current;
                             swiper.params.navigation.nextEl = nextRefs.current;
                         }}
-                        className="flex-1 w-full max-w-[1000px] md:max-w-[620px] lg:max-w-[1000px]"
+                        className=" w-full max-w-[1000px] md:max-w-[620px] lg:max-w-[1000px]"
                     >
                         {data.map((e, i) => (
                             <SwiperSlide key={i}>
                                 <div
                                     className="relative"
-                                    onMouseEnter={(e) => handleMouseEnter(e, i)}
+                                    onMouseEnter={(a) => handleMouseEnter(e, i, a)}
                                     onMouseLeave={handleMouseLeave}
                                 >
                                     <img src={e.imgUrl}
@@ -318,16 +121,23 @@ export default function NewMovie({data, title}) {
                                                 transformOrigin: "top left",
                                                 zIndex: 9999,
                                             }}
-                                            className="rounded-2xl overflow-hidden shadow-2xl bg-gray-950/65 text-white hidden lg:block"
+                                            className="rounded-2xl overflow-hidden shadow-2xl bg-gray-950/90 text-white hidden lg:block"
                                         >
-                                            <img src={hoveredMovie.imgUrl} className="w-full h-40 object-cover" />
+                                            <img
+                                                src={hoveredMovie.imgUrl}
+                                                className="w-full h-40 object-cover"
+                                            />
                                             <div className="p-4">
                                                 <h1 className="text-lg font-semibold">{hoveredMovie.name}</h1>
                                                 <div className='flex items-center gap-2 mt-5'>
-                                                    <button className='px-4 py-2 bg-yellow-500 flex items-center rounded-lg text-sm gap-2 text-black'>
+                                                    <Link
+                                                        to={`/detail/${e.id}`}
+                                                        className='px-4 py-2 bg-yellow-500 flex items-center rounded-lg text-sm gap-2
+                                                         text-black active:scale-95 active:shadow-[0_0_10px_3px_rgba(249,215,87)]'
+                                                    >
                                                         <FaPlay />
                                                         <span className='whitespace-nowrap'>Xem ngay</span>
-                                                    </button>
+                                                    </Link>
                                                     <div className='flex items-center rounded-lg border-1 px-4 py-2 text-sm gap-2'>
                                                         <FaHeart />
                                                         <span>Thích</span>

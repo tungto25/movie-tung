@@ -2,13 +2,17 @@ import { useContext } from 'react'
 import './App.css'
 import HomeAdmin from './pages/admin/home_admin/HomeAdmin'
 import Home from './pages/client/home/Home'
-import { AccountProvider } from './contexts/AccountProvider'
+import { ContextAccount } from './contexts/AccountProvider';
+import { ContextAuth } from './contexts/AuthProvider';
 function App() {
-  const accounts = useContext(AccountProvider);
-
+  const { isLogin } = useContext(ContextAuth);
+  console.log(isLogin);
+  const section = isLogin?.roles === "admin";
   return (
-    //  <HomeAdmin />
-    <Home />
+    <div>
+      {section ? <HomeAdmin /> : <Home />}
+    </div>
+
   )
 }
 

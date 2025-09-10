@@ -34,3 +34,25 @@
     perspective: 1000px;
     transform-style: preserve-3d;
 }
+
+@keyframes bell-shake {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-15deg);
+    }
+
+    75% {
+        transform: rotate(15deg);
+    }
+}
+
+.bell-animate {
+    animation: bell-shake 2s ease-in-out infinite;
+    transform-origin: top center;
+    /* lắc từ chỗ treo chuông */
+}

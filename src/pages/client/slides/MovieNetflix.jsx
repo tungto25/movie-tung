@@ -109,11 +109,6 @@ export default function MovieNetflix() {
             <div className="flex gap-4 items-center w-full rounded-t-2xl px-4 py-2">
                 <div className="flex items-center">
                     <h1 className="font-bold text-base md:text-2xl lg:text-3xl">Phim hot</h1>
-                    <img
-                        src="public/images/original-26e501e97684a115bfff294.png"
-                        alt=""
-                        className="w-15"
-                    />
                 </div>
                 <div className="flex items-center justify-center border rounded-2xl group p-1 transition-transform duration-150 active:scale-105">
                     <p className="hidden lg:group-hover:block">Xem thêm</p>

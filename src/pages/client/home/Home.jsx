@@ -2,10 +2,8 @@ import Header from '../../../components/client/Header';
 import Footer from '../../../components/client/Footer';
 import ClientRouters from '../../../routers/ClientRouters';
 import { useEffect, useState } from 'react';
-import LoginModal from '../auth/LoginModal';
 import Auth from '../auth/Auth';
-import DetailMovie from '../DetailMovie/DetailMovie';
-import PlayMovie from '../DetailMovie/PlayMovie';
+import DetailMovie from '../detail/DetailMovie';
 
 function Home(props) {
     const [scrolled, setScrolled] = useState(false);
@@ -31,9 +29,9 @@ function Home(props) {
             </header>
 
             <div className="flex-grow relative z-10">
-                {/* <ClientRouters /> */}
+                <ClientRouters />
             </div>
-            <DetailMovie />
+            {/* <DetailMovie /> */}
             {/* <PlayMovie /> */}
             <Footer className="relative z-10" />
             {/* <LoginModal openLogin={openLogin} handleCloseLogin={handleCloseLogin} /> */}

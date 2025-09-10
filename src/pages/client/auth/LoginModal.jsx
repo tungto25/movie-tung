@@ -74,7 +74,7 @@ export default function LoginModal({ handleCloseLogin, setFormSign }) {
                     <div className="flex items-center bg-gray-100 rounded-full px-4 py-2 mb-2 sm:mb-4">
                         <FaEnvelope className="text-gray-400 mr-3 text-[9px] sm:text-base" />
                         <input
-                            type="email"
+                            type="text"
                             name="email"
                             placeholder="Email"
                             value={form.email}

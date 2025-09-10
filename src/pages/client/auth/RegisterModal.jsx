@@ -37,7 +37,7 @@ export default function RegisterModal({ setFormSign }) {
         }
 
         setForm(inner);
-        setFormSign(true);
+        setFormSign(false);
     };
 
     const handleChange = (e) => {

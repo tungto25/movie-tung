@@ -1,16 +1,18 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { MdOutlineSearch } from "react-icons/md";
 import { IoIosMail } from "react-icons/io";
 import { FaBell } from "react-icons/fa";
 import Avatar from '@mui/material/Avatar';
 import { deepOrange, deepPurple } from '@mui/material/colors';
 import SplitText from "./Text";
+import { ContextAuth } from '../../contexts/AuthProvider';
 
 function HeaderAdmin(props) {
     const [open, setOpen] = useState(false);
     const handleAnimationComplete = () => {
         console.log('All letters have animated!');
     };
+    const { handleLogout } = useContext(ContextAuth);
     return (
         <div>
             <div className='p-3'>
@@ -57,7 +59,12 @@ function HeaderAdmin(props) {
                                 <ul className="py-2 text-black ">
                                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">👤 Profile</li>
                                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">⚙️ Settings</li>
-                                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-500">🚪 Logout</li>
+                                    <li
+                                        onClick={handleLogout}
+                                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-500"
+                                    >
+                                        🚪 Logout
+                                    </li>
                                 </ul>
                             </div>)}
                     </div>
