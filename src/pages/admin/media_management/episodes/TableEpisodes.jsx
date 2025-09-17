@@ -6,10 +6,12 @@ import { MdDeleteForever, MdEdit } from 'react-icons/md';
 import { getOjectById } from '../../../../services/reponsitory';
 import { ContextMovies } from '../../../../contexts/MovieProvider';
 import { deleteDocument } from '../../../../services/FirebaseService'; // API xóa
+import { ContextSections } from '../../../../contexts/SectionProvider';
 
 function TableEpisodes({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, search }) {
     const episodes = useContext(ContextEpisodes);
     const movies = useContext(ContextMovies);
+    const sections = useContext(ContextSections);
 
     const rowsPerPage = 5;
     const [selectedIds, setSelectedIds] = useState([]);
@@ -98,11 +100,11 @@ function TableEpisodes({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, 
                                 />
                             </TableCell>
                             <TableCell>#</TableCell>
-                            <TableCell align="right">Title</TableCell>
-                            <TableCell align="right">Description</TableCell>
-                            <TableCell align="right">Episodes Number</TableCell>
-                            <TableCell align="right">Video Url</TableCell>
                             <TableCell align="right">Movie</TableCell>
+                            <TableCell align="right">Episodes Number</TableCell>
+                            <TableCell align="right">Sections</TableCell>
+
+                            <TableCell align="right">Video Url</TableCell>
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>
                         {paginatedData.map((e, index) => (
@@ -121,11 +123,14 @@ function TableEpisodes({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, 
                                     />
                                 </TableCell>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
-                                <TableCell align="right">{e.title}</TableCell>
-                                <TableCell align="right">{e.description}</TableCell>
-                                <TableCell align="right">{e.episodeNumber}</TableCell>
-                                <TableCell align="right">{e.videoUrl}</TableCell>
                                 <TableCell align="right">{getOjectById(movies, e.movieId)?.name || ""}</TableCell>
+                                <TableCell align="right">{e.episodeNumber}</TableCell>
+                                <TableCell align="right">
+                                    {getOjectById(sections, e.sectionId)?.title || ""}
+                                </TableCell>
+
+                                <TableCell align="right">{e.videoUrl}</TableCell>
+
                                 <TableCell >
                                     <div className='flex gap-2 justify-center items-center'>
                                         <button onClick={() => editOpen(e)} className='bg-blue-600 p-2 rounded-md text-white'><MdEdit /></button>

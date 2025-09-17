@@ -4,8 +4,7 @@ import { IoMdAdd } from "react-icons/io";
 import { FaShare } from "react-icons/fa";
 import { BiSolidCommentDetail } from "react-icons/bi";
 import { useEffect, useState } from "react";
-import { Link, Outlet, useParams } from "react-router-dom";
-import { lists } from "../../../untils/ConstantsClient";
+import { Outlet, useParams } from "react-router-dom";
 import InforMovie from "./InforMovie";
 import Comment from "./Comment";
 import { useContext } from "react";
@@ -13,26 +12,26 @@ import { ContextMovies } from "../../../contexts/MovieProvider";
 
 function DetailMovie() {
     const { id } = useParams();
-    const [currentChoose, setCurrentChoose] = useState(1);
     const [movieShow, setMovieShow] = useState({});
     const movies = useContext(ContextMovies);
     useEffect(() => {
-        console.log(movies);
-        console.log("id", id);
         const movieFound = movies.find(e => e.id === id);
         setMovieShow(movieFound);
     }, [movies, id]);
-    console.log(movieShow);
+console.log(movies);
 
     return (
         <div>
-            <div className="w-full">
-                <div className="relative">
-                    <video
-                        src={movieShow?.videoUrl}
-                        alt=""
-                        className="w-full h-[550px] object-cover"
-                    />
+            <div className="w-full mt-30">
+                <div className=" p-5">
+                    {movies.map((e,i)=>(
+                        <iframe
+                        width="560"
+                        height="315"
+                        src="Full|https://player.phimapi.com/player/?url=https://s5.phim1280.tv/20250513/ZU0dQxi5/index.m3u8" 
+                        title={e.name}
+                    ></iframe>
+                    ))}
                 </div>
                 <div className="p-5 flex ">
                     <InforMovie movieShow={movieShow} />

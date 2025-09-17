@@ -17,6 +17,10 @@ function DetailMovie() {
     const [movieShow, setMovieShow] = useState({});
     const movies = useContext(ContextMovies);
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [id]);
+
+    useEffect(() => {
         console.log(movies);
         console.log("id", id);
         const movieFound = movies.find(e => e.id === id);

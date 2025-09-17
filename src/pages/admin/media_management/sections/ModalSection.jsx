@@ -19,14 +19,13 @@ function ModalSection({ open, handleClose, section, setSection, error, setError,
     }, [open]);
 
     const validation = () => {
-        const newError = {
-            title: section.title ? "" : "Please enter title",
-            type: section.type ? "" : "Please enter type",
-            movieId: section.movieId ? "" : "Please enter movieId",
-        };
-        setError(newError);
-        return Object.values(newError).every(e => e === "");
+    const newError = {
+        title: section.title ? "" : "Please enter title",
+        movieId: section.movieId ? "" : "Please enter movieId",
     };
+    setError(newError);
+    return Object.values(newError).every(e => e === "");
+};
 
     const handleChange = (e) => {
         setSection(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -34,6 +33,8 @@ function ModalSection({ open, handleClose, section, setSection, error, setError,
 
     const addTask = async () => {
         if (!validation()) {
+            console.log("vfdvb");
+            
             return
         }
         if (section.id) {
@@ -48,18 +49,18 @@ function ModalSection({ open, handleClose, section, setSection, error, setError,
     const Cancel = () => {
         handleClose();
         setSection(inner);
-        setError(inner);
-    }
+        setError({});
+    };
     const handleImg = (event) => {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
-                setSection({ ...movie, imgUrl: reader.result });
+                setSection(prev => ({ ...prev, imgUrl: reader.result }));
             };
             reader.readAsDataURL(file);
         }
-    }
+    };
     return (
         <Modal
             open={open}
@@ -76,25 +77,7 @@ function ModalSection({ open, handleClose, section, setSection, error, setError,
                     error={!!error.title}
                     helperText={error.title}
                 />
-                <Autocomplete
-                    options={movies}
-                    getOptionLabel={(option) => option.name}
-                    disablePortal
-                    fullWidth
-                    sx={{ mt: 2 }}
-                    value={getOjectById(movies, section.title)}
-                    onChange={(event, value) =>
-                        setSection(prev => ({ ...prev, movieId: value?.id || "" }))
-                    }
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Find the movie"
-                            error={!!error.movieId}
-                            helperText={error.movieId}
-                        />
-                    )}
-                />
+                
                 <div>
                     <label className='flex flex-col items-center rounded-3xl p-1 border-2 mt-4 w-full bg-gray-500 text-white hover:bg-gray-700'>
                         <p className='whitespace-nowrap'>Choosen Image</p>

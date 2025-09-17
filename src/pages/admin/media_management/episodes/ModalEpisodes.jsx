@@ -9,12 +9,11 @@ import { Autocomplete } from '@mui/material';
 import { useContext } from 'react';
 import { ContextMovies, MovieProvider } from '../../../../contexts/MovieProvider';
 import { getOjectById } from '../../../../services/reponsitory';
+import { ContextSections } from '../../../../contexts/SectionProvider';
 
 function ModalEpisodes({ open, handleClose, episode, setEpisode, error, setError, inner, handleUpdate }) {
     const validation = () => {
         const newError = {
-            title: episode.title ? "" : "Please enter title",
-            description: episode.description ? "" : "Please enter description",
             episodeNumber: episode.episodeNumber ? "" : "Please enter episode number",
             movieId: episode.movieId ? "" : "Please enter movieid",
             videoUrl: episode.videoUrl ? "" : "Please enter videoUrl",
@@ -45,45 +44,52 @@ function ModalEpisodes({ open, handleClose, episode, setEpisode, error, setError
         setEpisode(inner);
         setError(inner);
     }
-    const handleImg = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setEpisode({ ...episode, img: reader.result });
-            };
-            reader.readAsDataURL(file);
-        }
-    }
+    
     const movies = useContext(ContextMovies);
+    const sections = useContext(ContextSections);
     return (
         <Modal
             open={open}
             onClose={handleClose}>
             <Box sx={style}>
                 <Typography variant="h6">Modal Add Episode</Typography>
-                <TextField
-                    value={episode.title || ""}
-                    onChange={handleChange}
-                    name='title'
-                    label="title"
+                <Autocomplete
+                    options={movies}
+                    getOptionLabel={(option) => option.name}
+                    disablePortal
                     fullWidth
                     sx={{ mt: 2 }}
-                    error={!!error.title}
-                    helperText={error.title}
+                    value={movies.find(m => m.id === episode.movieId) || null}
+                    onChange={(event, value) =>
+                        setEpisode(prev => ({ ...prev, movieId: value?.id || "" }))
+                    }
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="Find the movie"
+                            error={!!error.movieId}
+                            helperText={error.movieId}
+                        />
+                    )}
                 />
-                <TextField
-                    value={episode.description || ""}
-                    onChange={handleChange}
-                    name='description'
-                    label="description"
+                <Autocomplete
+                    options={sections}
+                    getOptionLabel={(option) => option.title}   
+                    disablePortal
                     fullWidth
-                    rows={3}
-                    multiline
                     sx={{ mt: 2 }}
-                    error={!!error.description}
-                    helperText={error.description}
+                    value={sections.find(s => s.id === episode.sectionId) || null} 
+                    onChange={(event, value) =>
+                        setEpisode(prev => ({ ...prev, sectionId: value?.id || "" }))
+                    }
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="Find the section"
+                        />
+                    )}
                 />
+
                 <TextField
                     value={episode.episodeNumber || ""}
                     onChange={handleChange}
@@ -104,25 +110,8 @@ function ModalEpisodes({ open, handleClose, episode, setEpisode, error, setError
                     margin="normal"
                     placeholder=""
                 />
-                <Autocomplete
-                    options={movies}
-                    getOptionLabel={(option) => option.name}
-                    disablePortal
-                    fullWidth
-                    sx={{ mt: 2 }}
-                    value={getOjectById(movies, episode.title)}
-                    onChange={(event, value) =>
-                        setEpisode(prev => ({ ...prev, movieId: value?.id || "" }))
-                    }
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Find the movie"
-                            error={!!error.movieId}
-                            helperText={error.movieId}
-                        />
-                    )}
-                />
+                
+
                 <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
 
                     <Button onClick={Cancel} variant="contained" color="error">

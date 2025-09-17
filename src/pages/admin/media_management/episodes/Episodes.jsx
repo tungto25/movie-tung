@@ -6,7 +6,7 @@ import TableEpisodes from "./TableEpisodes";
 import * as XLSX from "xlsx";
 import { addDocument } from '../../../../services/FirebaseService';
 
-const inner = { title: "", description: "", videoUrl: "", episodeNumber: "", movieId: "", };
+const inner = { title: "", section: "", videoUrl: "", episodeNumber: "", movieId: "", };
 function Episodes(props) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);

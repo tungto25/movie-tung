@@ -1,4 +1,4 @@
-import { Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
+import { Avatar, Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 import { useContext, useState } from 'react';
 import { MdDeleteForever, MdEdit } from 'react-icons/md';
 import PaginationTable from '../../../../components/admin/PaginationTable';
@@ -116,7 +116,18 @@ function TableSection({ editOpen, setIdDeleted, setOpenDeleted, search, page, se
                                     />
                                 </TableCell>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
-                                <TableCell align="right">{e.imgUrl}</TableCell>
+                                <TableCell align="center" sx={{ width: "15px", height: "15px" }}>
+                                    <Avatar
+                                        variant="rounded"
+                                        src={e.imgUrl}
+                                        alt=" Image"
+                                        sx={{
+                                            width: 50,
+                                            height: 50,
+                                            margin: 'auto',
+                                        }}
+                                    />
+                                </TableCell>
                                 <TableCell align="right">{e.title}</TableCell>
                                 <TableCell align="right">{getOjectById(movies, e.movieId)?.name}</TableCell>
 
