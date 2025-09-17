@@ -31,7 +31,6 @@ function Header({ handleOpenLogin }) {
     const location = useLocation();
     const currentPath = location.pathname;
     const { isLogin, handleLogout } = useContext(ContextAuth);
-    console.log(isLogin);
 
     return (
         <div className="flex items-center bg-gray-900/20 text-white p-2 py-3 gap-2 text-sm justify-between 2xl:text-xl">
@@ -61,10 +60,10 @@ function Header({ handleOpenLogin }) {
                 onClick={() => setOpenSearch(!openSearch)}>
                 {openSearch ? <HiX size={22} /> : <IoIosSearch size={22} />}
             </div>
-            <div className={`min-sm:flex p-3 items-center rounded-xl gap-3 ml-5 max-sm:grid max-sm:grid-cols-2 max-sm:absolute 
-                top-[60px] left-0 max-sm:w-[70vw] max-sm:bg-gray-800 ${openMenu ? "" : "max-sm:hidden"}`}>
+            <div className={`min-lg:flex p-3 items-center rounded-xl gap-3 ml-5 max-lg:grid max-lg:grid-cols-2 max-lg:absolute 
+                top-[60px] left-0 max-lg:w-[70vw] max-lg:bg-gray-800 ${openMenu ? "" : "max-lg:hidden"}`}>
                 {!isLogin ? (
-                    <button className="col-span-2 min-sm:order-1 flex items-center gap-1 rounded-full bg-white text-black px-3 py-2 transition-transform duration-100 active:scale-95">
+                    <button className="col-span-2 min-lg:order-1 flex items-center gap-1 rounded-full bg-white text-black px-3 py-2 transition-transform duration-100 active:scale-95">
                         <FaUser />
                         <span onClick={handleOpenLogin} className="whitespace-nowrap">Thành Viên</span>
                     </button>
@@ -72,13 +71,13 @@ function Header({ handleOpenLogin }) {
                     <>
                         <div
                             onClick={() => setOpenAva(!openAva)}
-                            className="rounded-full h-10 w-10 transition-transform duration-150 hover:scale-110 min-sm:order-1"
+                            className="rounded-full h-10 w-10 transition-transform duration-150 hover:scale-110 min-lg:order-1"
                         >
                             <Avatar sx={{ bgcolor: "red" }} />
                         </div>
 
-                        <div className={` col-span-2 ${openAva ? "" : "sm:hidden"}`}>
-                            <div className="p-3 text-white md:absolute top-[62px] bg-gray-800 rounded-xl right-5">
+                        <div className={`col-span-2 lg:${openAva ? "block" : "hidden"}  sm:block md:block `}>
+                            <div className="p-3 text-white lg:absolute top-[62px] bg-gray-800 rounded-xl right-5">
                                 <div className="flex items-center gap-3">
                                     <p>{isLogin?.email?.split("@")[0].replace(/[0-9]/g, "")}</p>
                                     <FaUserCog className="text-yellow-500" />

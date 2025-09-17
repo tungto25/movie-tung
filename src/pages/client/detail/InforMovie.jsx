@@ -1,20 +1,13 @@
+import { useContext } from "react";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { ContextMovies } from "../../../contexts/MovieProvider";
+import { useParams } from "react-router-dom";
 
-const actor = [
-    {
-        name: "Sam Worthington",
-        img: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcR4NZrfjLuXKzWv2fTCnmo_CXtXPHA7yQfHYA9Q80M1hJvwRkPhxliBh6J7hj-urMDxh0Gj5SbpoxCvhjawxT5m9V399pB8gYyS4cM87A"
-    },
-    {
-        name: "Zoe Saldaña",
-        img: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTXjYizU8iPr28znx-4JVG3h2GqdP1NKIypVFrBdcc9K4oxYXfVw4EWciK0I1h6DFjJAnwETLTbf2Da9cXlipUMH9dI45UqHDtnqzgxVw"
-    },
-    {
-        name: "Stephen Lang",
-        img: "https://i.redd.it/have-yall-appreciate-col-miles-stephen-lang-lately-dudes-72-v0-z9iat14tx0od1.jpg?width=452&format=pjpg&auto=webp&s=53024cc02ba4c46384fb7a66135d9b2af0d9bf39"
-    },
-]
+
 function InforMovie({ movieShow }) {
+    const movies = useContext(ContextMovies);
+    const { id } = useParams();
+    const movie = movies.find(m => m.id === id);
     return (
         <div className="text-white w-[35%] p-2">
             <img
@@ -69,16 +62,36 @@ function InforMovie({ movieShow }) {
             <div className="mt-4">
                 <h1 className="text-xl">Diễn viên</h1>
                 <div className="flex items-center gap-3 mt-3">
-                    {actor.map((e, i) => (
-                        <div className="flex justify-center items-center flex-col gap-2">
-                            <img
-                                src={e.img}
-                                alt=""
-                                className="w-20 h-20 object-cover rounded-full"
-                            />
-                            <p>{e.name}</p>
-                        </div>
-                    ))}
+                    <div className="flex items-center gap-3 mt-3">
+                        {movie?.listActor && (
+                            <div className="flex items-center gap-3 mt-3">
+                                {movie.listActor.map((e, i) => (
+                                    <div key={i} className="flex justify-center items-center flex-col gap-2">
+                                        <img
+                                            src={e.imgUrl}
+                                            alt={e.name}
+                                            className="w-20 h-20 object-cover rounded-full"
+                                        />
+                                        <p>{e.name}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        {movie?.listCharacter && (
+                            <div className="flex items-center gap-3 mt-3">
+                                {movie.listCharacter.map((e, i) => (
+                                    <div key={i} className="flex justify-center items-center flex-col gap-2">
+                                        <img
+                                            src={e.imgUrl}
+                                            alt={e.name}
+                                            className="w-20 h-20 object-cover rounded-full"
+                                        />
+                                        <p>{e.name}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 

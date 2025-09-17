@@ -13,6 +13,7 @@ import Trailer from '../pages/client/detail/Trailer';
 import MovieActors from '../pages/client/detail/MovieActors';
 import Recommend from '../pages/client/detail/Recommend';
 import EpisodeMovie from '../pages/client/detail/EpisodeMovie';
+import PlayMovie from '../pages/client/detail/PlayMovie';
 
 function ClientRouters(props) {
     const routes = [
@@ -70,19 +71,23 @@ function ClientRouters(props) {
                 },
             ]
         },
+        {
+            path: "/playmovie",
+            element: <PlayMovie />
+        },
     ]
-// Recursive function to render both top-level and nested routes
-function renderRoutes(routeArray) {
-    return routeArray.map((route, index) => (
-        <Route key={index} path={route.path} element={route.element}>
-            {route.subRoutes && renderRoutes(route.subRoutes)}
-        </Route>
-    ));
-}
+    // Recursive function to render both top-level and nested routes
+    function renderRoutes(routeArray) {
+        return routeArray.map((route, index) => (
+            <Route key={index} path={route.path} element={route.element}>
+                {route.subRoutes && renderRoutes(route.subRoutes)}
+            </Route>
+        ));
+    }
     return (
         <div>
             <Routes>
-               {renderRoutes(routes)}
+                {renderRoutes(routes)}
             </Routes>
         </div>
 

@@ -11,7 +11,7 @@ import { IoIosInformationCircle } from "react-icons/io";
 import { GoDotFill } from "react-icons/go";
 
 import GradientText from "../../../components/client/GradientText";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
@@ -20,11 +20,22 @@ import { Link } from "react-router-dom";
 SwiperCore.use([Navigation, Thumbs]);
 
 export default function NewMovie({ data, title }) {
-    const prevRefs = useRef([]);
-    const nextRefs = useRef([]);
+
     const [hoveredMovie, setHoveredMovie] = useState(null);
     const openTimer = useRef(null);
     const closeTimer = useRef(null);
+
+    const prevRef = useRef(null);
+    const nextRef = useRef(null);
+    const swiperRef = useRef(null);
+    useEffect(() => {
+        if (swiperRef.current && swiperRef.current.params) {
+            swiperRef.current.params.navigation.prevEl = prevRef.current;
+            swiperRef.current.params.navigation.nextEl = nextRef.current;
+            swiperRef.current.navigation.init();
+            swiperRef.current.navigation.update();
+        }
+    }, []);
 
     const handleMouseEnter = (movie, i, e) => {
         const rect = e.currentTarget.getBoundingClientRect();
@@ -61,7 +72,6 @@ export default function NewMovie({ data, title }) {
                 </div>
                 <div className="relative flex-1">
                     <Swiper
-                        modules={[Navigation]}
                         breakpoints={{
                             // Mobile nhỏ
                             0: { slidesPerView: 2, spaceBetween: 8 },
@@ -77,14 +87,8 @@ export default function NewMovie({ data, title }) {
                             1280: { slidesPerView: 4, spaceBetween: 16 },
                         }}
                         spaceBetween={12}
-                        navigation={{
-                            prevEl: prevRefs.current,
-                            nextEl: nextRefs.current,
-                        }}
-                        onBeforeInit={(swiper) => {
-                            swiper.params.navigation.prevEl = prevRefs.current;
-                            swiper.params.navigation.nextEl = nextRefs.current;
-                        }}
+                        modules={[Navigation]}
+                        onSwiper={(swiper) => (swiperRef.current = swiper)}
                         className=" w-full max-w-[1000px] md:max-w-[620px] lg:max-w-[1000px]"
                     >
                         {data.map((e, i) => (
@@ -96,7 +100,7 @@ export default function NewMovie({ data, title }) {
                                 >
                                     <img src={e.imgUrl}
                                         alt={e.name}
-                                        className="rounded-lg hover:scale-102 h-[140px]"
+                                        className="rounded-lg hover:scale-102 h-[140px] object-cover"
                                     />
                                     <h3 className="text-sm mt-2">{e.name}</h3>
                                 </div>
@@ -180,14 +184,18 @@ export default function NewMovie({ data, title }) {
 
                     {/* Custom Buttons */}
                     <button
-                        ref={(el) => (prevRefs.current = el)}
-                        className="absolute hidden md:block md:top-1/3 md:-translate-y-1/3 lg:top-2/7 lg:translate-y-1 left-0 -translate-x-1/2 z-30 p-2 bg-white text-black rounded-full shadow"
+                        ref={prevRef}
+                        className="absolute top-1/3 -translate-y-1/3 left-0 -translate-x-1/2
+                                    z-30 p-2 bg-white text-black rounded-full shadow hidden md:flex"
                     >
                         <MdOutlineArrowBackIos />
                     </button>
+
+                    {/* Next Button */}
                     <button
-                        ref={(el) => (nextRefs.current = el)}
-                        className="absolute  hidden md:block md:top-1/3 md:-translate-y-1/3 lg:top-2/7 lg:translate-y-1 right-0 translate-x-1/2 z-30 p-2 bg-white text-black rounded-full shadow"
+                        ref={nextRef}
+                        className="absolute top-1/3 -translate-y-1/3 right-0 translate-x-1/2
+                                    z-30 p-2 bg-white text-black rounded-full shadow hidden md:flex"
                     >
                         <MdArrowForwardIos />
                     </button>

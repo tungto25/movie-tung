@@ -45,7 +45,7 @@ function ModalChatacter({ open, handleClose, character, setCharacter, error, set
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
-                setCharacter(prev => ({ ...prev, img: reader.result })); 
+                setCharacter(prev => ({ ...prev, img: reader.result }));
             };
             reader.readAsDataURL(file);
         } else {
@@ -80,19 +80,16 @@ function ModalChatacter({ open, handleClose, character, setCharacter, error, set
                     error={!!error.description}
                     helperText={error.description}
                 />
-
-                <label className='flex flex-col items-center rounded-3xl p-1 border-2 mt-4 w-full bg-gray-500 text-white hover:bg-gray-700'>
-                    <p className='whitespace-nowrap'>Choosen Image</p>
-                    <input
-                        type="file"
-                        className='hidden'
-                        onChange={handleImg}
-                    />
-                </label>
-                <Avatar
-                    src={character?.img}
-                    alt="Auhtor Image"
-                    sx={{ width: 150, height: 150, margin: '10px auto' }}
+                <TextField
+                    value={character.imgUrl || ""}
+                    onChange={handleChange}
+                    name='imgUrl'
+                    label="imgUrl"
+                    fullWidth
+                    multiline
+                    sx={{ mt: 2 }}
+                    error={!!error.imgUrl}
+                    helperText={error.imgUrl}
                 />
 
                 <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>

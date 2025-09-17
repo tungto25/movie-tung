@@ -78,6 +78,17 @@ function ModalAuthor({ open, handleClose, author, setAuthor, error, setError, in
                     error={!!error.description}
                     helperText={error.description}
                 />
+                <TextField
+                    value={author.imgUrl || ""}
+                    onChange={handleChange}
+                    name='imgUrl'
+                    label="imgUrl"
+                    fullWidth
+                    multiline
+                    sx={{ mt: 2 }}
+                    error={!!error.imgUrl}
+                    helperText={error.imgUrl}
+                />
 
                 <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
                     <Button onClick={Cancel} variant="contained" color="error">

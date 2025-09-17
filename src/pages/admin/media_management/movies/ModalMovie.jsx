@@ -26,13 +26,11 @@ import { getOjectById } from '../../../../services/reponsitory';
 import { ContextPlans } from '../../../../contexts/PlanProvider';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner, handleUpdate, authors, actors, categories, characters, plans, countries }) {
+function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner, handleUpdate, authors, actors, categories, characters, plans, countries, movieTypes }) {
 
     const [dataChoose, setDataChoose] = useState([]);
     const [openChoosen, setOpenChoosen] = useState(false);
     const [modalType, setModalType] = useState("");
-    console.log(authors);
-
 
     const handleOpenChoosen = () => setOpenChoosen(true);
     const handleCloseChoosen = () => setOpenChoosen(false);
@@ -125,16 +123,11 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                 return movie.listCharacter;
         }
     }
-    const handleImg = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setMovie({ ...movie, imgUrl: reader.result });
-            };
-            reader.readAsDataURL(file);
-        }
-    }
+
+    const minYear = 1900;
+    const maxYear = new Date().getFullYear();
+    const years = Array.from({ length: maxYear - minYear + 1 }, (_, i) => maxYear - i);
+
     return (
         <>
             <Dialog
@@ -182,25 +175,23 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                                 sx={{ mt: 2 }}
                                 error={!!error.duration}
                                 helperText={error.duration}
-                                type='number'
+                                type='text'
                             />
                             <div className='flex gap-3'>
                                 <Autocomplete
-                                    options={authors}
-                                    getOptionLabel={(option) => option.name}
+                                    options={years}
+                                    getOptionLabel={(option) => option.toString()}
+                                    value={movie.year || null}
                                     disablePortal
                                     fullWidth
                                     sx={{ mt: 2 }}
-                                    value={getOjectById(authors, movie.author)}
-                                    onChange={(event, value) =>
-                                        setMovie(prev => ({ ...prev, author: value?.id || "" }))
+                                    onChange={(_, newValue) =>
+                                        setMovie((prev) => ({ ...prev, year: newValue || "" }))
                                     }
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            label="Find the author"
-                                            error={!!error.author}
-                                            helperText={error.author}
+                                            label="Year"
                                         />
                                     )}
                                 />
@@ -234,27 +225,65 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                                         error={!!error.rent}
                                         helperText={error.rent}
                                     />)}
+                                <Autocomplete
+                                    options={movieTypes}
+                                    getOptionLabel={(option) => option?.name || ""}
+                                    disablePortal
+                                    fullWidth
+                                    sx={{ mt: 2 }}
+                                    value={getOjectById(movieTypes, movie.movieType) || null}
+                                    onChange={(event, value) =>
+                                        setMovie((prev) => ({ ...prev, movieType: value?.id || "" }))
+                                    }
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label="Find movieType"
+                                            error={!!error.movieType}
+                                            helperText={error.movieType}
+                                        />
+                                    )}
+                                />
+                            </div>
+                            <div className='flex items-center gap-2 mt-2'>
+                                <Autocomplete
+                                    options={authors}
+                                    getOptionLabel={(option) => option?.name || ""}
+                                    disablePortal
+                                    fullWidth
+                                    value={getOjectById(authors, movie.author) || null}
+                                    onChange={(event, value) =>
+                                        setMovie((prev) => ({ ...prev, author: value?.id || "" }))
+                                    }
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label="Find the author"
+                                            error={!!error.author}
+                                            helperText={error.author}
+                                        />
+                                    )}
+                                />
+                                <Autocomplete
+                                    options={countries}
+                                    getOptionLabel={(option) => option?.name || ""}
+                                    disablePortal
+                                    fullWidth
+                                    value={getOjectById(countries, movie.country) || null}
+                                    onChange={(event, value) =>
+                                        setMovie((prev) => ({ ...prev, country: value?.id || "" }))
+                                    }
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label="Find the country"
+                                            error={!!error.country}
+                                            helperText={error.country}
+                                        />
+                                    )}
+                                />
 
                             </div>
-                            <Autocomplete
-                                options={countries}
-                                getOptionLabel={(option) => option?.name || ""}
-                                disablePortal
-                                fullWidth
-                                sx={{ mt: 2 }}
-                                value={getOjectById(countries, movie.country) || null}
-                                onChange={(event, value) =>
-                                    setMovie((prev) => ({ ...prev, country: value?.id || "" }))
-                                }
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Find the country"
-                                        error={!!error.country}
-                                        helperText={error.country}
-                                    />
-                                )}
-                            />
                         </div>
 
                         {/* Cột phải */}
@@ -369,8 +398,8 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                                             }
                                         >
                                             <Avatar
-                                                src={getOjectById(actors, e)?.img}
-                                                alt="author Image"
+                                                src={getOjectById(actors, e)?.imgUrl}
+                                                alt="actors Image"
                                                 sx={{
                                                     width: 50,
                                                     height: 50,
@@ -441,7 +470,7 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                                         >
 
                                             <Avatar
-                                                src={getOjectById(characters, e)?.img}
+                                                src={getOjectById(characters, e)?.imgUrl}
                                                 alt="author Image"
                                                 sx={{
                                                     width: 50,
@@ -455,21 +484,24 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                                     </div>
                                 ))}
                             </div>
-                            <div>
-                                <label className='flex flex-col items-center rounded-3xl p-1 border-2 mt-4 w-full bg-gray-500 text-white hover:bg-gray-700'>
-                                    <p className='whitespace-nowrap'>Choosen Image</p>
-                                    <input
-                                        type="file"
-                                        className='hidden'
-                                        onChange={handleImg}
-                                    />
-                                </label>
-                                <Avatar
-                                    src={movie?.imgUrl}
-                                    alt="Actor Image"
-                                    sx={{ width: 150, height: 150, margin: '10px auto' }}
-                                />
-                            </div>
+                            <TextField
+                                value={movie.imgUrl || ""}
+                                onChange={handleChange}
+                                name='imgUrl'
+                                label="Link Image"
+                                fullWidth
+                                sx={{ mt: 2 }}
+                                type='text'
+                            />
+                            <TextField
+                                value={movie.videoUrl || ""}
+                                onChange={handleChange}
+                                name='videoUrl'
+                                label="Link Video"
+                                fullWidth
+                                sx={{ mt: 2 }}
+                                type='text'
+                            />
                         </div>
 
                     </div>

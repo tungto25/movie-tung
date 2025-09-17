@@ -1,5 +1,5 @@
 import { MdDeleteForever, MdEdit } from 'react-icons/md';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
+import { Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 import { useContext, useState } from 'react';
 import PaginationTable from '../../../../components/admin/PaginationTable';
 import { ContextCountries } from '../../../../contexts/CountryProvider';
@@ -9,6 +9,7 @@ function TableCountry({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, s
     const Countries = useContext(ContextCountries);
 
     const rowsPerPage = 5;
+    const [selectedIds, setSelectedIds] = useState([]);
 
     const handleChange = (event, value) => {
         setPage(value);
@@ -24,10 +25,58 @@ function TableCountry({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, s
         setOpenDeleted(true);
         setIdDeleted(id);
     }
+    // Chọn/bỏ chọn 1 item
+    const handleSelect = (id) => {
+        setSelectedIds(prev =>
+            prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+        );
+    };
 
+    // Chọn tất cả trên trang hiện tại
+    const handleSelectAll = () => {
+        const currentPageIds = paginatedData.map(e => e.id);
+        const allSelected = currentPageIds.every(id => selectedIds.includes(id));
+
+        if (allSelected) {
+            // Bỏ chọn tất cả
+            setSelectedIds(prev => prev.filter(id => !currentPageIds.includes(id)));
+        } else {
+            // Chọn tất cả
+            setSelectedIds(prev => [...new Set([...prev, ...currentPageIds])]);
+        }
+    };
+
+    // Xóa tất cả item được chọn
+    const handleDeleteAll = async () => {
+        if (selectedIds.length === 0) {
+            alert("Chưa chọn mục nào để xóa!");
+            return;
+        }
+
+        if (!window.confirm("Bạn có chắc chắn muốn xóa tất cả?")) return;
+
+        try {
+            await Promise.all(selectedIds.map(id => deleteDocument("Countries", id)));
+            setSelectedIds([]);
+            alert("Đã xóa tất cả mục đã chọn!");
+        } catch (err) {
+            console.error(err);
+            alert("Có lỗi xảy ra khi xóa!");
+        }
+    };
     return (
         <>
-            <TableContainer component={Paper}>
+            {selectedIds.length > 0 && (
+                <div className="flex justify-end mb-2">
+                    <button
+                        onClick={handleDeleteAll}
+                        className="bg-red-600 px-4 py-2 rounded-md text-white"
+                    >
+                        Xóa tất cả
+                    </button>
+                </div>
+            )}
+            <TableContainer component={Paper} sx={{ borderRadius: "10px", boxShadow: "0px 4px 20px rgba(106,114,130)" }}>
                 <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                     <TableBody>
                         <TableRow sx={{
@@ -37,6 +86,13 @@ function TableCountry({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, s
                                 color: "white" // nếu muốn chữ trắng
                             }
                         }}>
+                            <TableCell>
+                                <Checkbox
+                                    checked={paginatedData.length > 0 && paginatedData.every(e => selectedIds.includes(e.id))}
+                                    onChange={handleSelectAll}
+                                    sx={{ color: "white" }}
+                                />
+                            </TableCell>
                             <TableCell>#</TableCell>
                             <TableCell align="right">Name Country</TableCell>
                             <TableCell align="right">Description</TableCell>
@@ -50,6 +106,13 @@ function TableCountry({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, s
                                         color: "white" // nếu muốn chữ trắng
                                     }
                                 }}>
+                                <TableCell>
+                                    <Checkbox
+                                        checked={selectedIds.includes(e.id)}
+                                        onChange={() => handleSelect(e.id)}
+                                        sx={{ color: "white" }}
+                                    />
+                                </TableCell>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
                                 <TableCell align="right">{e.name}</TableCell>
                                 <TableCell align="right">{truncateText(e.description)}</TableCell>

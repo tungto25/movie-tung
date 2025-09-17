@@ -1,19 +1,21 @@
 import { MdDeleteForever, MdEdit } from 'react-icons/md';
-import { Avatar, Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
+import { Avatar, Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 import { useContext, useState } from 'react';
 import PaginationTable from '../../../../components/admin/PaginationTable';
 import { ContextActors } from '../../../../contexts/ActorProvider';
-import { truncateText } from '../../../../services/reponsitory';
+import useSearch, { truncateText } from '../../../../services/reponsitory';
+import { deleteDocument } from '../../../../services/FirebaseService'; // API xóa
 
-function TableActor({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, search }) {
+function TableActor({ editOpen, setIdDeleted, setOpenDeleted, search, page, setPage }) {
     const actors = useContext(ContextActors);
 
     const rowsPerPage = 5;
+    const [selectedIds, setSelectedIds] = useState([]);
 
     const handleChange = (event, value) => {
         setPage(value);
     };
-    const dataSearch = actors.filter(e => e.name.toLowerCase().includes(search));
+    const dataSearch = useSearch(actors, search, (e) => e.name);
 
     const paginatedData = dataSearch.slice(
         (page - 1) * rowsPerPage,
@@ -24,9 +26,58 @@ function TableActor({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sea
         setOpenDeleted(true);
         setIdDeleted(id);
     }
+    // Chọn/bỏ chọn 1 item
+    const handleSelect = (id) => {
+        setSelectedIds(prev =>
+            prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+        );
+    };
+
+    // Chọn tất cả trên trang hiện tại
+    const handleSelectAll = () => {
+        const allIds = dataSearch.map(e => e.id); // lấy tất cả id trong bảng đã search
+        const allSelected = allIds.every(id => selectedIds.includes(id));
+
+        if (allSelected) {
+            // Bỏ chọn tất cả
+            setSelectedIds([]);
+        } else {
+            // Chọn tất cả
+            setSelectedIds(allIds);
+        }
+    };
+
+    // Xóa tất cả item được chọn
+    const handleDeleteAll = async () => {
+        if (selectedIds.length === 0) {
+            alert("Chưa chọn mục nào để xóa!");
+            return;
+        }
+
+        if (!window.confirm("Bạn có chắc chắn muốn xóa tất cả?")) return;
+
+        try {
+            await Promise.all(selectedIds.map(id => deleteDocument("Actors", id)));
+            setSelectedIds([]);
+            alert("Đã xóa tất cả mục đã chọn!");
+        } catch (err) {
+            console.error(err);
+            alert("Có lỗi xảy ra khi xóa!");
+        }
+    };
     return (
         <>
-            <TableContainer component={Paper}>
+            {selectedIds.length > 0 && (
+                <div className="flex justify-end mb-2">
+                    <button
+                        onClick={handleDeleteAll}
+                        className="bg-red-600 px-4 py-2 rounded-md text-white"
+                    >
+                        Xóa tất cả
+                    </button>
+                </div>
+            )}
+            <TableContainer component={Paper} sx={{ borderRadius: "10px", boxShadow: "0px 4px 20px rgba(106,114,130)" }}>
                 <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                     <TableBody>
                         <TableRow sx={{
@@ -36,6 +87,13 @@ function TableActor({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sea
                                 color: "white" // nếu muốn chữ trắng
                             }
                         }}>
+                            <TableCell>
+                                <Checkbox
+                                    checked={paginatedData.length > 0 && paginatedData.every(e => selectedIds.includes(e.id))}
+                                    onChange={handleSelectAll}
+                                    sx={{ color: "white" }}
+                                />
+                            </TableCell>
                             <TableCell>#</TableCell>
                             <TableCell align="center">Image</TableCell>
                             <TableCell align="right">Name</TableCell>
@@ -50,10 +108,17 @@ function TableActor({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sea
                                         color: "white" // nếu muốn chữ trắng
                                     }
                                 }}>
+                                <TableCell>
+                                    <Checkbox
+                                        checked={selectedIds.includes(e.id)}
+                                        onChange={() => handleSelect(e.id)}
+                                        sx={{ color: "white" }}
+                                    />
+                                </TableCell>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
                                 <TableCell align="right">
                                     <Avatar
-                                        src={e.img}
+                                        src={e.imgUrl}
                                         alt="Auhtor Image"
                                         sx={{ width: 50, height: 50, margin: ' auto' }}
                                     />

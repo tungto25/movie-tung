@@ -12,7 +12,29 @@ import { getOjectById } from "../../../services/reponsitory";
 import { FaPlay } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { IoIosInformationCircle } from "react-icons/io";
-
+import { Description } from "./Description";
+const ava = [
+    {
+        name: "Avatar",
+        img: "https://logos-world.net/wp-content/uploads/2023/04/James-Camerons-Avatar-Logo-2018.png"
+    },
+    {
+        name: "wakanda forever",
+        img: "https://freebiehive.com/wp-content/uploads/2022/05/Black-Panther-Wakanda-Forever-PNG-758x473.jpg"
+    },
+    {
+        name: "K2",
+        img: "https://upload.wikimedia.org/wikipedia/commons/6/68/The_K2_Drama_logo.png"
+    },
+    {
+        name: "Lâm giang tiên",
+        img: "https://sf-static.upanhlaylink.com/img/image_202509178274c2aed1664c5e7f32061c7d3c9d0c.jpg"
+    },
+    {
+        name: "Doctor strange",
+        img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTk3lMOTCluDl0c2kmO4dwYrOaN_yiNMch4AIBAHIZvz7bK7Kx2WcmyX7ZCPE3IOJVzPZc&usqp=CAU"
+    },
+];
 function BannerSlide(props) {
     const movies = useContext(ContextMovies);
     const categories = useContext(ContextCategories);
@@ -26,31 +48,31 @@ function BannerSlide(props) {
                 onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
                 className="w-full"
             >
-                {movies.map((e) => (
+                {movies.filter(e => !e.listCate.some(c => getOjectById(categories, c)?.name.toLowerCase() === "hoạt hình")).slice(0, 5).map((e, i) => (
                     <SwiperSlide key={e.id} className="relative flex justify-center ">
                         <img
                             src={e.imgUrl}
                             alt={e.name}
-                            className="w-full h-auto ma object-contain"
+                            className="w-full h-[300px] md:h-[550px] lg:h-[700px] object-cover"
                         />
                         {/* làm blur */}
                         <div className="absolute inset-0 flex justify-between pointer-events-none">
-                            <div className="w-1/3 h-full bg-gradient-to-r from-gray-900/95 to-transparent blur-md"></div>
-                            <div className="w-1/3 h-full bg-gradient-to-l from-gray-900/95 to-transparent blur-md"></div>
+                            <div className="absolute w-full h-full bg-gradient-to-l from-gray-900/60 to-transparent"></div>
+                            <div className="absolute w-full h-full bg-gradient-to-r from-gray-900/60 to-transparent"></div>
                         </div>
-                        <div className="absolute bottom-0 left-0 w-full h-36 md:h-16 bg-gradient-to-t from-gray-900 to-transparent pointer-events-none"></div>
+                        <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-gray-900 to-transparent"></div>
 
-                        <div className="absolute left-1/2 -translate-x-1/2 top-1/2
-                        md:top-2/3 md:-translate-y-1/2 md:left-1/3 md:-translate-x-1/2
-                        lg:top-1/2 lg:left-1/4 lg:-translate-x-1/2 lg:-translate-y-1/2
+                        <div className="absolute max-sm:bottom-1/4 max-sm:translate-y-1/4 max-sm:left-1/2 max-sm:-translate-x-1/2
+                        md:top-2/3 md:-translate-y-1/2 md:ms-5
+                        lg:top-1/2 lg:-translate-y-1/2 lg:ms-8
                          text-white font-bold ">
                             <img
                                 src="public/images/logo-thanh-guom-diet-quy.png"
                                 alt="Banner"
-                                className="w-45 hidden lg:block "
+                                className="w-40 hidden lg:block "
                             />
                             <h1 className="lg:hidden text-xl text-center md:text-start">{e.name}</h1>
-                            <div className="flex items-center mt-1 md:mt-3 text-[7px] md:text-xs lg:mt-5 lg:text-lg gap-2">
+                            <div className="flex items-center max-sm:justify-center mt-1 md:mt-3 text-[7px] md:text-xs lg:mt-5 gap-2">
                                 <div className="flex items-center justify-center border-1 rounded-md border-yellow-500 p-1">
                                     <h1 className="text-yellow-500">IMDB</h1>
                                     <span>7.0</span>
@@ -60,15 +82,15 @@ function BannerSlide(props) {
                                 <div className="flex items-center justify-center border-1 rounded-md border-white p-1">2025</div>
                                 <div className="flex items-center justify-center border-1 rounded-md border-white p-1">{e.duration}</div>
                             </div>
-                            <div className="flex flex-wrap items-center text-[7px] md:text-xs lg:text-lg gap-2 mt-1 md:mt-2 lg:mt-5">
+                            <div className="flex flex-wrap items-center max-sm:justify-center text-[6px] md:text-[10px] lg:text-sm gap-2 mt-1 md:mt-2 lg:mt-5">
                                 {e.listCate.map(f => (
                                     <div key={f} className="bg-white/30 p-1 md:p-2 rounded md:rounded-md">
                                         {getOjectById(categories, f)?.name || "Unknown"}
                                     </div>
                                 ))}
                             </div>
-                            <div className="mt-1 md:mt-2 font-medium text-[7px] md:text-xs lg:text-sm">
-                                {e.description}
+                            <div className="mt-1 text-center md:mt-2 font-medium text-[7px] md:text-[9px] lg:text-[14px] md:w-[65%]">
+                                <Description text={e.description} maxLength={200} />
                             </div>
                             <div className="items-center gap-5 mt-6 hidden md:flex ">
                                 <button
@@ -107,7 +129,7 @@ function BannerSlide(props) {
                     slideToClickedSlide={true}
                     className="h-20"
                 >
-                    {movies.map((e, i) => (
+                    {movies.filter(e => !e.listCate.some(c => getOjectById(categories, c)?.name.toLowerCase() === "hoạt hình")).slice(0, 5).map((e, i) => (
                         <SwiperSlide
                             key={e.id}
                             className="flex-shrink-0 transition-transform duration-200 hover:scale-105 "

@@ -12,15 +12,16 @@ import { useContext } from "react";
 function Main(props) {
     const movies = useContext(ContextMovies);
     const countries = useContext(ContextCountries);
+    console.log(countries);
 
     return (
         <div>
             <BannerSlide />
             <SectionSlide />
             <div className="space-y-10 p-6 bg-gray-800 from-gray-700 via-gray-700/30 to-gray-900 bg-gradient-to-b text-white w-[96%] m-auto mt-5 rounded-2xl">
-                <NewMovie title={countries[4]?.name} data={movies.filter(e => e.country == countries[4].id)} />
-                <NewMovie title={countries[3]?.name} data={movies.filter(e => e.country == countries[3].id)} />
-                <NewMovie title={countries[2]?.name} data={movies.filter(e => e.country == countries[2].id)} />
+                <NewMovie title={countries[3]?.name} data={movies.filter(e => e.country == countries[3].name)} />
+                <NewMovie title={countries[6]?.name} data={movies.filter(e => e.country == countries[6].name)} />
+                <NewMovie title={countries[0]?.name} data={movies.filter(e => e.country == countries[0].name)} />
             </div>
             <MovieNetflix />
             <TopSerie />

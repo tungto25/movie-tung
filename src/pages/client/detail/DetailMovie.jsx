@@ -38,15 +38,16 @@ function DetailMovie() {
                     <InforMovie movieShow={movieShow} />
                     <div className="flex-1 ">
                         <div className="flex items-center justify-between w-full">
-                            <button
+                            <Link
                                 type="button"
+                                to="/playmovie"
                                 className="rounded-full px-8 py-4 gap-2 bg-gradient-to-l
                                  from-yellow-500 to-yellow-200 flex items-center justify-center shadow-lg transition-transform duration-100
                                  active:scale-95 active:shadow-[0_0_10px_3px_rgba(249,215,87)]"
                             >
                                 <FaPlay className="text-sm text-black" />
                                 <span className="whitespace-nowrap text-xl">Xem ngay</span>
-                            </button>
+                            </Link>
                             <div className="text-white whitespace-nowrap flex flex-col items-center gap-1 hover:text-yellow-400 hover:bg-gray-800/50 hover:shadow hover:rounded-md hover:p-2">
                                 <FaHeart />
                                 <p>Yêu thích</p>
@@ -85,7 +86,7 @@ function DetailMovie() {
                         <hr className="text-gray-600" />
 
                         <div className="text-white ">
-                          <Outlet />
+                            <Outlet />
                         </div>
                         <Comment />
 

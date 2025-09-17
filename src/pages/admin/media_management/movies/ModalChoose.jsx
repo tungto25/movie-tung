@@ -86,7 +86,7 @@ function ModalChoose({ openChoosen, handleCloseChoosen, dataChoose, modalType, h
                                     <div style={{ position: "relative", width: 80, height: 80 }}>
                                         {/* Avatar ở giữa */}
                                         <Avatar
-                                            src={e.img}
+                                            src={e.imgUrl}
                                             alt="actors Image"
                                             sx={{
                                                 width: 50,

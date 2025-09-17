@@ -18,6 +18,8 @@ function Categories(props) {
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
     const [rows, setRows] = useState([]);
+    const [openExcel, setOpenExcel] = useState(false);
+
     const handleSearch = (a) => {
         setSearch(a);
         setPage(1);
@@ -65,25 +67,39 @@ function Categories(props) {
         };
         reader.readAsArrayBuffer(file);
     };
-console.log(rows);
 
     const addToExcel = async () => {
         try {
+            // Lọc bỏ dòng không hợp lệ (không có name)
+            const validRows = rows.filter((row) => row.name && row.name.trim() !== "");
+
+            if (validRows.length === 0) {
+                alert("Không có dữ liệu hợp lệ để thêm!");
+                return;
+            }
+
             await Promise.all(
-                rows.map(async (row) => {
-                    await addDocument("Categories", row); // row thay vì category
+                validRows.map(async (row) => {
+                    await addDocument("Categories", {
+                        name: row.name.trim(),
+                        description: row.description ? row.description.trim() : "",
+                    });
                 })
             );
+
             alert("Thêm thành công!");
+            setRows([]); // clear data sau khi thêm
+            setOpenExcel(false); // đóng modal
         } catch (err) {
             console.error(err);
             alert("Có lỗi xảy ra!");
         }
     };
 
+
     return (
         <div>
-            <SearchAdmin addToExcel={addToExcel} handleFileUpload={handleFileUpload} title="Categories" buttonText="Category" handleOpen={handleOpen} search={search} setSearch={setSearch} handleSearch={handleSearch} />
+            <SearchAdmin openExcel={openExcel} setOpenExcel={setOpenExcel} addToExcel={addToExcel} handleFileUpload={handleFileUpload} title="Categories" buttonText="Category" handleOpen={handleOpen} search={search} setSearch={setSearch} handleSearch={handleSearch} />
             <TableCategory editOpen={editOpen} setOpenDeleted={setOpenDeleted} setIdDeleted={setIdDeleted} search={search} page={page} setPage={setPage} />
             <ModalCategoty inner={inner} handleUpdate={handleUpdate} open={open} handleClose={handleClose} category={category} setCategory={setCategory} error={error} setError={setError} />
             <ModalDeleted openDeleted={openDeleted} handleCloseDel={handleCloseDel} idDeleted={idDeleted} handleUpdate={handleUpdate} />

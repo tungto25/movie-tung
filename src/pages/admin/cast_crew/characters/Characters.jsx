@@ -1,10 +1,12 @@
 import SearchAdmin from '../../../../components/admin/SearchAdmin';
 import { useState } from 'react';
 import ModalDeleted from '../../../../components/admin/ModalDeleted';
-import TableCharacter from './tableCharacter';
 import ModalChatacter from './ModalChatacter';
+import { addDocument } from '../../../../services/FirebaseService';
+import * as XLSX from "xlsx";
+import TableCharacter from './TableCharacter';
 
-const inner = { name: "", description: "", img: "" };
+const inner = { name: "", description: "", imgUrl: "" };
 function Characters(props) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);
@@ -15,6 +17,9 @@ function Characters(props) {
     const [update, setUpdate] = useState(false);
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
+    const [rows, setRows] = useState([]);
+    const [openExcel, setOpenExcel] = useState(false);
+
     const handleSearch = (a) => {
         setSearch(a);
         setPage(1);
@@ -37,10 +42,66 @@ function Characters(props) {
     const handleUpdate = () => {
         setUpdate(!update)
     }
+    const handleFileUpload = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+            const data = new Uint8Array(evt.target.result);
+            const workbook = XLSX.read(data, { type: "array" });
+
+            // Lấy sheet đầu tiên
+            const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+            // jsonData là mảng 2 chiều (dòng, cột)
+            // Bỏ dòng tiêu đề nếu cần
+            const formatted = jsonData.slice(1).map((row) => ({
+                name: row[0],
+                description: row[1],
+                imgUrl: row[2]
+            }));
+
+            setRows(formatted);
+        };
+        reader.readAsArrayBuffer(file);
+    };
+
+    const addToExcel = async () => {
+        try {
+            // Lọc bỏ dòng không hợp lệ (không có name)
+            const validRows = rows.filter((row) => row.name && row.name.trim() !== "");
+
+            if (validRows.length === 0) {
+                alert("Không có dữ liệu hợp lệ để thêm!");
+                return;
+            }
+
+            await Promise.all(
+                validRows.map(async (row) => {
+                    await addDocument("Characters", {
+                        name: row.name.trim(),
+                        description: row.description ? row.description.trim() : "",
+                        imgUrl: row.imgUrl ? row.imgUrl.trim() : "",
+                    });
+                })
+            );
+
+            alert("Thêm thành công!");
+            setRows([]); // clear data sau khi thêm
+            setOpenExcel(false); // đóng modal
+        } catch (err) {
+            console.error(err);
+            alert("Có lỗi xảy ra!");
+        }
+    };
+
+
     return (
         <div>
             <div>
-                <SearchAdmin title="Characters" buttonText="CHARACTER" handleOpen={handleOpen} search={search} setSearch={setSearch} handleSearch={handleSearch} />
+                <SearchAdmin openExcel={openExcel} setOpenExcel={setOpenExcel} addToExcel={addToExcel} handleFileUpload={handleFileUpload} title="Characters" buttonText="CHARACTER" handleOpen={handleOpen} search={search} setSearch={setSearch} handleSearch={handleSearch} />
                 <TableCharacter editOpen={editOpen} setOpenDeleted={setOpenDeleted} setIdDeleted={setIdDeleted} page={page} setPage={setPage} search={search} />
                 <ModalChatacter inner={inner} handleUpdate={handleUpdate} open={open} handleClose={handleClose} character={character} setCharacter={setCharacter} error={error} setError={setError} />
                 <ModalDeleted openDeleted={openDeleted} handleCloseDel={handleCloseDel} idDeleted={idDeleted} handleUpdate={handleUpdate} />
