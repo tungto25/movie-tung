@@ -123,8 +123,17 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                 return movie.listCharacter;
         }
     }
-
-    const minYear = 1900;
+    const handleImg = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setMovie(prev => ({ ...prev, imgUrl: reader.result }));
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    const minYear = 2000;
     const maxYear = new Date().getFullYear();
     const years = Array.from({ length: maxYear - minYear + 1 }, (_, i) => maxYear - i);
 
@@ -484,24 +493,21 @@ function ModalMovie({ open, handleClose, movie, setMovie, error, setError, inner
                                     </div>
                                 ))}
                             </div>
-                            <TextField
-                                value={movie.imgUrl || ""}
-                                onChange={handleChange}
-                                name='imgUrl'
-                                label="Link Image"
-                                fullWidth
-                                sx={{ mt: 2 }}
-                                type='text'
-                            />
-                            <TextField
-                                value={movie.videoUrl || ""}
-                                onChange={handleChange}
-                                name='videoUrl'
-                                label="Link Video"
-                                fullWidth
-                                sx={{ mt: 2 }}
-                                type='text'
-                            />
+                            <div>
+                                <label className='flex flex-col items-center rounded-3xl p-1 border-2 mt-4 w-full bg-gray-500 text-white hover:bg-gray-700'>
+                                    <p className='whitespace-nowrap'>Choosen Image</p>
+                                    <input
+                                        type="file"
+                                        className='hidden'
+                                        onChange={handleImg}
+                                    />
+                                </label>
+                                <Avatar
+                                    src={movie?.imgUrl}
+                                    alt="Image"
+                                    sx={{ width: 150, height: 150, margin: '10px auto' }}
+                                />
+                            </div>
                         </div>
 
                     </div>

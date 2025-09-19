@@ -1,28 +1,20 @@
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
 import { MdDeleteForever, MdEdit } from 'react-icons/md';
-import PaginationTable from "../../../../../src/components/admin/PaginationTable";
+import { Avatar, Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 import { useContext, useState } from 'react';
-import { ContextCategories } from '../../../../contexts/CategoryProvider';
-import useSearch, { truncateText } from '../../../../services/reponsitory';
-import { deleteDocument } from '../../../../services/FirebaseService'; // API xóa
+import { deleteDocument } from '../../../services/FirebaseService';
+import PaginationTable from '../../../components/admin/PaginationTable';
+import useSearch, { truncateText } from '../../../services/reponsitory';
+import { ContextAccount } from '../../../contexts/AccountProvider';
 
-export default function TableCategory({ editOpen, setIdDeleted, setOpenDeleted, search, page, setPage }) {
-    const categories = useContext(ContextCategories);
-
+function TableUser({ editOpen, setIdDeleted, setOpenDeleted, search, page, setPage }) {
+    const accounts = useContext(ContextAccount)
     const rowsPerPage = 5;
     const [selectedIds, setSelectedIds] = useState([]);
 
     const handleChange = (event, value) => {
         setPage(value);
     };
-
-    const dataSearch = useSearch(categories, search, (e) => e.name );
+    const dataSearch = useSearch(accounts, search, (e) => e.email);
 
     const paginatedData = dataSearch.slice(
         (page - 1) * rowsPerPage,
@@ -32,8 +24,7 @@ export default function TableCategory({ editOpen, setIdDeleted, setOpenDeleted, 
     const showModalDeleted = (id) => {
         setOpenDeleted(true);
         setIdDeleted(id);
-    };
-
+    }
     // Chọn/bỏ chọn 1 item
     const handleSelect = (id) => {
         setSelectedIds(prev =>
@@ -65,7 +56,7 @@ export default function TableCategory({ editOpen, setIdDeleted, setOpenDeleted, 
         if (!window.confirm("Bạn có chắc chắn muốn xóa tất cả?")) return;
 
         try {
-            await Promise.all(selectedIds.map(id => deleteDocument("Categories", id)));
+            await Promise.all(selectedIds.map(id => deleteDocument("Actors", id)));
             setSelectedIds([]);
             alert("Đã xóa tất cả mục đã chọn!");
         } catch (err) {
@@ -73,7 +64,6 @@ export default function TableCategory({ editOpen, setIdDeleted, setOpenDeleted, 
             alert("Có lỗi xảy ra khi xóa!");
         }
     };
-
     return (
         <>
             {selectedIds.length > 0 && (
@@ -93,7 +83,7 @@ export default function TableCategory({ editOpen, setIdDeleted, setOpenDeleted, 
                             backgroundColor: "rgba(3, 7, 18, 0.8)",
                             "& .MuiTableCell-root": {
                                 fontWeight: "bold",
-                                color: "white"
+                                color: "white" // nếu muốn chữ trắng
                             }
                         }}>
                             <TableCell>
@@ -103,18 +93,19 @@ export default function TableCategory({ editOpen, setIdDeleted, setOpenDeleted, 
                                     sx={{ color: "white" }}
                                 />
                             </TableCell>
-                            <TableCell align="center">#</TableCell>
-                            <TableCell align="center">Name</TableCell>
-                            <TableCell align="right">Description</TableCell>
+                            <TableCell>#</TableCell>
+                            <TableCell align="left">Email</TableCell>
+                            <TableCell align="center">Password</TableCell>
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>
                         {paginatedData.map((e, index) => (
                             <TableRow key={e.id}
                                 sx={{
                                     background: "rgba(31, 41, 55, 0.8)",
-                                    "& .MuiTableCell-root": { color: "white" }
-                                }}
-                            >
+                                    "& .MuiTableCell-root": {
+                                        color: "white" // nếu muốn chữ trắng
+                                    }
+                                }}>
                                 <TableCell>
                                     <Checkbox
                                         checked={selectedIds.includes(e.id)}
@@ -122,13 +113,11 @@ export default function TableCategory({ editOpen, setIdDeleted, setOpenDeleted, 
                                         sx={{ color: "white" }}
                                     />
                                 </TableCell>
-                                <TableCell>
-                                    {(page - 1) * rowsPerPage + index + 1}
-                                </TableCell>
+                                <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
 
-                                <TableCell align="center">{e.name}</TableCell>
-                                <TableCell align="right">{truncateText(e.description)}</TableCell>
-                                <TableCell>
+                                <TableCell align="left">{e.email}</TableCell>
+                                <TableCell align="center">{truncateText(e.password)}</TableCell>
+                                <TableCell >
                                     <div className='flex gap-2 justify-center items-center'>
                                         <button onClick={() => editOpen(e)} className='bg-blue-600 p-2 rounded-md text-white'><MdEdit /></button>
                                         <button onClick={() => showModalDeleted(e.id)} className='bg-red-600 p-2 rounded-md text-white'><MdDeleteForever /></button>
@@ -143,3 +132,5 @@ export default function TableCategory({ editOpen, setIdDeleted, setOpenDeleted, 
         </>
     );
 }
+
+export default TableUser;

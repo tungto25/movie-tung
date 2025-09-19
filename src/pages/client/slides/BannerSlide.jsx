@@ -13,28 +13,7 @@ import { FaPlay } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { IoIosInformationCircle } from "react-icons/io";
 import { Description } from "./Description";
-const ava = [
-    {
-        name: "Avatar",
-        img: "https://logos-world.net/wp-content/uploads/2023/04/James-Camerons-Avatar-Logo-2018.png"
-    },
-    {
-        name: "wakanda forever",
-        img: "https://freebiehive.com/wp-content/uploads/2022/05/Black-Panther-Wakanda-Forever-PNG-758x473.jpg"
-    },
-    {
-        name: "K2",
-        img: "https://upload.wikimedia.org/wikipedia/commons/6/68/The_K2_Drama_logo.png"
-    },
-    {
-        name: "Lâm giang tiên",
-        img: "https://sf-static.upanhlaylink.com/img/image_202509178274c2aed1664c5e7f32061c7d3c9d0c.jpg"
-    },
-    {
-        name: "Doctor strange",
-        img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTk3lMOTCluDl0c2kmO4dwYrOaN_yiNMch4AIBAHIZvz7bK7Kx2WcmyX7ZCPE3IOJVzPZc&usqp=CAU"
-    },
-];
+
 function BannerSlide(props) {
     const movies = useContext(ContextMovies);
     const categories = useContext(ContextCategories);
@@ -53,7 +32,7 @@ function BannerSlide(props) {
                         <img
                             src={e.imgUrl}
                             alt={e.name}
-                            className="w-full h-[300px] md:h-[550px] lg:h-[700px] object-cover"
+                            className="w-full h-[300px] md:h-[550px] lg:h-[600px] xl:h-[700px] object-cover"
                         />
                         {/* làm blur */}
                         <div className="absolute inset-0 flex justify-between pointer-events-none">
@@ -64,7 +43,7 @@ function BannerSlide(props) {
 
                         <div className="absolute max-sm:bottom-1/4 max-sm:translate-y-1/4 max-sm:left-1/2 max-sm:-translate-x-1/2
                         md:top-2/3 md:-translate-y-1/2 md:ms-5
-                        lg:top-1/2 lg:-translate-y-1/2 lg:ms-8
+                        lg:top-2/3 lg:-translate-y-2/3 lg:ms-8 lg:left-1 lg:-translate-x-1
                          text-white font-bold ">
                             <img
                                 src="public/images/logo-thanh-guom-diet-quy.png"
@@ -89,10 +68,10 @@ function BannerSlide(props) {
                                     </div>
                                 ))}
                             </div>
-                            <div className="mt-1 text-center md:mt-2 font-medium text-[7px] md:text-[9px] lg:text-[14px] md:w-[65%]">
+                            <div className="mt-1 max-lg:text-center md:mt-2 font-medium text-[7px] md:text-[9px] lg:text-[14px] md:w-[65%]">
                                 <Description text={e.description} maxLength={200} />
                             </div>
-                            <div className="items-center gap-5 mt-6 hidden md:flex ">
+                            <div className="items-center gap-5 mt-10 hidden md:flex ">
                                 <button
                                     type="button"
                                     className="h-13 w-13 lg:h-17 lg:w-17 rounded-full bg-gradient-to-l from-yellow-500 to-yellow-200 flex items-center justify-center shadow-lg transition-transform duration-100 active:scale-95"
@@ -115,7 +94,7 @@ function BannerSlide(props) {
 
             <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-3/4
             md:bottom-1/8 md:translate-y-1/2 md:left-1/2 md:translate-x-1/3
-             lg:bottom-1/9 lg:left-3/4 lg:-translate-x-1/4 lg:-translate-y-1/2 z-50 lg:w-3/4 pointer-events-auto ">
+             lg:bottom-1 lg:left-3/4 lg:-translate-x-1/4 lg:-translate-y-1/2 z-50 lg:w-3/4 pointer-events-auto ">
                 <Swiper
                     onSwiper={setThumbsSwiper}
                     slidesPerView="auto"

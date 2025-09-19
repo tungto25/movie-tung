@@ -17,8 +17,13 @@ function TableMovie({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, sea
     const handleChange = (event, value) => {
         setPage(value);
     };
-    const dataSearch = useSearch(movies, search, (e) => e.name);
-
+    const dataSearch = useSearch(movies, search, (e) => {
+        const countryName = getOjectById(countries, e.country)?.name || "";
+        const cateNames = e.listCate
+            .map(c => getOjectById(categories, c)?.name || "")
+            .join(" ");
+        return `${e.name} ${countryName} ${cateNames}`;
+    });
     const paginatedData = dataSearch.slice(
         (page - 1) * rowsPerPage,
         page * rowsPerPage

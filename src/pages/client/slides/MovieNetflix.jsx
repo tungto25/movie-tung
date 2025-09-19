@@ -104,7 +104,7 @@ export default function MovieNetflix() {
     };
 
     return (
-        <div className="space-y-10 text-white m-auto mt-5 rounded-2xl  w-[96%]
+        <div className="space-y-10 text-white m-auto mt-5 rounded-2xl  w-full
          bg-red-700 from-red-300 via-gray-700/30 to-gray-900 bg-gradient-to-b">
             <div className="flex gap-4 items-center w-full rounded-t-2xl px-4 py-2">
                 <div className="flex items-center">

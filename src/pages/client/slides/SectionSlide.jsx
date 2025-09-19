@@ -10,7 +10,7 @@ const colors = ["bg-red-500", "bg-blue-500", "bg-green-500", "bg-purple-500", "b
 
 function SectionSlide(props) {
     return (
-        <div className='p-6'>
+        <div className=''>
             <h1 className='font-bold text-white text-sm md:text-lg lg:text-2xl'>Bạn đang quan tâm cái gì ?</h1>
             <Swiper
                 modules={[Navigation]}
@@ -18,24 +18,24 @@ function SectionSlide(props) {
                     // Mobile nhỏ
                     0: { slidesPerView: 2, spaceBetween: 1 },
                     // Mobile lớn
-                    480: { slidesPerView: 3, spaceBetween: 1 },
+                    480: { slidesPerView: 3, spaceBetween: 0 },
                     // Tablet nhỏ
-                    640: { slidesPerView: 4, spaceBetween: 1 },
+                    640: { slidesPerView: 4, spaceBetween: 0 },
                     // Tablet lớn
                     768: { slidesPerView: 4, spaceBetween: 1 },
                     // Laptop
-                    1024: { slidesPerView: 6, spaceBetween: 1 },
+                    1024: { slidesPerView: 5, spaceBetween: 1 },
                     // Desktop lớn
-                    1280: { slidesPerView: 7, spaceBetween: 1 },
+                    1280: { slidesPerView: 6, spaceBetween: 1 },
                 }}
                 spaceBetween={12}
             >
                 {content.map((e, i) => (
                     <SwiperSlide className="mt-4 p-2">
                         <div className={`${colors[i % colors.length]} 
-                        rounded-xl py-7 px-3 text-white transition-transform duration-200 ease-out hover:scale-102 hover:-translate-y-1`}>
-                            <p className="text-xl font-bold">{e}</p>
-                            <div className="text-sm flex items-center mt-4">
+                        rounded-xl px-2 py-5 md:py-7 md:px-3 text-white transition-transform duration-200 ease-out hover:scale-102 hover:-translate-y-1`}>
+                            <p className="text-lg md:text-xl font-bold">{e}</p>
+                            <div className="text-[7px] md:text-sm flex items-center mt-4">
                                 <span>Xem chủ đề</span>
                                 <MdKeyboardArrowRight />
                             </div>

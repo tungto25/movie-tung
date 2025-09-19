@@ -2,7 +2,7 @@ import { IoIosSearch } from "react-icons/io";
 import { menus } from "../../untils/ConstantsClient";
 import { Link, useLocation } from "react-router-dom";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { use, useContext, useState } from "react";
+import { use, useContext, useEffect, useRef, useState } from "react";
 import { ContextCategories } from "../../contexts/CategoryProvider";
 import { ContextCountries } from "../../contexts/CountryProvider";
 import { FaUser } from "react-icons/fa";
@@ -25,12 +25,30 @@ function Header({ handleOpenLogin }) {
     const categories = useContext(ContextCategories);
     const countries = useContext(ContextCountries);
     const [openMenu, setOpenMenu] = useState(false);
-    const handleOpenDrop = (item) => {
-        setOpenDrop(openDrop === item ? null : item)
-    }
     const location = useLocation();
     const currentPath = location.pathname;
     const { isLogin, handleLogout } = useContext(ContextAuth);
+
+
+    const dropRef = useRef(null);
+
+    const handleOpenDrop = (item) => {
+        setOpenDrop(openDrop === item ? null : item);
+    };
+
+    // click outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropRef.current && !dropRef.current.contains(event.target)) {
+                setOpenDrop(null);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
 
     return (
         <div className="flex items-center bg-gray-900/20 text-white p-2 py-3 gap-2 text-sm justify-between 2xl:text-xl">
@@ -85,10 +103,10 @@ function Header({ handleOpenLogin }) {
                                 <p className="text-xs py-2 text-gray-400">
                                     Nâng cấp tài khoản VIP để có trải nghiệm đẳng cấp hơn
                                 </p>
-                                <button className="w-full bg-yellow-500 px-2 py-1 rounded text-black flex items-center justify-center gap-1 mt-3">
+                                <Link to="/packages" className="w-full bg-yellow-500 px-2 py-1 rounded text-black flex items-center justify-center gap-1 mt-3 active:scale-98">
                                     <span>Nâng Cấp Ngay</span>
                                     <RxDoubleArrowUp />
-                                </button>
+                                </Link>
                                 <hr className="my-2 text-gray-600 max-md:hidden" />
                                 <div className="flex justify-between items-center p-3">
                                     <div className="flex items-center gap-1">
@@ -131,7 +149,7 @@ function Header({ handleOpenLogin }) {
                     </>
                 )}
                 {menus.map((e, id) => (
-                    <div className="relative group">
+                    <div className="relative group" ref={dropRef}>
                         {(e.title == "Thể Loại" || e.title == "Quốc Gia") ? (
                             <div onClick={() => handleOpenDrop(e.title)}>
                                 <div className="hover:text-yellow-500 flex items-center ">

@@ -14,6 +14,7 @@ import MovieActors from '../pages/client/detail/MovieActors';
 import Recommend from '../pages/client/detail/Recommend';
 import EpisodeMovie from '../pages/client/detail/EpisodeMovie';
 import PlayMovie from '../pages/client/detail/PlayMovie';
+import Packages from '../pages/client/vip/Packages';
 
 function ClientRouters(props) {
     const routes = [
@@ -74,6 +75,10 @@ function ClientRouters(props) {
         {
             path: "/playmovie",
             element: <PlayMovie />
+        },
+        {
+            path: "/packages",
+            element: <Packages />
         },
     ]
     // Recursive function to render both top-level and nested routes

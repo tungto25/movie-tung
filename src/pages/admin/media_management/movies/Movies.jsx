@@ -15,7 +15,7 @@ import { addDocument } from '../../../../services/FirebaseService';
 import { ContextMovieTypes } from '../../../../contexts/MovieTypeProvider';
 
 const inner = {
-    name: "", description: "", imgUrl: "", videoUrl: "", year: "",
+    name: "", description: "", imgUrl: "", poster: "", year: "",
     author: "", duration: "", plan: "", rent: "", country: "", movieTypes: "",
     listCate: [], listActor: [], listCharacter: []
 };
@@ -82,7 +82,7 @@ function Movies(props) {
                     name: row[0],
                     description: row[1],
                     imgUrl: row[2],
-                    videoUrl: row[3],
+                    poster: row[3],
                     duration: row[4] ? String(row[4]).trim() : "",
                     author: row[5] ? String(row[5]).trim() : "",
                     plan: row[6] && String(row[6]).trim() !== "" ? String(row[6]).trim() : "free",
@@ -118,7 +118,7 @@ function Movies(props) {
                         name: row.name ? String(row.name).trim() : "",
                         description: row.description ? String(row.description).trim() : "",
                         imgUrl: row.imgUrl ? String(row.imgUrl).trim() : "",
-                        videoUrl: row.videoUrl ? String(row.videoUrl).trim() : "",
+                        poster: row.poster ? String(row.poster).trim() : "",
                         duration: row.duration ? String(row.duration).trim() : "",
                         rent: row.rent ? parseFloat(row.rent) : 0,
 
@@ -137,7 +137,7 @@ function Movies(props) {
 
             alert("Thêm movie thành công!");
             setRows([]);
-            setOpenExcel(false); 
+            setOpenExcel(false);
             setFile(null);
         } catch (err) {
             console.error(err);

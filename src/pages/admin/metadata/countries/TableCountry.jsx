@@ -3,7 +3,7 @@ import { Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableRow 
 import { useContext, useState } from 'react';
 import PaginationTable from '../../../../components/admin/PaginationTable';
 import { ContextCountries } from '../../../../contexts/CountryProvider';
-import { truncateText } from '../../../../services/reponsitory';
+import useSearch, { truncateText } from '../../../../services/reponsitory';
 
 function TableCountry({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, search }) {
     const Countries = useContext(ContextCountries);
@@ -14,7 +14,7 @@ function TableCountry({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, s
     const handleChange = (event, value) => {
         setPage(value);
     };
-    const dataSearch = Countries.filter(e => e.name.toLowerCase().includes(search));
+    const dataSearch = useSearch(Countries, search, (e) => e.name);
 
     const paginatedData = dataSearch.slice(
         (page - 1) * rowsPerPage,

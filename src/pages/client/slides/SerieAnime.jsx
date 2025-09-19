@@ -10,108 +10,102 @@ import { FaHeart, FaPlay } from "react-icons/fa";
 import { IoIosInformationCircle } from "react-icons/io";
 import { GoDotFill } from "react-icons/go";
 
-import GradientText from "../../../components/client/GradientText";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { createPortal } from "react-dom";
-import { Link } from "react-router-dom";
+import { ContextMovies } from "../../../contexts/MovieProvider";
 
 // Kích hoạt module
 SwiperCore.use([Navigation, Thumbs]);
 
-export default function NewMovie({ data, title }) {
-
+export default function SerieAnime() {
+    const prevRef = useRef(null);
+    const nextRef = useRef(null);
     const [hoveredMovie, setHoveredMovie] = useState(null);
     const openTimer = useRef(null);
     const closeTimer = useRef(null);
 
-    const prevRef = useRef(null);
-    const nextRef = useRef(null);
-    const swiperRef = useRef(null);
-    useEffect(() => {
-        if (swiperRef.current && swiperRef.current.params) {
-            swiperRef.current.params.navigation.prevEl = prevRef.current;
-            swiperRef.current.params.navigation.nextEl = nextRef.current;
-            swiperRef.current.navigation.init();
-            swiperRef.current.navigation.update();
-        }
-    }, []);
+    const movies = useContext(ContextMovies);
 
-    const handleMouseEnter = (movie, i, e) => {
+    const handleMouseEnter = (movie, idx, e) => {
         const rect = e.currentTarget.getBoundingClientRect();
         clearTimeout(closeTimer.current);
         clearTimeout(openTimer.current);
         openTimer.current = setTimeout(() => {
-            setHoveredMovie({ ...movie, i, rect });
+            setHoveredMovie({ movie, idx, rect });
         }, 700);
     };
 
     const handleMouseLeave = () => {
         clearTimeout(openTimer.current);
         clearTimeout(closeTimer.current);
-        closeTimer.current = setTimeout(() => {
-            setHoveredMovie(null);
-        }, 150);
+        closeTimer.current = setTimeout(() => setHoveredMovie(null), 150);
     };
-    return (
-        <div className="">
 
-            <div className="flex gap-4 relative flex-col md:flex-row ">
-                <div className="flex flex-row md:flex-col items-center md:items-start justify-around md:justify-around gap-4">
-                    <GradientText
-                        animationSpeed={0.5}
-                        showBorder={false}
-                        className="custom-class text-lg md:text-xl lg:text-2xl"
-                    >
-                        Phim {title} mới
-                    </GradientText>
-                    <button className="text-sm text-gray-400 hover:underline flex items-center">
-                        <span>Xem toàn bộ</span>
-                        <MdOutlineKeyboardArrowRight />
-                    </button>
+    return (
+        <div className="space-y-10 text-white m-auto rounded-2xl  w-full">
+            <div className="flex gap-4 items-center w-full rounded-t-2xl px-4 py-2">
+                <div className="flex items-center">
+                    <h1 className="font-bold text-base md:text-2xl lg:text-3xl">Những Bộ Anime Hot Nhất</h1>
                 </div>
-                <div className="relative flex-1">
+                <div className="flex items-center justify-center border rounded-2xl group p-1 transition-transform duration-150 active:scale-105">
+                    <p className="hidden lg:group-hover:block">Xem thêm</p>
+                    <MdOutlineKeyboardArrowRight />
+                </div>
+            </div>
+
+            <div className=" gap-4 relative w-full px-6">
+                <div className="relative">
                     <Swiper
+                        modules={[Navigation]}
                         breakpoints={{
-                            // Mobile nhỏ
-                            0: { slidesPerView: 2, spaceBetween: 4 },
-                            // Mobile lớn
-                            480: { slidesPerView: 3, spaceBetween: 8 },
-                            // Tablet nhỏ
-                            640: { slidesPerView: 3, spaceBetween: 8 },
-                            // Tablet lớn
-                            768: { slidesPerView: 3, spaceBetween: 4 },
-                            // Laptop
-                            1024: { slidesPerView: 4, spaceBetween: 5 },
-                            // Desktop lớn
-                            1280: { slidesPerView: 4, spaceBetween: 6 },
+                            0: { slidesPerView: 2, spaceBetween: 8 },
+                            480: { slidesPerView: 2, spaceBetween: 10 },
+                            640: { slidesPerView: 3, spaceBetween: 12 },
+                            768: { slidesPerView: 3, spaceBetween: 12 },
+                            1024: { slidesPerView: 5, spaceBetween: 14 },
+                            1280: { slidesPerView: 5, spaceBetween: 16 },
                         }}
                         spaceBetween={12}
-                        modules={[Navigation]}
-                        onSwiper={(swiper) => (swiperRef.current = swiper)}
-                        className=" w-full md:w-[600px] lg:w-[1000px]"
+                        navigation={{
+                            prevEl: prevRef.current,
+                            nextEl: nextRef.current,
+                        }}
+                        onBeforeInit={(swiper) => {
+                            swiper.params.navigation.prevEl = prevRef.current;
+                            swiper.params.navigation.nextEl = nextRef.current;
+                        }}
+                        className="w-full max-w-[1200px] mx-auto"
                     >
-                        {data.map((e, i) => (
-                            <SwiperSlide key={i}>
+                        {movies.filter(a => a.country === "Nhật Bản").filter(f => f.movieType === "phim bộ").slice(0, 10).map((e, idx) => (
+                            <SwiperSlide
+                                key={idx}
+
+                            >
                                 <div
                                     className="relative"
-                                    onMouseEnter={(a) => handleMouseEnter(e, i, a)}
+                                    onMouseEnter={(ev) => handleMouseEnter(e, idx, ev)}
                                     onMouseLeave={handleMouseLeave}
                                 >
-                                    <img src={e.imgUrl}
+                                    <img
+                                        src={e.poster}
                                         alt={e.name}
-                                        className="rounded-lg hover:scale-102 h-[100px] md:h-[120px] lg:h-[140px] w-full object-cover"
+                                        className="rounded-lg hover:scale-102 h-[250px] md:h-[370px] lg:h-[330px]"
                                     />
-                                    <h3 className="text-sm mt-2">{e.name}</h3>
+                                    <h3 className="text-lg md:text-xl text-center mt-2">{e.name}</h3>
+                                    <h3 className="text-[8px] md:text-sm text-center mt-1 text-gray-400">{e.subtitle}</h3>
                                 </div>
 
-                                {hoveredMovie?.i === i &&
+                                {hoveredMovie?.idx === idx &&
                                     createPortal(
                                         <motion.div
                                             onMouseEnter={() => clearTimeout(closeTimer.current)}
                                             onMouseLeave={() => {
                                                 clearTimeout(closeTimer.current);
-                                                closeTimer.current = setTimeout(() => setHoveredMovie(null), 100);
+                                                closeTimer.current = setTimeout(
+                                                    () => setHoveredMovie(null),
+                                                    100
+                                                );
                                             }}
                                             initial={{ opacity: 0, scale: 0.96 }}
                                             animate={{ opacity: 1, scale: 1.08 }}
@@ -125,23 +119,24 @@ export default function NewMovie({ data, title }) {
                                                 transformOrigin: "top left",
                                                 zIndex: 9999,
                                             }}
-                                            className="rounded-2xl overflow-hidden shadow-2xl bg-gray-950/90 text-white hidden lg:block"
+                                            className="rounded-2xl overflow-hidden shadow-2xl bg-gray-950 text-white hidden lg:block"
                                         >
                                             <img
-                                                src={hoveredMovie.imgUrl}
+                                                src={hoveredMovie.movie.imgUrl}
                                                 className="w-full h-40 object-cover"
                                             />
                                             <div className="p-4">
-                                                <h1 className="text-lg font-semibold">{hoveredMovie.name}</h1>
+                                                <h1 className="text-lg font-semibold">
+                                                    {hoveredMovie.movie.name}
+                                                </h1>
+                                            </div>
+                                            <div className="p-4">
+                                                <h1 className="text-lg font-semibold">{hoveredMovie.movie.name}</h1>
                                                 <div className='flex items-center gap-2 mt-5'>
-                                                    <Link
-                                                        to={`/detail/${e.id}`}
-                                                        className='px-4 py-2 bg-yellow-500 flex items-center rounded-lg text-sm gap-2
-                                                         text-black active:scale-95 active:shadow-[0_0_10px_3px_rgba(249,215,87)]'
-                                                    >
+                                                    <button className='px-4 py-2 bg-yellow-500 flex items-center rounded-lg text-sm gap-2 text-black'>
                                                         <FaPlay />
                                                         <span className='whitespace-nowrap'>Xem ngay</span>
-                                                    </Link>
+                                                    </button>
                                                     <div className='flex items-center rounded-lg border-1 px-4 py-2 text-sm gap-2'>
                                                         <FaHeart />
                                                         <span>Thích</span>
@@ -185,22 +180,20 @@ export default function NewMovie({ data, title }) {
                     {/* Custom Buttons */}
                     <button
                         ref={prevRef}
-                        className="absolute top-1/3 -translate-y-1/3 left-0 -translate-x-1/2
-                                    z-30 p-2 bg-white text-black rounded-full shadow hidden md:flex"
+                        className="absolute top-1/3 -translate-y-1/12 -left-5 -translate-5 text-sm
+                        lg:-left-5 lg:-translate-x-5 lg:text-xl border bg-black rounded-full z-30 p-2 text-white hidden md:block"
                     >
                         <MdOutlineArrowBackIos />
                     </button>
-
-                    {/* Next Button */}
                     <button
                         ref={nextRef}
-                        className="absolute top-1/3 -translate-y-1/3 right-0 translate-x-1/2
-                                    z-30 p-2 bg-white text-black rounded-full shadow hidden md:flex"
+                        className="absolute top-1/3 -translate-y-1/12 -right-5 translate-5 text-sm
+                        lg:-right-5 lg:translate-x-5 lg:text-xl border bg-black rounded-full z-30 p-2 text-white hidden md:block"
                     >
                         <MdArrowForwardIos />
                     </button>
                 </div>
             </div>
-        </div >
+        </div>
     );
 }
