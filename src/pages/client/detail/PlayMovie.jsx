@@ -9,32 +9,31 @@ import InforMovie from "./InforMovie";
 import Comment from "./Comment";
 import { useContext } from "react";
 import { ContextMovies } from "../../../contexts/MovieProvider";
+import { ContextEpisodes } from "../../../contexts/EpisodeProvider";
 
 function DetailMovie() {
     const { id } = useParams();
     const [movieShow, setMovieShow] = useState({});
-    const movies = useContext(ContextMovies);
+    const episodes = useContext(ContextEpisodes);
     useEffect(() => {
-        const movieFound = movies.find(e => e.id === id);
+        const movieFound = episodes.find(e => e.id === id);
         setMovieShow(movieFound);
-    }, [movies, id]);
-console.log(movies);
+    }, [episodes, id]);
+console.log(episodes);
 
     return (
         <div>
             <div className="w-full mt-30">
                 <div className=" p-5">
-                    {movies.map((e,i)=>(
                         <iframe
                         width="560"
                         height="315"
-                        src="Full|https://player.phimapi.com/player/?url=https://s5.phim1280.tv/20250513/ZU0dQxi5/index.m3u8" 
-                        title={e.name}
+                        src={`https://player.phimapi.com/player/?url=${movieShow?.videoUrl}`}                    
+                        title=""
                     ></iframe>
-                    ))}
                 </div>
                 <div className="p-5 flex ">
-                    <InforMovie movieShow={movieShow} />
+                    {/* <InforMovie movieShow={movieShow} /> */}
                     <div className="flex-1 ">
                         <div className="flex items-center justify-between w-full">
                             <div className="text-white whitespace-nowrap flex flex-col items-center gap-1 hover:text-yellow-400 hover:bg-gray-800/50 hover:shadow hover:rounded-md hover:p-2">
@@ -61,10 +60,9 @@ console.log(movies);
 
 
                         <div className="text-white ">
-                            <Outlet />
+                            {/* <Outlet /> */}
                         </div>
-                        <Comment />
-
+                        {/* <Comment /> */}
                     </div>
                 </div>
             </div>

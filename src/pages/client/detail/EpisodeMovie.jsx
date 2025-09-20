@@ -4,14 +4,14 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { CgMenuLeft } from "react-icons/cg";
 import { MdOutlineSubtitles } from "react-icons/md";
 import { ContextEpisodes } from '../../../contexts/EpisodeProvider';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 function EpisodeMovie() {
     const [selected, setSelected] = useState("Phần 1");
     const [open, setOpen] = useState(false);
     const episodes = useContext(ContextEpisodes);
     const { id } = useParams();
-    
+
     const options = ["Phần 1", "Phần 2", "Phần 3"];
     return (
         <div className='mt-7'>
@@ -61,9 +61,12 @@ function EpisodeMovie() {
             </div>
             <div className="flex items-center text-white mt-2 gap-3">
                 {episodes.filter(a => a.movieId == id).sort((a, b) => a.episodeNumber - b.episodeNumber).map((e, i) => (
-                    <div className="bg-gray-600/40 rounded-md px-5 py-2 flex items-center gap-2"><FaPlay className="text-[8px]" />
+                    <Link to={`/playmovie/${e.id}`}
+                        className="bg-gray-600/40 rounded-md px-5 py-2 flex items-center gap-2"
+                    >
+                        <FaPlay className="text-[8px]" />
                         tập {e.episodeNumber}
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>

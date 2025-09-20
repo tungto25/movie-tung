@@ -73,7 +73,7 @@ function ClientRouters(props) {
             ]
         },
         {
-            path: "/playmovie",
+            path: "/playmovie/:id",
             element: <PlayMovie />
         },
         {

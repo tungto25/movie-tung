@@ -14,6 +14,7 @@ import { useContext, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { createPortal } from "react-dom";
 import { ContextMovies } from "../../../contexts/MovieProvider";
+import { Link } from "react-router-dom";
 
 // Kích hoạt module
 SwiperCore.use([Navigation, Thumbs]);
@@ -77,7 +78,7 @@ export default function SerieAnime() {
                         }}
                         className="w-full max-w-[1200px] mx-auto"
                     >
-                        {movies.filter(a => a.country === "Nhật Bản").filter(f => f.movieType === "phim bộ").slice(0, 10).map((e, idx) => (
+                        {movies.filter(a => a.country === "Nhật Bản").filter(f => f.movieType === "phim bộ").map((e, idx) => (
                             <SwiperSlide
                                 key={idx}
 
@@ -133,10 +134,10 @@ export default function SerieAnime() {
                                             <div className="p-4">
                                                 <h1 className="text-lg font-semibold">{hoveredMovie.movie.name}</h1>
                                                 <div className='flex items-center gap-2 mt-5'>
-                                                    <button className='px-4 py-2 bg-yellow-500 flex items-center rounded-lg text-sm gap-2 text-black'>
+                                                    <Link to={`/detail/${e.id}`} className='px-4 py-2 bg-yellow-500 flex items-center rounded-lg text-sm gap-2 text-black'>
                                                         <FaPlay />
                                                         <span className='whitespace-nowrap'>Xem ngay</span>
-                                                    </button>
+                                                    </Link>
                                                     <div className='flex items-center rounded-lg border-1 px-4 py-2 text-sm gap-2'>
                                                         <FaHeart />
                                                         <span>Thích</span>

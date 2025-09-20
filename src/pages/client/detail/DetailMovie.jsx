@@ -44,7 +44,7 @@ function DetailMovie() {
                         <div className="flex items-center justify-between w-full">
                             <Link
                                 type="button"
-                                to="/playmovie"
+                                // to={`/playmovie/`}
                                 className="rounded-full px-8 py-4 gap-2 bg-gradient-to-l
                                  from-yellow-500 to-yellow-200 flex items-center justify-center shadow-lg transition-transform duration-100
                                  active:scale-95 active:shadow-[0_0_10px_3px_rgba(249,215,87)]"

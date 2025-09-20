@@ -6,7 +6,7 @@ import TableEpisodes from "./TableEpisodes";
 import * as XLSX from "xlsx";
 import { addDocument } from '../../../../services/FirebaseService';
 
-const inner = { title: "", section: "", videoUrl: "", episodeNumber: "", movieId: "", };
+const inner = { section: "", videoUrl: "", episodeNumber: "", movieId: "" };
 function Episodes(props) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);
@@ -19,6 +19,7 @@ function Episodes(props) {
     const [page, setPage] = useState(1);
     const [rows, setRows] = useState([]);
     const [openExcel, setOpenExcel] = useState(false);
+    console.log(episode);
 
     const handleSearch = (a) => {
         setSearch(a);
@@ -58,8 +59,10 @@ function Episodes(props) {
             // jsonData là mảng 2 chiều (dòng, cột)
             // Bỏ dòng tiêu đề nếu cần
             const formatted = jsonData.slice(1).map((row) => ({
-                name: row[0],
-                description: row[1],
+                movieId: row[0] ? String(row[0]).trim() : "",
+                episodeNumber: row[1],
+                section: row[2],
+                videoUrl: row[3],
             }));
 
             setRows(formatted);
@@ -69,8 +72,12 @@ function Episodes(props) {
 
     const addToExcel = async () => {
         try {
-            // Lọc bỏ dòng không hợp lệ (không có name)
-            const validRows = rows.filter((row) => row.name && row.name.trim() !== "");
+            // Lọc bỏ dòng không hợp lệ (ví dụ yêu cầu phải có movieId và episodeNumber)
+            const validRows = rows.filter(
+                (row) =>
+                    row.movieId && String(row.movieId).trim() !== "" &&
+                    row.episodeNumber && String(row.episodeNumber).trim() !== ""
+            );
 
             if (validRows.length === 0) {
                 alert("Không có dữ liệu hợp lệ để thêm!");
@@ -80,20 +87,23 @@ function Episodes(props) {
             await Promise.all(
                 validRows.map(async (row) => {
                     await addDocument("Episodes", {
-                        name: row.name.trim(),
-                        description: row.description ? row.description.trim() : "",
+                        movieId: row.movieId ? String(row.movieId).trim() : "",
+                        episodeNumber: row.episodeNumber ? String(row.episodeNumber).trim() : "",
+                        section: row.section ? String(row.section).trim() : "0",
+                        videoUrl: row.videoUrl ? String(row.videoUrl).trim() : "",
                     });
                 })
             );
 
             alert("Thêm thành công!");
-            setRows([]); // clear data sau khi thêm
-            setOpenExcel(false); // đóng modal
+            setRows([]);
+            setOpenExcel(false);
         } catch (err) {
             console.error(err);
             alert("Có lỗi xảy ra!");
         }
     };
+
     return (
         <div>
             <div>

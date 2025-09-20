@@ -3,7 +3,7 @@ import { useContext, useState } from 'react';
 import PaginationTable from '../../../../components/admin/PaginationTable';
 import { ContextEpisodes } from '../../../../contexts/EpisodeProvider';
 import { MdDeleteForever, MdEdit } from 'react-icons/md';
-import { getOjectById } from '../../../../services/reponsitory';
+import useSearch, { getOjectById } from '../../../../services/reponsitory';
 import { ContextMovies } from '../../../../contexts/MovieProvider';
 import { deleteDocument } from '../../../../services/FirebaseService'; // API xóa
 import { ContextSections } from '../../../../contexts/SectionProvider';
@@ -19,7 +19,7 @@ function TableEpisodes({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, 
     const handleChange = (event, value) => {
         setPage(value);
     };
-    const dataSearch = episodes.filter(e => e.title.toLowerCase().includes(search));
+    const dataSearch = useSearch(episodes, search, (e) => e.movieId);
 
     const paginatedData = dataSearch.slice(
         (page - 1) * rowsPerPage,
