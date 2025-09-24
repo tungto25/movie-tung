@@ -45,7 +45,7 @@ function ModalActor({ open, handleClose, actor, setActor, error, setError, inner
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
-                setActor({ ...actor, img: reader.result });
+                setActor({ ...actor, imgUrl: reader.result });
             };
             reader.readAsDataURL(file);
         }
@@ -88,7 +88,7 @@ function ModalActor({ open, handleClose, actor, setActor, error, setError, inner
                     />
                 </label>
                 <Avatar
-                    src={actor?.img}
+                    src={actor?.imgUrl}
                     alt="Actor Image"
                     sx={{ width: 150, height: 150, margin: '10px auto' }}
                 />

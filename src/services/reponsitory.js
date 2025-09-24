@@ -13,10 +13,10 @@ export const truncateText = (text) => {
   return text.length > 40 ? text.slice(0, 70) + "..." : text;
 }
 
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 
 // Hàm bỏ dấu tiếng Việt
-function removeVietnameseTones(str = "") {
+export function removeVietnameseTones(str = "") {
   return str
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -26,11 +26,8 @@ function removeVietnameseTones(str = "") {
 
 /**
  * Hook search
- * @param {Array} data - mảng dữ liệu gốc
- * @param {string} keyword - chuỗi search
- * @param {function} selector - hàm lấy text từ mỗi item (vd: item => item.name)
  */
-export default function useSearch(data, keyword, selector) {
+export function useSearch(data, keyword, selector) {
   return useMemo(() => {
     if (!keyword) return data;
 
@@ -41,5 +38,44 @@ export default function useSearch(data, keyword, selector) {
       return text.includes(searchText);
     });
   }, [data, keyword, selector]);
+}
+
+/**
+ * Hook sort
+ */
+export function useSort(data, options = {}) {
+  const [sortConfig, setSortConfig] = useState({
+    key: options.initialKey || null,
+    direction: options.initialDirection || "asc",
+  });
+
+  const sortedData = useMemo(() => {
+    if (!sortConfig.key) return data;
+
+    return [...data].sort((a, b) => {
+      let aVal = a[sortConfig.key];
+      let bVal = b[sortConfig.key];
+
+      if (typeof aVal === "string") {
+        aVal = aVal.toLowerCase();
+        bVal = bVal.toLowerCase();
+      }
+
+      if (aVal < bVal) return sortConfig.direction === "asc" ? -1 : 1;
+      if (aVal > bVal) return sortConfig.direction === "asc" ? 1 : -1;
+      return 0;
+    });
+  }, [data, sortConfig]);
+
+  const toggleSort = (key) => {
+    setSortConfig((prev) => {
+      if (prev.key === key) {
+        return { key, direction: prev.direction === "asc" ? "desc" : "asc" };
+      }
+      return { key, direction: "asc" };
+    });
+  };
+
+  return { sortedData, sortConfig, toggleSort };
 }
 

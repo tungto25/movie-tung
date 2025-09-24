@@ -3,7 +3,7 @@ import { useContext, useState } from 'react';
 import PaginationTable from '../../../../components/admin/PaginationTable';
 import { ContextEpisodes } from '../../../../contexts/EpisodeProvider';
 import { MdDeleteForever, MdEdit } from 'react-icons/md';
-import useSearch, { getOjectById } from '../../../../services/reponsitory';
+import { getOjectById, useSearch, useSort } from '../../../../services/reponsitory';
 import { ContextMovies } from '../../../../contexts/MovieProvider';
 import { deleteDocument } from '../../../../services/FirebaseService'; // API xóa
 import { ContextSections } from '../../../../contexts/SectionProvider';
@@ -19,9 +19,11 @@ function TableEpisodes({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, 
     const handleChange = (event, value) => {
         setPage(value);
     };
-    const dataSearch = useSearch(episodes, search, (e) => e.movieId);
+    const dataSearch = useSearch(episodes, search, (e) => getOjectById(movies, e.movieId)?.name);
 
-    const paginatedData = dataSearch.slice(
+    const { sortedData, sortConfig, toggleSort } = useSort(dataSearch);
+
+    const paginatedData = sortedData.slice(
         (page - 1) * rowsPerPage,
         page * rowsPerPage
     );
@@ -100,9 +102,16 @@ function TableEpisodes({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, 
                                 />
                             </TableCell>
                             <TableCell>#</TableCell>
-                            <TableCell align="right">Movie</TableCell>
-                            <TableCell align="right">Episodes Number</TableCell>
-                            <TableCell align="right">Sections</TableCell>
+                            <TableCell align="right" onClick={() => toggleSort("movieId")} style={{ cursor: "pointer" }}>
+                                Movie {sortConfig.key === "movieId" ? (sortConfig.direction === "asc" ? "↑" : "↓") : ""}
+                            </TableCell>
+
+                            <TableCell align="right" onClick={() => toggleSort("episodeNumber")} style={{ cursor: "pointer" }}>
+                                Episodes Number {sortConfig.key === "episodeNumber" ? (sortConfig.direction === "asc" ? "↑" : "↓") : ""}
+                            </TableCell>
+                            <TableCell align="right" onClick={() => toggleSort("section")} style={{ cursor: "pointer" }}>
+                                Sections {sortConfig.key === "section" ? (sortConfig.direction === "asc" ? "↑" : "↓") : ""}
+                            </TableCell>
 
                             <TableCell align="right">Video Url</TableCell>
                             <TableCell align='center'>Action</TableCell>
@@ -126,7 +135,7 @@ function TableEpisodes({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, 
                                 <TableCell align="right">{getOjectById(movies, e.movieId)?.name || ""}</TableCell>
                                 <TableCell align="right">{e.episodeNumber}</TableCell>
                                 <TableCell align="right">
-                                    {getOjectById(sections, e.sectionId)?.title || ""}
+                                    {getOjectById(sections, e.sectionId)?.season || ""}
                                 </TableCell>
 
                                 <TableCell align="right">{e.videoUrl}</TableCell>

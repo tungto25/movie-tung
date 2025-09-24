@@ -21,7 +21,6 @@ function AnimeSlide(props) {
     const categories = useContext(ContextCategories);
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
-    console.log(movies);
 
     return (
         <>

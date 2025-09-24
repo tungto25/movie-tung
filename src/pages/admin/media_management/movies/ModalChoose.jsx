@@ -9,10 +9,11 @@ import {
 import { IoIosSearch } from 'react-icons/io';
 import { useState } from 'react';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useSearch } from '../../../../services/reponsitory';
 
 function ModalChoose({ openChoosen, handleCloseChoosen, dataChoose, modalType, handleChoose, getChoose }) {
     const [search, setSearch] = useState("");
-    const dataSearch = dataChoose.filter(a => a.name.toLowerCase().includes(search.toLowerCase()));
+    const dataSearch = useSearch(dataChoose, search, (e) => e.name);
     console.log(getChoose);
     const selected = (id) => {
         return getChoose.includes(id);

@@ -44,7 +44,7 @@ function ModalEpisodes({ open, handleClose, episode, setEpisode, error, setError
         setEpisode(inner);
         setError(inner);
     }
-    
+
     const movies = useContext(ContextMovies);
     const sections = useContext(ContextSections);
     return (
@@ -74,11 +74,11 @@ function ModalEpisodes({ open, handleClose, episode, setEpisode, error, setError
                 />
                 <Autocomplete
                     options={sections}
-                    getOptionLabel={(option) => option.title}   
+                    getOptionLabel={(option) => option.season}
                     disablePortal
                     fullWidth
                     sx={{ mt: 2 }}
-                    value={sections.find(s => s.id === episode.sectionId) || null} 
+                    value={sections.find(s => s.id === episode.sectionId) || null}
                     onChange={(event, value) =>
                         setEpisode(prev => ({ ...prev, sectionId: value?.id || "" }))
                     }
@@ -110,7 +110,7 @@ function ModalEpisodes({ open, handleClose, episode, setEpisode, error, setError
                     margin="normal"
                     placeholder=""
                 />
-                
+
 
                 <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
 

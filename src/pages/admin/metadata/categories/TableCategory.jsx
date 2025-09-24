@@ -9,7 +9,7 @@ import { MdDeleteForever, MdEdit } from 'react-icons/md';
 import PaginationTable from "../../../../../src/components/admin/PaginationTable";
 import { useContext, useState } from 'react';
 import { ContextCategories } from '../../../../contexts/CategoryProvider';
-import useSearch, { truncateText } from '../../../../services/reponsitory';
+import  { truncateText, useSearch } from '../../../../services/reponsitory';
 import { deleteDocument } from '../../../../services/FirebaseService'; // API xóa
 
 export default function TableCategory({ editOpen, setIdDeleted, setOpenDeleted, search, page, setPage }) {

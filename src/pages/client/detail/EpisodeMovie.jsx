@@ -5,14 +5,17 @@ import { CgMenuLeft } from "react-icons/cg";
 import { MdOutlineSubtitles } from "react-icons/md";
 import { ContextEpisodes } from '../../../contexts/EpisodeProvider';
 import { Link, useParams } from 'react-router-dom';
+import { ContextSections } from '../../../contexts/SectionProvider';
+import { getOjectById } from '../../../services/reponsitory';
 
 function EpisodeMovie() {
     const [selected, setSelected] = useState("Phần 1");
+    const selectedSeason = selected.replace("Phần ", "");
     const [open, setOpen] = useState(false);
     const episodes = useContext(ContextEpisodes);
+    const sections = useContext(ContextSections)
     const { id } = useParams();
 
-    const options = ["Phần 1", "Phần 2", "Phần 3"];
     return (
         <div className='mt-7'>
             <div className='bg-blue-900 bg-gradient-to-r from-blue-700/40 via-purple-600/50 to-purple-700
@@ -34,16 +37,16 @@ function EpisodeMovie() {
                     </button>
                     {open && (
                         <ul className="absolute top-4 translate-y-4 right-0 w-auto bg-gray-700 text-white rounded-lg shadow-lg z-10 p-1">
-                            {options.map((e, i) => (
+                            {sections.map((section) => (
                                 <div
-                                    key={i}
+                                    key={section.id}
                                     onClick={() => {
-                                        setSelected(e);
+                                        setSelected(`Phần ${section.season}`);
                                         setOpen(false);
                                     }}
                                     className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
                                 >
-                                    {e}
+                                    Phần {section.season}
                                 </div>
                             ))}
                         </ul>
@@ -59,10 +62,10 @@ function EpisodeMovie() {
                     <p >Thuyết minh</p>
                 </div>
             </div>
-            <div className="flex items-center text-white mt-2 gap-3">
-                {episodes.filter(a => a.movieId == id).sort((a, b) => a.episodeNumber - b.episodeNumber).map((e, i) => (
+            <div className="grid grid-cols-7 text-white mt-2 gap-3">
+                {episodes.filter(f => getOjectById(sections, f.sectionId)?.season === selectedSeason && f.movieId === id).filter(a => a.movieId == id).sort((a, b) => a.episodeNumber - b.episodeNumber).map((e, i) => (
                     <Link to={`/playmovie/${e.id}`}
-                        className="bg-gray-600/40 rounded-md px-5 py-2 flex items-center gap-2"
+                        className="bg-gray-600/40 rounded-md px-5 py-2 flex items-center gap-2 whitespace-nowrap"
                     >
                         <FaPlay className="text-[8px]" />
                         tập {e.episodeNumber}

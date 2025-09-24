@@ -15,8 +15,9 @@ import Recommend from '../pages/client/detail/Recommend';
 import EpisodeMovie from '../pages/client/detail/EpisodeMovie';
 import PlayMovie from '../pages/client/detail/PlayMovie';
 import Packages from '../pages/client/vip/Packages';
+import PaymentPage from '../pages/client/vip/PaymentPage';
 
-function ClientRouters(props) {
+function ClientRouters({ handleOpenLogin }) {
     const routes = [
         {
             path: "/",
@@ -52,7 +53,7 @@ function ClientRouters(props) {
         },
         {
             path: "/detail/:id",
-            element: <DetailMovie />,
+            element: <DetailMovie handleOpenLogin={handleOpenLogin} />,
             subRoutes: [
                 {
                     path: "",
@@ -74,11 +75,15 @@ function ClientRouters(props) {
         },
         {
             path: "/playmovie/:id",
-            element: <PlayMovie />
+            element: <PlayMovie handleOpenLogin={handleOpenLogin} />
         },
         {
             path: "/packages",
             element: <Packages />
+        },
+        {
+            path: "/paymentPage",
+            element: <PaymentPage />
         },
     ]
     // Recursive function to render both top-level and nested routes

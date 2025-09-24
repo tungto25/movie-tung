@@ -19,7 +19,6 @@ function Episodes(props) {
     const [page, setPage] = useState(1);
     const [rows, setRows] = useState([]);
     const [openExcel, setOpenExcel] = useState(false);
-    console.log(episode);
 
     const handleSearch = (a) => {
         setSearch(a);
@@ -61,7 +60,7 @@ function Episodes(props) {
             const formatted = jsonData.slice(1).map((row) => ({
                 movieId: row[0] ? String(row[0]).trim() : "",
                 episodeNumber: row[1],
-                section: row[2],
+                sectionId: row[2],
                 videoUrl: row[3],
             }));
 
@@ -72,7 +71,6 @@ function Episodes(props) {
 
     const addToExcel = async () => {
         try {
-            // Lọc bỏ dòng không hợp lệ (ví dụ yêu cầu phải có movieId và episodeNumber)
             const validRows = rows.filter(
                 (row) =>
                     row.movieId && String(row.movieId).trim() !== "" &&
@@ -89,7 +87,7 @@ function Episodes(props) {
                     await addDocument("Episodes", {
                         movieId: row.movieId ? String(row.movieId).trim() : "",
                         episodeNumber: row.episodeNumber ? String(row.episodeNumber).trim() : "",
-                        section: row.section ? String(row.section).trim() : "0",
+                        sectionId: row.sectionId ? String(row.sectionId).trim() : "0",
                         videoUrl: row.videoUrl ? String(row.videoUrl).trim() : "",
                     });
                 })

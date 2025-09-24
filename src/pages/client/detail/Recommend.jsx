@@ -91,19 +91,24 @@ function Recommend() {
 
     return (
         <div className="mt-5">
-            <p className="text-lg">Có thể bạn sẽ thích</p>
-            <div className="flex flex-wrap items-center gap-3 pb-20 pt-5">
+            <p className="text-xl font-bold">Có thể bạn sẽ thích</p>
+            <div className="flex flex-col items-center gap-3 pb-20 pt-5">
                 {movieData.map((e, i) => (
                     <div
                         key={i}
                         onMouseEnter={(ev) => handleMouseEnter(e, i, ev)}
                         onMouseLeave={handleMouseLeave}
-                        className="h-[230px]"
+                        className="flex items-center gap-3 bg-gray-800/50 rounded-xl w-[300px]"
                     >
-                        <img src={e.img} alt="" className="h-[180px] w-[130px] rounded-xl"/>
-                        <div className="text-center max-w-[130px]">
-                            <p className="text-sm">{e.name}</p>
-                            <p className="text-xs">{e.subtitle}</p>
+                        <img src={e.img} alt="" className="h-[140px] w-[100px] rounded-xl" />
+                        <div className="text-start max-w-[130px] ">
+                            <p className="text-base py-2">{e.name}</p>
+                            <p className="text-xs py-2 text-gray-400">{e.subtitle}</p>
+                            <div className="flex items-center gap-3 text-gray-400 text-xs py-2">
+                                <p>T13</p>
+                                <p>2025</p>
+                                <p>1h58m</p>
+                            </div>
                         </div>
 
                         {hoveredMovie?.i === i &&

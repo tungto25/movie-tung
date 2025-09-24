@@ -3,7 +3,7 @@ import { Avatar, Checkbox, Paper, Table, TableBody, TableCell, TableContainer, T
 import { useContext, useState } from 'react';
 import { deleteDocument } from '../../../services/FirebaseService';
 import PaginationTable from '../../../components/admin/PaginationTable';
-import useSearch, { truncateText } from '../../../services/reponsitory';
+import { truncateText, useSearch } from '../../../services/reponsitory';
 import { ContextAccount } from '../../../contexts/AccountProvider';
 
 function TableUser({ editOpen, setIdDeleted, setOpenDeleted, search, page, setPage }) {

@@ -3,20 +3,20 @@ import { useContext, useState } from 'react';
 import { MdDeleteForever, MdEdit } from 'react-icons/md';
 import PaginationTable from '../../../../components/admin/PaginationTable';
 import { ContextSections } from '../../../../contexts/SectionProvider';
-import { getOjectById } from '../../../../services/reponsitory';
+import { getOjectById, useSearch } from '../../../../services/reponsitory';
 import { deleteDocument } from '../../../../services/FirebaseService'; // API xóa
 
 function TableSection({ editOpen, setIdDeleted, setOpenDeleted, search, page, setPage, movies }) {
 
     const sections = useContext(ContextSections);
-    const dataSearch = sections.filter(e => e.title.toLowerCase().includes(search.toLowerCase()));
+    const dataSearch = useSearch(sections, search, (e) => getOjectById(movies, e.movieId)?.name);
+
     const rowsPerPage = 5;
     const [selectedIds, setSelectedIds] = useState([]);
 
     const handleChange = (event, value) => {
         setPage(value);
     };
-
 
     const paginatedData = dataSearch.slice(
         (page - 1) * rowsPerPage,
@@ -95,7 +95,6 @@ function TableSection({ editOpen, setIdDeleted, setOpenDeleted, search, page, se
                                 />
                             </TableCell>
                             <TableCell>#</TableCell>
-                            <TableCell align="right">Image</TableCell>
                             <TableCell align="right">Title</TableCell>
                             <TableCell align="right">Movie</TableCell>
                             <TableCell align='center'>Action</TableCell>
@@ -116,19 +115,7 @@ function TableSection({ editOpen, setIdDeleted, setOpenDeleted, search, page, se
                                     />
                                 </TableCell>
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
-                                <TableCell align="center" sx={{ width: "15px", height: "15px" }}>
-                                    <Avatar
-                                        variant="rounded"
-                                        src={e.imgUrl}
-                                        alt=" Image"
-                                        sx={{
-                                            width: 50,
-                                            height: 50,
-                                            margin: 'auto',
-                                        }}
-                                    />
-                                </TableCell>
-                                <TableCell align="right">{e.title}</TableCell>
+                                <TableCell align="right">{e.season}</TableCell>
                                 <TableCell align="right">{getOjectById(movies, e.movieId)?.name}</TableCell>
 
                                 <TableCell >

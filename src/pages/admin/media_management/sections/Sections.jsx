@@ -7,7 +7,7 @@ import { ContextMovies } from '../../../../contexts/MovieProvider';
 import * as XLSX from "xlsx";
 import { addDocument } from '../../../../services/FirebaseService';
 
-const inner = { title: "", imgUrl: "", movieId: "" };
+const inner = { season: "", movieId: "" };
 function Sections(props) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);

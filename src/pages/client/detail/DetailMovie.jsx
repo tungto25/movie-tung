@@ -10,23 +10,23 @@ import InforMovie from "./InforMovie";
 import Comment from "./Comment";
 import { useContext } from "react";
 import { ContextMovies } from "../../../contexts/MovieProvider";
+import { ContextEpisodes } from "../../../contexts/EpisodeProvider";
 
-function DetailMovie() {
+function DetailMovie({ handleOpenLogin }) {
     const { id } = useParams();
     const [currentChoose, setCurrentChoose] = useState(1);
     const [movieShow, setMovieShow] = useState({});
     const movies = useContext(ContextMovies);
+    const episodes = useContext(ContextEpisodes);
+    const firstEpisode = movieShow && episodes ? episodes.find(e => e.movieId === movieShow.id) : null;
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [id]);
 
     useEffect(() => {
-        console.log(movies);
-        console.log("id", id);
         const movieFound = movies.find(e => e.id === id);
         setMovieShow(movieFound);
     }, [movies, id]);
-    console.log(movieShow);
 
     return (
         <div>
@@ -39,32 +39,35 @@ function DetailMovie() {
                     />
                     <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-gray-900 to-transparent"></div>                </div>
                 <div className="p-5 flex ">
-                    <InforMovie movieShow={movieShow} />
+                    <div className="w-[35%]">
+                        <InforMovie movieShow={movieShow} />
+                    </div>
                     <div className="flex-1 ">
                         <div className="flex items-center justify-between w-full">
-                            <Link
-                                type="button"
-                                // to={`/playmovie/`}
-                                className="rounded-full px-8 py-4 gap-2 bg-gradient-to-l
-                                 from-yellow-500 to-yellow-200 flex items-center justify-center shadow-lg transition-transform duration-100
-                                 active:scale-95 active:shadow-[0_0_10px_3px_rgba(249,215,87)]"
-                            >
-                                <FaPlay className="text-sm text-black" />
-                                <span className="whitespace-nowrap text-xl">Xem ngay</span>
-                            </Link>
-                            <div className="text-white whitespace-nowrap flex flex-col items-center gap-1 hover:text-yellow-400 hover:bg-gray-800/50 hover:shadow hover:rounded-md hover:p-2">
+                            {firstEpisode && (
+                                <Link
+                                    to={`/playmovie/${firstEpisode.id}`}
+                                    className="rounded-full px-8 py-4 gap-2 bg-gradient-to-l
+                                              from-yellow-500 to-yellow-200 flex items-center justify-center shadow-lg transition-transform duration-100
+                                                active:scale-95 active:shadow-[0_0_10px_3px_rgba(249,215,87)]"
+                                >
+                                    <FaPlay className="text-sm text-black" />
+                                    <span className="whitespace-nowrap text-xl">Xem ngay</span>
+                                </Link>
+                            )}
+                            <div className="text-white whitespace-nowrap flex flex-col items-center gap-1 hover:text-yellow-400 hover:bg-gray-800/50 rounded-md p-2">
                                 <FaHeart />
                                 <p>Yêu thích</p>
                             </div>
-                            <div className="text-white whitespace-nowrap flex flex-col items-center gap-1 hover:text-yellow-400 hover:bg-gray-800/50 hover:shadow hover:rounded-md hover:p-2">
+                            <div className="text-white whitespace-nowrap flex flex-col items-center gap-1 hover:text-yellow-400  hover:bg-gray-800/50 rounded-md p-2">
                                 <IoMdAdd />
                                 <p>Thêm vào</p>
                             </div>
-                            <div className="text-white whitespace-nowrap flex flex-col items-center gap-1 hover:text-yellow-400 hover:bg-gray-800/50 hover:shadow hover:rounded-md hover:p-2">
+                            <div className="text-white whitespace-nowrap flex flex-col items-center gap-1 hover:text-yellow-400  hover:bg-gray-800/50 rounded-md p-2">
                                 <FaShare />
                                 <p>Chia sẻ</p>
                             </div>
-                            <div className="text-white whitespace-nowrap flex flex-col items-center gap-1 hover:text-yellow-400 hover:bg-gray-800/50 hover:shadow hover:rounded-md hover:p-2">
+                            <div className="text-white whitespace-nowrap flex flex-col items-center gap-1 hover:text-yellow-400  hover:bg-gray-800/50 rounded-md p-2">
                                 <BiSolidCommentDetail />
                                 <p>Bình luận</p>
                             </div>
@@ -92,7 +95,7 @@ function DetailMovie() {
                         <div className="text-white ">
                             <Outlet />
                         </div>
-                        <Comment />
+                        <Comment handleOpenLogin={handleOpenLogin} />
 
                     </div>
                 </div>

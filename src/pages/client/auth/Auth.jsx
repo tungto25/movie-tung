@@ -31,7 +31,7 @@ export default function AuthModal({ openLogin, handleCloseLogin }) {
                 }}
             >
                 <div className="relative flex justify-center items-center bg-gray-800 h-auto max-sm:w-[280px] w-auto rounded-3xl overflow-hidden">
-                    
+
                     <div
                         onClick={handleCloseLogin}
                         className="text-white text-2xl absolute right-2 top-2 -translate-x-2 translate-y-2"

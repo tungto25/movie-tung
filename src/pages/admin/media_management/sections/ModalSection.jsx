@@ -19,13 +19,13 @@ function ModalSection({ open, handleClose, section, setSection, error, setError,
     }, [open]);
 
     const validation = () => {
-    const newError = {
-        title: section.title ? "" : "Please enter title",
-        movieId: section.movieId ? "" : "Please enter movieId",
+        const newError = {
+            season: section.season ? "" : "Please enter season",
+            movieId: section.movieId ? "" : "Please enter movieId",
+        };
+        setError(newError);
+        return Object.values(newError).every(e => e === "");
     };
-    setError(newError);
-    return Object.values(newError).every(e => e === "");
-};
 
     const handleChange = (e) => {
         setSection(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -34,7 +34,7 @@ function ModalSection({ open, handleClose, section, setSection, error, setError,
     const addTask = async () => {
         if (!validation()) {
             console.log("vfdvb");
-            
+
             return
         }
         if (section.id) {
@@ -66,33 +66,39 @@ function ModalSection({ open, handleClose, section, setSection, error, setError,
             open={open}
             onClose={handleClose}>
             <Box sx={style}>
+
                 <Typography variant="h6">Modal Add Section</Typography>
-                <TextField
-                    value={section.title || ""}
-                    onChange={handleChange}
-                    name='title'
-                    label="title"
+                <Autocomplete
+                    options={movies}
+                    getOptionLabel={(option) => option.name}
+                    disablePortal
                     fullWidth
                     sx={{ mt: 2 }}
-                    error={!!error.title}
-                    helperText={error.title}
-                />
-                
-                <div>
-                    <label className='flex flex-col items-center rounded-3xl p-1 border-2 mt-4 w-full bg-gray-500 text-white hover:bg-gray-700'>
-                        <p className='whitespace-nowrap'>Choosen Image</p>
-                        <input
-                            type="file"
-                            className='hidden'
-                            onChange={handleImg}
+                    value={movies.find(m => m.id === section.movieId) || null}
+                    onChange={(event, value) =>
+                        setSection(prev => ({ ...prev, movieId: value?.id || "" }))
+                    }
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="Find the movie"
+                            error={!!error.movieId}
+                            helperText={error.movieId}
                         />
-                    </label>
-                    <Avatar
-                        src={section?.imgUrl}
-                        alt="Image"
-                        sx={{ width: 150, height: 150, margin: '10px auto' }}
-                    />
-                </div>
+                    )}
+                />
+                <TextField
+                    value={section.season || ""}
+                    onChange={handleChange}
+                    name='season'
+                    label="season"
+                    fullWidth
+                    sx={{ mt: 2 }}
+                    error={!!error.season}
+                    helperText={error.season}
+                />
+
+
                 <Box sx={{ mt: 2, display: 'flex', gap: 2, justifyContent: "end" }}>
                     <Button onClick={Cancel} variant="contained" color="error">
                         Cancel
