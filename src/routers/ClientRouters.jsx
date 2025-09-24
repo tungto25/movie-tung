@@ -82,7 +82,7 @@ function ClientRouters({ handleOpenLogin }) {
             element: <Packages />
         },
         {
-            path: "/paymentPage",
+            path: "/paymentPage/:id",
             element: <PaymentPage />
         },
     ]

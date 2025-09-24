@@ -29,7 +29,6 @@ function Header({ handleOpenLogin }) {
     const currentPath = location.pathname;
     const { isLogin, handleLogout } = useContext(ContextAuth);
 
-
     const dropRef = useRef(null);
 
     const handleOpenDrop = (item) => {
@@ -91,7 +90,10 @@ function Header({ handleOpenLogin }) {
                             onClick={() => setOpenAva(!openAva)}
                             className="rounded-full h-10 w-10 transition-transform duration-150 hover:scale-110 min-lg:order-1"
                         >
-                            <Avatar sx={{ bgcolor: "red" }} />
+                            <Avatar
+                                src={isLogin.imgUrl && isLogin.imgUrl}
+                                sx={{ bgcolor: "red" }}
+                            />
                         </div>
 
                         <div className={`col-span-2 lg:${openAva ? "block" : "hidden"}  sm:block md:block `}>

@@ -1,12 +1,13 @@
 import { Modal, Box } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import { RiCloseLargeLine } from "react-icons/ri";
+import { ContextAccount } from "../../../contexts/AccountProvider";
 
 export default function AuthModal({ openLogin, handleCloseLogin }) {
     const [formSign, setFormSign] = useState(false);
-
+    const accounts = useContext(ContextAccount);
     return (
         <Modal
             open={openLogin}
@@ -41,9 +42,9 @@ export default function AuthModal({ openLogin, handleCloseLogin }) {
                     <div className="flex flex-row h-full w-full justify-center items-center">
                         <div className="flex-1 relative z-20">
                             {!formSign ? (
-                                <LoginModal setFormSign={setFormSign} handleCloseLogin={handleCloseLogin} />
+                                <LoginModal accounts={accounts} setFormSign={setFormSign} handleCloseLogin={handleCloseLogin} />
                             ) : (
-                                <RegisterModal setFormSign={setFormSign} />
+                                <RegisterModal accounts={accounts} setFormSign={setFormSign} />
                             )}
                         </div>
 

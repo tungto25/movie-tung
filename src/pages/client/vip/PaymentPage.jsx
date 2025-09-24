@@ -5,7 +5,7 @@ import MoviePackages from './MoviePackages';
 
 function PaymentPage(props) {
     return (
-        <div className='mt-50 text-white'>
+        <div className='mt-30 text-white'>
             <div className='text-center'>
                 <h1 className='text-3xl font-bold'>Phương thức thanh toán</h1>
                 <p>Hủy bất cứ lúc nào</p>

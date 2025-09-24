@@ -7,14 +7,14 @@ import { ROLES } from "../../../untils/Constants";
 const inner = {
     email: "",
     password: "",
-    confirmPassword: "",
+    imgUrl:"",
     roles: ROLES.USER
 };
 
-export default function RegisterModal({ setFormSign }) {
+export default function RegisterModal({ setFormSign,accounts }) {
     const [form, setForm] = useState(inner);
     const [error, setError] = useState(inner);
-    const accounts = useContext(ContextAccount);
+    
 
     const validation = () => {
         const newError = {

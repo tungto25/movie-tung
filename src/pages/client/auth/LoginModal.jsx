@@ -1,18 +1,19 @@
 import { useState, useContext } from "react";
 import { FaFacebookF, FaGooglePlusG, FaTwitter, FaEnvelope, FaLock } from 'react-icons/fa';
-import { addDocument, updateDocument } from "../../../services/FirebaseService";
-import { ContextAccount } from "../../../contexts/AccountProvider";
 import { ContextAuth } from "../../../contexts/AuthProvider";
-
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "../../../config/firebaseConfig";
+import { toast } from "react-toastify";
+import { ROLES } from "../../../untils/Constants";
+import { addDocument } from "../../../services/FirebaseService";
 const inner = {
     email: "",
     password: "",
 };
 
-export default function LoginModal({ handleCloseLogin, setFormSign }) {
+export default function LoginModal({ handleCloseLogin, setFormSign, accounts }) {
     const [form, setForm] = useState(inner);
     const [error, setError] = useState(inner);
-    const accounts = useContext(ContextAccount);
     const { handleLogin } = useContext(ContextAuth);
 
 
@@ -50,7 +51,36 @@ export default function LoginModal({ handleCloseLogin, setFormSign }) {
         handleCloseLogin();
         setForm(inner);
     };
+    // Google sign-in
+    const signInWithGoogle = async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const user = result.user;
+            const existingCustomer = accounts.find(e => e.id === user.email);
+            let loggedInCustomer;
 
+            if (!existingCustomer) {
+                const newCustomer = {
+                    username: user.displayName,
+                    imgUrl: user.photoURL,
+                    role: ROLES.USER,
+                    email: user.email
+                };
+             const acounLogin =   await addDocument('Accounts', newCustomer);
+                loggedInCustomer = acounLogin;
+            } else {
+                loggedInCustomer = existingCustomer;
+            }
+
+            toast.success("Đăng nhập thành công!");
+            handleLogin(loggedInCustomer);
+            handleCloseLogin();
+            navigate("/");
+        } catch (error) {
+            console.error(error);
+            toast.error("Có lỗi xảy ra, vui lòng thử lại!");
+        }
+    };
     return (
         <div className="flex items-center justify-center">
             <div className="relative rounded-2xl z-10 max-sm:w-full w-2/3 p-6">
@@ -61,7 +91,7 @@ export default function LoginModal({ handleCloseLogin, setFormSign }) {
                         <div className="bg-blue-600 text-white w-6 h-6 max-sm:text-xs sm:w-10 sm:h-10 flex items-center justify-center rounded-full cursor-pointer hover:scale-110 transition">
                             <FaFacebookF />
                         </div>
-                        <div className="bg-red-600 text-white w-6 h-6 max-sm:text-xs sm:w-10 sm:h-10 flex items-center justify-center rounded-full cursor-pointer hover:scale-110 transition">
+                        <div onClick={signInWithGoogle} className="bg-red-600 text-white w-6 h-6 max-sm:text-xs sm:w-10 sm:h-10 flex items-center justify-center rounded-full cursor-pointer hover:scale-110 transition">
                             <FaGooglePlusG />
                         </div>
                         <div className="bg-sky-400 text-white w-6 h-6 max-sm:text-xs sm:w-10 sm:h-10 flex items-center justify-center rounded-full cursor-pointer hover:scale-110 transition">

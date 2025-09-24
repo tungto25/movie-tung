@@ -1,37 +1,22 @@
-import React, { useContext, useState } from 'react';
+import React, { use, useContext, useEffect, useState } from 'react';
 import { ContextPackages } from '../../../contexts/PackageProvider';
 import { ContextPlans } from '../../../contexts/PlanProvider';
 import { getOjectById } from '../../../services/reponsitory';
+import { useParams } from 'react-router-dom';
 
-const eions = [
-    { id: "1", title: "1 Tháng", price: "129.000đ" },
-    {
-        id: "6",
-        title: "6 Tháng",
-        price: "579.000đ",
-        oldPrice: "774.000đ",
-        discount: "Tiết kiệm 25%",
-    },
-    {
-        id: "12",
-        title: "12 Tháng",
-        price: "888.000đ",
-        oldPrice: "1.548.000đ",
-        discount: "Tiết kiệm 43%",
-        popular: true,
-    },
-];
 function PackagesPay(props) {
+    const { id } = useParams();
     const [selected, setSelected] = useState("1");
+
     const packages = useContext(ContextPackages);
     const plans = useContext(ContextPlans);
-
+   
     return (
         <div className='w-full p-5 max-w-[50%]'>
             <div className="rounded-xl p-5 shadow-lg shadow-[0_0_10px_3px_rgba(255,255,255) bg-gray-800/20">
-                <h2 className="text-lg font-semibold mb-4">Thời hạn Gói Siêu Việt</h2>
+                <h2 className="text-lg font-semibold mb-4">Thời hạn Gói {getOjectById(plans,id)?.title}</h2>
                 <div className="space-y-4">
-                    {packages.sort((a, b) => a.time - b.time).map((e) => (
+                    {packages.filter(e => e.plan == id).sort((a, b) => a.time - b.time).map((e) => (
                         <label
                             className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition
                             ${selected === e.id ? "bg-gradient-to-r from-blue-800 via-blue-600 to-gray-400 " : "border-gray-300"}`}
@@ -59,10 +44,10 @@ function PackagesPay(props) {
                                 </div>
                             </div>
                             <div className="text-right">
-                                <p className="font-semibold">{Number(getOjectById(plans, e.plan)?.price).toLocaleString("vi-VN")}đ</p>
-                                {e.oldPrice && (
-                                    <p className="text-sm text-gray-400 line-through">
-                                        {e.oldPrice}
+                                <p className="font-semibold">{Number((getOjectById(plans, e.plan)?.price)-((getOjectById(plans, e.plan)?.price) * e.discount/100)).toLocaleString("vi-VN")}đ</p>
+                                {e.discount && (
+                                    <p className="text-sm text-gray-200 line-through">
+                                        {Number(getOjectById(plans, e.plan)?.price).toLocaleString("vi-VN")}đ
                                     </p>
                                 )}
                             </div>
@@ -91,7 +76,7 @@ function PackagesPay(props) {
                         </div>
                         <div className="flex justify-between mb-1">
                             <span className="text-gray-600">Tên gói</span>
-                            <span className="font-medium">Gói Siêu Việt</span>
+                            <span className="font-medium">Gói {getOjectById(plans,id)?.title}</span>
                         </div>
                         <div className="flex justify-between mb-1">
                             <span className="text-gray-600">Thời hạn *</span>
