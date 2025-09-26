@@ -112,7 +112,7 @@ function TableEpisodes({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, 
                             <TableCell align="right" onClick={() => toggleSort("section")} style={{ cursor: "pointer" }}>
                                 Sections {sortConfig.key === "section" ? (sortConfig.direction === "asc" ? "↑" : "↓") : ""}
                             </TableCell>
-
+                            <TableCell align="center">Time</TableCell>
                             <TableCell align="right">Video Url</TableCell>
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>
@@ -137,7 +137,7 @@ function TableEpisodes({ editOpen, setIdDeleted, setOpenDeleted, page, setPage, 
                                 <TableCell align="right">
                                     {getOjectById(sections, e.sectionId)?.season || ""}
                                 </TableCell>
-
+                                <TableCell align="right">{e.time}</TableCell>
                                 <TableCell align="right">{e.videoUrl}</TableCell>
 
                                 <TableCell >

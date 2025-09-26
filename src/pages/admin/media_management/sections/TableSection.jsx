@@ -95,7 +95,7 @@ function TableSection({ editOpen, setIdDeleted, setOpenDeleted, search, page, se
                                 />
                             </TableCell>
                             <TableCell>#</TableCell>
-                            <TableCell align="right">Title</TableCell>
+                            <TableCell align="right">Season</TableCell>
                             <TableCell align="right">Movie</TableCell>
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>

@@ -6,36 +6,31 @@ export const menus = [
     },
     {
         id: 2,
-        title: "Chủ Đề",
-        path: "/topics"
-    },
-    {
-        id: 3,
         title: "Thể Loại",
         path: ""
     },
     {
-        id: 4,
+        id: 3,
         title: "Phim Lẻ",
-        path: "/categories"
+        path: "/movie"
     },
     {
-        id: 5,
+        id: 4,
         title: "Phim Bộ",
         path: "/tvseries"
     },
     {
-        id: 6,
+        id: 5,
         title: "Quốc Gia",
         path: ""
     },
     {
-        id: 7,
+        id: 6,
         title: "Diễn Viên",
         path: "/actors"
     },
     {
-        id: 8,
+        id: 7,
         title: "Lịch Chiếu",
         path: "/showtimes"
     },

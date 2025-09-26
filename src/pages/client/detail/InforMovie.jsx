@@ -24,10 +24,10 @@ function InforMovie({ movieShow }) {
             <h1 className="text-2xl mt-2">{movieShow?.name}</h1>
             <div className="flex items-center gap-2 mt-5">
                 {sections.map(e => (
-                    <div className="bg-white border text-black text-center rounded p-1">Phần {e.season}</div>
+                    <div className="bg-white border text-black text-center rounded p-1">{e.season}</div>
                 ))}
             </div>
-            <div className="flex items-center gap-2 mt-2">
+            <div className="flex items-center gap-2 mt-2  whitespace-nowrap flex-wrap">
                 {movieShow?.listCate?.map((e, i) => (
                     <div className="bg-white/20 text-center rounded p-1">{e}</div>
                 ))}
@@ -70,21 +70,23 @@ function InforMovie({ movieShow }) {
                             {movieShow?.listActor?.map((e, i) => (
                                 <div key={i} className="flex justify-center items-center flex-col gap-2">
                                     <img
-                                        src=""
-                                        alt={getOjectById(actors, e)?.imgUrl}
+                                        src={getOjectById(actors, e)?.imgUrl || "https://png.pngtree.com/png-vector/20220817/ourmid/pngtree-cartoon-man-avatar-vector-ilustration-png-image_6111064.png"}
+                                        alt={getOjectById(actors, e)?.name}
                                         className="w-20 h-20 object-cover rounded-full"
+                                        onError={(e) => e.currentTarget.src = "https://png.pngtree.com/png-vector/20220817/ourmid/pngtree-cartoon-man-avatar-vector-ilustration-png-image_6111064.png"}
                                     />
                                     <p>{getOjectById(actors, e)?.name}</p>
                                 </div>
                             ))}
                         </div>
-                        <div className="flex items-center gap-3 mt-3">
+                        <div className="flex items-center gap-3 mt-3 flex-wrap">
                             {movieShow?.listCharacter?.map((e, i) => (
                                 <div key={i} className="flex justify-center items-center flex-col gap-2">
                                     <img
-                                        src={getOjectById(characters, e)?.imgUrl}
-                                        alt={e.name}
+                                        src={getOjectById(characters, e)?.imgUrl || "https://png.pngtree.com/png-vector/20220817/ourmid/pngtree-cartoon-man-avatar-vector-ilustration-png-image_6111064.png"}
+                                        alt={getOjectById(characters, e)?.name}
                                         className="w-20 h-20 object-cover rounded-full"
+                                        onError={(e) => e.currentTarget.src = "https://png.pngtree.com/png-vector/20220817/ourmid/pngtree-cartoon-man-avatar-vector-ilustration-png-image_6111064.png"}
                                     />
                                     <p>{getOjectById(characters, e)?.name}</p>
                                 </div>

@@ -6,7 +6,7 @@ import TableEpisodes from "./TableEpisodes";
 import * as XLSX from "xlsx";
 import { addDocument } from '../../../../services/FirebaseService';
 
-const inner = { section: "", videoUrl: "", episodeNumber: "", movieId: "" };
+const inner = { section: "", videoUrl: "", episodeNumber: "", movieId: "", time: "" };
 function Episodes(props) {
     const [openDeleted, setOpenDeleted] = useState(false);
     const [idDeleted, setIdDeleted] = useState(null);
@@ -61,7 +61,8 @@ function Episodes(props) {
                 movieId: row[0] ? String(row[0]).trim() : "",
                 episodeNumber: row[1],
                 sectionId: row[2],
-                videoUrl: row[3],
+                time: row[3],
+                videoUrl: row[4],
             }));
 
             setRows(formatted);
@@ -88,6 +89,7 @@ function Episodes(props) {
                         movieId: row.movieId ? String(row.movieId).trim() : "",
                         episodeNumber: row.episodeNumber ? String(row.episodeNumber).trim() : "",
                         sectionId: row.sectionId ? String(row.sectionId).trim() : "0",
+                        time: row.time ? String(row.time).trim() : "0",
                         videoUrl: row.videoUrl ? String(row.videoUrl).trim() : "",
                     });
                 })

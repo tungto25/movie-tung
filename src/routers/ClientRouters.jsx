@@ -48,10 +48,6 @@ function ClientRouters({ handleOpenLogin }) {
             element: <ShowTime />
         },
         {
-            path: "/topics",
-            element: <Topics />
-        },
-        {
             path: "/detail/:id",
             element: <DetailMovie handleOpenLogin={handleOpenLogin} />,
             subRoutes: [

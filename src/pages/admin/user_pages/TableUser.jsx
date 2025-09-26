@@ -10,6 +10,7 @@ function TableUser({ editOpen, setIdDeleted, setOpenDeleted, search, page, setPa
     const accounts = useContext(ContextAccount)
     const rowsPerPage = 5;
     const [selectedIds, setSelectedIds] = useState([]);
+    console.log(accounts);
 
     const handleChange = (event, value) => {
         setPage(value);
@@ -96,6 +97,7 @@ function TableUser({ editOpen, setIdDeleted, setOpenDeleted, search, page, setPa
                             <TableCell>#</TableCell>
                             <TableCell align="left">Email</TableCell>
                             <TableCell align="center">Password</TableCell>
+                            <TableCell align="center">Role</TableCell>
                             <TableCell align='center'>Action</TableCell>
                         </TableRow>
                         {paginatedData.map((e, index) => (
@@ -116,7 +118,10 @@ function TableUser({ editOpen, setIdDeleted, setOpenDeleted, search, page, setPa
                                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
 
                                 <TableCell align="left">{e.email}</TableCell>
-                                <TableCell align="center">{truncateText(e.password)}</TableCell>
+                                <TableCell align="center">
+                                    {e.password ? truncateText(e.password) : "Đăng nhập Google"}
+                                </TableCell>
+                                <TableCell align="center">{e.role}</TableCell>
                                 <TableCell >
                                     <div className='flex gap-2 justify-center items-center'>
                                         <button onClick={() => editOpen(e)} className='bg-blue-600 p-2 rounded-md text-white'><MdEdit /></button>

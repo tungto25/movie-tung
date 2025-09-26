@@ -109,9 +109,9 @@ function PlayMovie({ handleOpenLogin }) {
                                 </div>
                             </div>
                             <div className="mb-auto w-[40%] ml-auto">
-                                <p className="text-gray-500 text-sm">
+                                <div className="text-gray-500 text-sm">
                                     <Description text={movieShow?.description} maxLength={200} />
-                                </p>
+                                </div>
                                 <Link to={`/detail/${movieShow?.id}`} className="flex items-center gap-2 text-yellow-400 w-[35%] mt-4 whitespace-nowrap">
                                     Thông tin phim
                                     <IoIosArrowForward />

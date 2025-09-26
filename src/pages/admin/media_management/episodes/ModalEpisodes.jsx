@@ -60,9 +60,10 @@ function ModalEpisodes({ open, handleClose, episode, setEpisode, error, setError
                     fullWidth
                     sx={{ mt: 2 }}
                     value={movies.find(m => m.id === episode.movieId) || null}
-                    onChange={(event, value) =>
-                        setEpisode(prev => ({ ...prev, movieId: value?.id || "" }))
-                    }
+                    onChange={(event, value) => {
+                        setEpisode(prev => ({ ...prev, movieId: value?.id || "" }));
+                        console.log("Movie selected:", value);
+                    }}
                     renderInput={(params) => (
                         <TextField
                             {...params}
@@ -73,23 +74,23 @@ function ModalEpisodes({ open, handleClose, episode, setEpisode, error, setError
                     )}
                 />
                 <Autocomplete
-                    options={sections}
+                    options={sections.filter(s => s.movieId === episode.movieId)}
                     getOptionLabel={(option) => option.season}
                     disablePortal
                     fullWidth
                     sx={{ mt: 2 }}
                     value={sections.find(s => s.id === episode.sectionId) || null}
-                    onChange={(event, value) =>
-                        setEpisode(prev => ({ ...prev, sectionId: value?.id || "" }))
-                    }
+                    onChange={(event, value) => {
+                        setEpisode(prev => ({ ...prev, sectionId: value?.id || "" }));
+                        console.log("season:", value);
+                    }}
                     renderInput={(params) => (
                         <TextField
                             {...params}
-                            label="Find the section"
+                            label="Find the season"
                         />
                     )}
                 />
-
                 <TextField
                     value={episode.episodeNumber || ""}
                     onChange={handleChange}
@@ -109,6 +110,18 @@ function ModalEpisodes({ open, handleClose, episode, setEpisode, error, setError
                     fullWidth
                     margin="normal"
                     placeholder=""
+                />
+                <TextField
+                    label="Time"
+                    name="time"
+                    value={episode.time || ""}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                    type="date"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                 />
 
 

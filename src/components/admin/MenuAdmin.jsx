@@ -88,7 +88,7 @@ function MenuAdmin(props) {
                         <div to={"/user-pages"} className=" flex-1">
                             <div className="flex items-center">
                                 <h1 className=' text-xl'> User Pages</h1>
-                                <IoMdArrowDropright className='text-xl ml-auto' />
+
                             </div>
                         </div >
                     )}
@@ -101,7 +101,7 @@ function MenuAdmin(props) {
                         <div className=" flex-1">
                             <div className="flex items-center">
                                 <h1 className=' text-xl'> User Managemnent</h1>
-                                <IoMdArrowDropright className='text-xl ml-auto' />
+
                             </div>
                         </div >
                     )}
@@ -113,7 +113,7 @@ function MenuAdmin(props) {
                         <div className=" flex-1">
                             <div className="flex items-center">
                                 <h1 className=' text-xl'>Profile</h1>
-                                <IoMdArrowDropright className='text-xl ml-auto' />
+
                             </div>
                         </div >
                     )}

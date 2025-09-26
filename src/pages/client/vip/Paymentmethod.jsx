@@ -25,7 +25,7 @@ const payment = [
 ]
 function Paymentmethod(props) {
     const [value, setValue] = useState("");
-
+    const [selected, setSelected] = useState("")
     const handleChange = (e) => {
         let input = e.target.value.replace(/\D/g, ""); // bỏ ký tự ko phải số
         if (input.length > 4) input = input.slice(0, 4);
@@ -43,7 +43,10 @@ function Paymentmethod(props) {
                 <h1 className='text-lg font-bold py-4'>Chọn phương thức thanh toán</h1>
                 <div className='flex flex-wrap justify-start gap-3'>
                     {payment.map(e => (
-                        <div className='border rounded-xl flex flex-col items-center justify-center w-35 h-25 gap-3'>
+                        <div
+                            onClick={() => setSelected(e.name)}
+                            className={`border rounded-xl flex flex-col items-center justify-center w-35 h-25 gap-3 ${selected === e.name ? "border-yellow-500 bg-gradient-to-bl from-gray-800 via-gray-600 to-gray-400" : ""}`}
+                        >
                             <h1>{e.name}</h1>
                             <img
                                 src={e.img}
