@@ -18,6 +18,9 @@ import { getOjectById } from "../../../services/reponsitory";
 import { ContextCharacters } from "../../../contexts/CharacterProvider";
 import Recommend from "./Recommend";
 import { ContextSections } from "../../../contexts/SectionProvider";
+import { ContextLikeMovie } from "../../../contexts/LikeMovieProvider";
+import { ContextAuth } from "../../../contexts/AuthProvider";
+import { addDocument, deleteDocument } from "../../../services/FirebaseService";
 
 function PlayMovie({ handleOpenLogin }) {
     const { id } = useParams();
@@ -29,6 +32,9 @@ function PlayMovie({ handleOpenLogin }) {
     const characters = useContext(ContextCharacters);
     const sections = useContext(ContextSections);
     const [isOn, setIsOn] = useState(false);
+    const likeMovies = useContext(ContextLikeMovie);
+    const { isLogin } = useContext(ContextAuth);
+
     useEffect(() => {
         const episodeFound = episodes.find(ep => ep.id === id);
         setCurrentEpisode(episodeFound);
@@ -41,6 +47,23 @@ function PlayMovie({ handleOpenLogin }) {
             setEpisodeList(list);
         }
     }, [episodes, movies, id]);
+
+    const checkLike = likeMovies.find(e => e.idMovie === movieShow?.id && e.idUser === isLogin?.id);
+
+    const addLike = async () => {
+    
+        const like = { idMovie: movieShow.id, idUser: isLogin?.id };   
+        if (!isLogin) {
+            console.log("need login");          
+            handleOpenLogin();
+            return;
+        }
+        if (checkLike) {
+            await deleteDocument("LikeMovies", checkLike.id);
+        } else {
+            await addDocument("LikeMovies",like );
+        }
+    }
 
     return (
         <div>
@@ -56,9 +79,12 @@ function PlayMovie({ handleOpenLogin }) {
                     ></iframe>
                     <div className="flex items-center justify-between py-5 px-8">
                         <div className="bg-black flex items-center gap-5">
-                            <div className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-700/50 ">
-                                <FaHeart />
-                                <p>Yêu thích</p>
+                            <div
+                                onClick={addLike}
+                                className={`flex items-center gap-2 p-2 rounded-md hover:bg-gray-700/50`}
+                            >
+                                <FaHeart className={`${checkLike ? "text-red-500" : ""}`} />
+                                <p className={`${checkLike ? "text-red-500" : ""}`}>Yêu thích</p>
                             </div>
                             <div className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-700/50">
                                 <IoMdAdd />

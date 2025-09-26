@@ -11,31 +11,28 @@ import Menu from '@mui/material/Menu';
 import Button from '@mui/material/Button';
 import { FaFlag, FaReply } from 'react-icons/fa';
 import { MdEdit } from 'react-icons/md';
+import { ContextComments } from '../../../contexts/CommentProvider';
+import { addDocument } from '../../../services/FirebaseService';
 
 function Comment({ handleOpenLogin, id }) {
     const [comment, setComment] = useState("");
-    const [comments, setComments] = useState([]);
-    const handleComment = (e) => {
-        e.preventDefault();
-        if (comment.trim() === "")
-            return;
-        setComments([...comments, comment]);
-        setComment("");
-    }
+
     const { isLogin } = useContext(ContextAuth);
-    const accounts = useContext(ContextAccount);
+    const comments = useContext(ContextComments);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
     const handleClick = (event) => {
-        setAnchorEl(event.currentTarget); // mở menu tại vị trí nút
+        setAnchorEl(event.currentTarget);
     };
 
     const handleClose = () => {
-        setAnchorEl(null); // đóng menu
+        setAnchorEl(null);
     };
-
+    const addComment = async () => {
+        await addDocument("Comments", { idMovie: id, idUser: isLogin?.id, content: comment, creatAt: new Date() });
+    }
     return (
         <>
             <div id="comment" className="mt-8">
@@ -78,50 +75,54 @@ function Comment({ handleOpenLogin, id }) {
                         </label>
                         <p className="text-white">Ẩn danh?</p> */}
                     </div>
-                    {isLogin && (<button onClick={handleComment} type='button' className='flex items-center gap-3 active:scale-95'>
+                    {isLogin && (<button onClick={addComment} type='button' className='flex items-center gap-3 active:scale-95'>
                         <p>Gửi</p>
                         <IoSend />
                     </button>)}
                 </div>
             </div>
             <div className='text-white py-8'>
-                <div className='flex items-start gap-5'>
-                    <Avatar
-                        src=""
-                        alt=""
-                        sx={{ height: "60px", width: "60px" }}
-                    />
-                    <div className='text-gray-500'>
-                        <p className='font-bold text-white'>{isLogin?.email?.split("@")[0].replace(/[0-9]/g, "")}</p>
-                        {comments.map(e => (
-                            <div className='text-gray-400'>
-                                {e}
-                            </div>
-                        ))}
-                        <div className='flex items-center gap-6'>
-                            <AiFillLike />
-                            <AiFillDislike />
-                            <div className='flex items-center gap-1'>
-                                <FaReply />
-                                <p>Trả lời</p>
-                            </div>
-                            <div className="">
-                                <div onClick={handleClick} className='flex items-center gap-1'>
-                                    <span >...</span>thêm
+                {comments.map(e => (
+                    <div className='flex items-start gap-5'>
+                        <Avatar
+                            src={isLogin?.imgUrl}
+                            alt=""
+                            sx={{ height: "60px", width: "60px" }}
+                        />
+                        <div className='text-gray-500'>
+                            <p className='font-bold text-white'>{isLogin?.email?.split("@")[0].replace(/[0-9]/g, "")}</p>
+                            {comments.map(e => (
+                                <div className='text-gray-400'>
+                                    {e.content}
                                 </div>
-                                <Menu
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={handleClose}
-                                    disableScrollLock={true}
-                                >
-                                    <MenuItem onClick={handleClose} className='flex items-center gap-1'><FaFlag />Báo cáo</MenuItem>
-                                    {isLogin && (<MenuItem onClick={handleClose} className='flex items-center gap-1'><MdEdit /> Edit</MenuItem>)}
-                                </Menu>
+                            ))}
+                            <div className='flex items-center gap-6'>
+                                <AiFillLike />
+                                <AiFillDislike />
+                                <div className='flex items-center gap-1'>
+                                    <FaReply />
+                                    <p>Trả lời</p>
+                                </div>
+                                <div className="">
+                                    <div onClick={handleClick} className='flex items-center gap-1'>
+                                        <span >...</span>thêm
+                                    </div>
+                                    <Menu
+                                        anchorEl={anchorEl}
+                                        open={open}
+                                        onClose={handleClose}
+                                        disableScrollLock={true}
+                                    >
+                                        <MenuItem onClick={handleClose} className='flex items-center gap-1'><FaFlag />Báo cáo</MenuItem>
+                                        {isLogin && (<MenuItem onClick={handleClose} className='flex items-center gap-1'><MdEdit /> Edit</MenuItem>)}
+                                    </Menu>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+
+                ))}
+
             </div>
         </>
     );
