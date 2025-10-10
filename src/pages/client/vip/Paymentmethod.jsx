@@ -27,10 +27,9 @@ function Paymentmethod(props) {
     const [value, setValue] = useState("");
     const [selected, setSelected] = useState("")
     const handleChange = (e) => {
-        let input = e.target.value.replace(/\D/g, ""); // bỏ ký tự ko phải số
+        let input = e.target.value.replace(/\D/g, ""); 
         if (input.length > 4) input = input.slice(0, 4);
 
-        // format thành MM/YY
         if (input.length >= 3) {
             input = input.slice(0, 2) + "/" + input.slice(2);
         }

@@ -16,6 +16,12 @@ import EpisodeMovie from '../pages/client/detail/EpisodeMovie';
 import PlayMovie from '../pages/client/detail/PlayMovie';
 import Packages from '../pages/client/vip/Packages';
 import PaymentPage from '../pages/client/vip/PaymentPage';
+import Favorite from '../pages/client/favorite/Favorite';
+import LikeEpi from '../pages/client/favorite/LikeEpi';
+import ListEpi from '../pages/client/favorite/ListEpi';
+import SeeMore from '../pages/client/favorite/SeeMore';
+import Notice from '../pages/client/favorite/Notice';
+import Account from '../pages/client/favorite/Account';
 
 function ClientRouters({ handleOpenLogin }) {
     const routes = [
@@ -81,8 +87,29 @@ function ClientRouters({ handleOpenLogin }) {
             path: "/paymentPage/:id",
             element: <PaymentPage />
         },
+        {
+            path: "/likeEpi",
+            element: <LikeEpi />
+        },
+        {
+            path: "/listEpi",
+            element: <ListEpi />
+        },
+        {
+            path: "/seeMore",
+            element: <SeeMore />
+        },
+        {
+            path: "/notice",
+            element: <Notice />
+        },
+        {
+            path: "/account",
+            element: <Account />
+        },
+
     ]
-    // Recursive function to render both top-level and nested routes
+
     function renderRoutes(routeArray) {
         return routeArray.map((route, index) => (
             <Route key={index} path={route.path} element={route.element}>

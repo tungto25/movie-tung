@@ -211,22 +211,22 @@ function Header({ handleOpenLogin }) {
                                 </div>
                                 <hr className="my-2 text-gray-600 max-md:hidden" />
                                 <div className=" gap-4 grid grid-cols-2 md:grid-cols-1">
-                                    <div className="flex items-center gap-2 max-md:border max-md:px-4 max-md:py-2 max-md:rounded-md">
+                                    <Link to='/likeEpi' className="flex items-center gap-2 max-md:border max-md:px-4 max-md:py-2 max-md:rounded-md">
                                         <FaHeart />
                                         <span className="whitespace-nowrap">Yêu Thích</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 max-md:border max-md:px-4 max-md:py-2 max-md:rounded-md">
+                                    </Link>
+                                    <Link to='/listEpi' className="flex items-center gap-2 max-md:border max-md:px-4 max-md:py-2 max-md:rounded-md">
                                         <FaPlus />
                                         <span className="whitespace-nowrap">Danh sách</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 max-md:border max-md:px-4 max-md:py-2 max-md:rounded-md">
+                                    </Link>
+                                    <Link to="/seeMore" className="flex items-center gap-2 max-md:border max-md:px-4 max-md:py-2 max-md:rounded-md">
                                         <MdReplayCircleFilled />
                                         <span className="whitespace-nowrap">Xem tiếp</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 max-md:border max-md:px-4 max-md:py-2 max-md:rounded-md">
+                                    </Link>
+                                    <Link to="/account" className="flex items-center gap-2 max-md:border max-md:px-4 max-md:py-2 max-md:rounded-md">
                                         <FaUser />
                                         <span className="whitespace-nowrap">Tài khoản</span>
-                                    </div>
+                                    </Link>
                                 </div>
                                 <hr className="my-2 text-gray-600 max-md:hidden" />
                                 <div onClick={handleLogout} className="p-2 hover:text-yellow-400 cursor-pointer text-red-500 flex items-center gap-2 max-md:border max-md:px-4 max-md:py-2 max-md:rounded-md max-md:mt-3">

@@ -11,6 +11,9 @@ import Comment from "./Comment";
 import { useContext } from "react";
 import { ContextMovies } from "../../../contexts/MovieProvider";
 import { ContextEpisodes } from "../../../contexts/EpisodeProvider";
+import { ContextLikeMovie } from "../../../contexts/LikeMovieProvider";
+import { ContextAuth } from "../../../contexts/AuthProvider";
+import { addDocument, deleteDocument } from "../../../services/FirebaseService";
 
 function DetailMovie({ handleOpenLogin }) {
     const { id } = useParams();
@@ -18,6 +21,9 @@ function DetailMovie({ handleOpenLogin }) {
     const [movieShow, setMovieShow] = useState({});
     const movies = useContext(ContextMovies);
     const episodes = useContext(ContextEpisodes);
+    const likeMovies = useContext(ContextLikeMovie);
+    const { isLogin } = useContext(ContextAuth);
+
     const firstEpisode = movieShow && episodes ? episodes.find(e => e.movieId === movieShow.id) : null;
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -27,6 +33,22 @@ function DetailMovie({ handleOpenLogin }) {
         const movieFound = movies.find(e => e.id === id);
         setMovieShow(movieFound);
     }, [movies, id]);
+
+    const checkLike = likeMovies.find(
+        e => e.idMovie === movieShow?.id && e.idUser === isLogin?.id
+    );
+
+    const addLike = async () => {
+        if (!isLogin) {
+            handleOpenLogin();
+            return;
+        }
+        if (checkLike) {
+            await deleteDocument("LikeMovies", checkLike.id);
+        } else {
+            await addDocument("LikeMovies", { idMovie: movieShow.id, idUser: isLogin.id });
+        }
+    };
 
     return (
         <div>
@@ -55,9 +77,12 @@ function DetailMovie({ handleOpenLogin }) {
                                     <span className="whitespace-nowrap text-xl">Xem ngay</span>
                                 </Link>
                             )}
-                            <div className="text-white whitespace-nowrap flex flex-col items-center gap-1 hover:text-yellow-400 hover:bg-gray-800/50 rounded-md p-2">
-                                <FaHeart />
-                                <p>Yêu thích</p>
+                            <div
+                                onClick={addLike}
+                                className="text-white whitespace-nowrap flex flex-col items-center gap-1 hover:text-yellow-400 hover:bg-gray-800/50 rounded-md p-2 cursor-pointer"
+                            >
+                                <FaHeart className={`${checkLike ? "text-red-500" : ""}`} />
+                                <p className={`${checkLike ? "text-red-500" : ""}`}>Yêu thích</p>
                             </div>
                             <div className="text-white whitespace-nowrap flex flex-col items-center gap-1 hover:text-yellow-400  hover:bg-gray-800/50 rounded-md p-2">
                                 <IoMdAdd />

@@ -47,7 +47,7 @@ function Packages(props) {
             </div>
             <p className='text-4xl text-center font-bold my-10'>Nâng cấp tài khoản VIP ngay</p>
             <div className='p-4 flex items-center gap-3 justify-center '>
-                {plans.map(e => {
+                {plans.sort((a, b) => a.price - b.price).map(e => {
                     const planFeatures = features.filter(f => f.plan === e.id);
                     return (
                         <div onClick={() => setSelect(e.id)} className={`rounded-xl shadow-[0_0_10px_3px_rgba(255,255,255)] 
