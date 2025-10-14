@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ContextLikeMovie } from '../../../contexts/LikeMovieProvider';
 import { ContextMovies } from '../../../contexts/MovieProvider';
 import Favorite from './Favorite';
+import { ContextAuth } from '../../../contexts/AuthProvider';
 
 const list = [
     {
@@ -15,12 +16,19 @@ const list = [
 ]
 function LikeEpi(props) {
     const likeMovies = useContext(ContextLikeMovie);
+    const [likeLists, setLikeLists] = useState([]);
     const movies = useContext(ContextMovies);
-    const likedIds = likeMovies.map(e => e.idMovie);
-    const likeLists = movies.filter(e => likedIds.includes(e.id));
+    const { isLogin } = useContext(ContextAuth);
+
+    useEffect(() => {
+        const likeUser = likeMovies.filter(e => e.idUser === isLogin?.id);
+        const likedIds = likeUser.map(e => e.idMovie);
+        const listLikes = movies.filter(e => likedIds.includes(e.id));
+        setLikeLists(listLikes);
+    }, [isLogin,likeMovies,movies]);
+
     return (
-        <div className='w-full flex mt-20 p-10 gap-10 items-start'>
-            <Favorite />
+        <div className='w-full'>
             <div className='text-white'>
                 <h1 className='text-xl'>Yêu thích</h1>
                 <div className='flex gap-2 items-center mt-6'>

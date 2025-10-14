@@ -176,10 +176,14 @@ function Header({ handleOpenLogin }) {
                             onClick={() => setOpenAva(!openAva)}
                             className="rounded-full h-10 w-10 transition-transform duration-150 hover:scale-110 min-lg:order-1"
                         >
+                            {isLogin?.imgUrl ? 
                             <Avatar
-                                src={isLogin.imgUrl}
+                                src={isLogin?.imgUrl && isLogin?.imgUrl}
+                                sx={{}}
+                            />:<Avatar
                                 sx={{ bgcolor: "red" }}
-                            />
+                            />}
+                            
                         </div>
 
                         <div className={`col-span-2 lg:${openAva ? "block" : "hidden"}  sm:block md:block `}>
@@ -211,19 +215,19 @@ function Header({ handleOpenLogin }) {
                                 </div>
                                 <hr className="my-2 text-gray-600 max-md:hidden" />
                                 <div className=" gap-4 grid grid-cols-2 md:grid-cols-1">
-                                    <Link to='/likeEpi' className="flex items-center gap-2 max-md:border max-md:px-4 max-md:py-2 max-md:rounded-md">
+                                    <Link to='/manageAccount/likeEpi' className="flex items-center gap-2 max-md:border max-md:px-4 max-md:py-2 max-md:rounded-md">
                                         <FaHeart />
                                         <span className="whitespace-nowrap">Yêu Thích</span>
                                     </Link>
-                                    <Link to='/listEpi' className="flex items-center gap-2 max-md:border max-md:px-4 max-md:py-2 max-md:rounded-md">
+                                    <Link to='/manageAccount/listEpi' className="flex items-center gap-2 max-md:border max-md:px-4 max-md:py-2 max-md:rounded-md">
                                         <FaPlus />
                                         <span className="whitespace-nowrap">Danh sách</span>
                                     </Link>
-                                    <Link to="/seeMore" className="flex items-center gap-2 max-md:border max-md:px-4 max-md:py-2 max-md:rounded-md">
+                                    <Link to="/manageAccount/seeMore" className="flex items-center gap-2 max-md:border max-md:px-4 max-md:py-2 max-md:rounded-md">
                                         <MdReplayCircleFilled />
                                         <span className="whitespace-nowrap">Xem tiếp</span>
                                     </Link>
-                                    <Link to="/account" className="flex items-center gap-2 max-md:border max-md:px-4 max-md:py-2 max-md:rounded-md">
+                                    <Link to="/manageAccount/account" className="flex items-center gap-2 max-md:border max-md:px-4 max-md:py-2 max-md:rounded-md">
                                         <FaUser />
                                         <span className="whitespace-nowrap">Tài khoản</span>
                                     </Link>

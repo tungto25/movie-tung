@@ -1,6 +1,7 @@
 import { TextField } from '@mui/material';
 import React, { useState } from 'react';
-
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
+import { initialOptions } from '../../../untils/ConstantsClient';
 const payment = [
     {
         name: "Thẻ tín dụng",
@@ -36,6 +37,9 @@ function Paymentmethod(props) {
 
         setValue(input);
     };
+    const createSubscription = (transactionId)  => {
+          alert("code thanh toan thanh cong");
+    }
     return (
         <div className='p-5 max-w-[50%]'>
             <div className='text-white w-full bg-gray-800/20 shadow-lg rounded-xl shadow-[0_0_10px_3px_rgba(255,255,255) p-5'>
@@ -55,7 +59,7 @@ function Paymentmethod(props) {
                         </div>
                     ))}
                 </div>
-                <div className='mt-5'>
+                {/* <div className='mt-5'>
                     <TextField
                         id="outlined-basic"
                         label="Tên in trên thẻ"
@@ -147,7 +151,33 @@ function Paymentmethod(props) {
                         của Tfilm và ủy quyền cho Tfilm tự động gia hạn khi hết hạn sữ dụng,cho đến khi bạn hủy tự động gia hạn.</p>
                     <button className='mt-5 bg-blue-700 w-full py-2 rounded-full active:scale-98'>Thanh toán</button>
                     <p className='text-center text-blue-500 mt-3'>xem kho phim và thanh toán sau</p>
-                </div>
+                </div> */}
+                     <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                        <PayPalScriptProvider options={initialOptions}>
+                            <PayPalButtons
+                                style={{ layout: "vertical" }}
+                                createOrder={(data, actions) => {
+                                
+                                    return actions.order.create({
+                                        purchase_units: [{
+                                            amount: {
+                                                value: "10.00"
+                                            }
+                                        }]
+                                    });
+                                }}
+                                onApprove={(data, actions) => {
+                                    return actions.order.capture().then((details) => {
+                                        const transactionId = details.id; // Lấy ID giao dịch từ PayPal
+                                        createSubscription(transactionId);
+                                    });
+                                }}
+                                onError={(err) => {
+                                    console.error("PayPal error:", err);
+                                }}
+                            />
+                        </PayPalScriptProvider>
+                    </div>
             </div>
         </div>
     );

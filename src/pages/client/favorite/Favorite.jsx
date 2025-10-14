@@ -14,27 +14,27 @@ const list = [
     {
         name: "Yêu thích",
         icon: <FaHeart />,
-        path: "/likeEpi"
+        path: "/manageAccount/likeEpi"
     },
     {
         name: "Danh sách",
         icon: <FaPlus />,
-        path: "/listEpi"
+        path: "/manageAccount/listEpi"
     },
     {
         name: "Xem tiếp",
         icon: <MdReplayCircleFilled />,
-        path: "/seeMore"
+        path: "/manageAccount/seeMore"
     },
     {
         name: "Thông báo",
         icon: <FaBell />,
-        path: "/notice"
+        path: "/manageAccount/notice"
     },
     {
         name: "Tài khoản",
         icon: <FaUser />,
-        path: "/account"
+        path: "/manageAccount/account"
     },
 ]
 function Favorite(props) {
@@ -66,7 +66,6 @@ function Favorite(props) {
                     </div>
                 </div>
             </div>
-            <Outlet />
         </div>
     );
 }

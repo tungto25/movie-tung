@@ -31,8 +31,7 @@ function ListEpi() {
     };
 
     return (
-        <div className="w-full flex items-start gap-10 mt-20 p-10 text-white">
-            <Favorite />
+        <div className="w-full text-white">
             <div>
                 <div className="flex items-center gap-3">
                     <h1 className="text-xl">Danh sách</h1>

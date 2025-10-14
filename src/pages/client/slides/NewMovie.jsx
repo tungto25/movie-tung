@@ -11,10 +11,13 @@ import { IoIosInformationCircle } from "react-icons/io";
 import { GoDotFill } from "react-icons/go";
 
 import GradientText from "../../../components/client/GradientText";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
+import { ContextLikeMovie } from "../../../contexts/LikeMovieProvider";
+import { addDocument, deleteDocument } from "../../../services/FirebaseService";
+import { ContextAuth } from "../../../contexts/AuthProvider";
 
 // Kích hoạt module
 SwiperCore.use([Navigation, Thumbs]);
@@ -24,6 +27,9 @@ export default function NewMovie({ data, title }) {
     const [hoveredMovie, setHoveredMovie] = useState(null);
     const openTimer = useRef(null);
     const closeTimer = useRef(null);
+    const { isLogin } = useContext(ContextAuth);
+    const [movieShow, setMovieShow] = useState({});
+    const likeMovies = useContext(ContextLikeMovie);
 
     const prevRef = useRef(null);
     const nextRef = useRef(null);
@@ -38,12 +44,14 @@ export default function NewMovie({ data, title }) {
     }, []);
 
     const handleMouseEnter = (movie, i, e) => {
+        if (hoveredMovie?.i === i) return;
         const rect = e.currentTarget.getBoundingClientRect();
         clearTimeout(closeTimer.current);
         clearTimeout(openTimer.current);
         openTimer.current = setTimeout(() => {
             setHoveredMovie({ ...movie, i, rect });
         }, 700);
+        setMovieShow(movie);
     };
 
     const handleMouseLeave = () => {
@@ -52,6 +60,20 @@ export default function NewMovie({ data, title }) {
         closeTimer.current = setTimeout(() => {
             setHoveredMovie(null);
         }, 150);
+
+    };
+    const checkLike = likeMovies.find(e => e.idMovie === movieShow?.id && e.idUser === isLogin?.id );
+    const addLike = async () => {
+        if (!isLogin) {
+            alert("Vui lòng đăng nhập để thêm vào danh sách yêu thích!");
+            return;
+        }
+        if (checkLike) {
+            await deleteDocument("LikeMovies", checkLike.id);
+        } else {
+            await addDocument("LikeMovies", { idMovie: movieShow.id, idUser: isLogin.id });
+        }
+
     };
     return (
         <div className="">
@@ -142,9 +164,13 @@ export default function NewMovie({ data, title }) {
                                                         <FaPlay />
                                                         <span className='whitespace-nowrap'>Xem ngay</span>
                                                     </Link>
-                                                    <div className='flex items-center rounded-lg border-1 px-4 py-2 text-sm gap-2'>
-                                                        <FaHeart />
-                                                        <span>Thích</span>
+                                                    <div
+                                                        onClick={addLike}
+                                                        className={`text-white flex items-center rounded-lg border-1 px-4 py-2 text-sm gap-2
+                                                             hover:text-yellow-400 hover:bg-gray-800/50 rounded-md p-2 cursor-pointer ${checkLike ? "border-red-500":""}`}
+                                                    >
+                                                        <FaHeart className={`${checkLike ? "text-red-500" : ""}`} />
+                                                        <p className={`${checkLike ? "text-red-500" : ""}`}>Yêu thích</p>
                                                     </div>
                                                     <div className='flex items-center rounded-lg border-1 px-4 py-2 text-sm gap-2'>
                                                         <IoIosInformationCircle />
