@@ -176,14 +176,19 @@ function Header({ handleOpenLogin }) {
                             onClick={() => setOpenAva(!openAva)}
                             className="rounded-full h-10 w-10 transition-transform duration-150 hover:scale-110 min-lg:order-1"
                         >
-                            {isLogin?.imgUrl ? 
-                            <Avatar
-                                src={isLogin?.imgUrl && isLogin?.imgUrl}
-                                sx={{}}
-                            />:<Avatar
-                                sx={{ bgcolor: "red" }}
-                            />}
-                            
+                            {isLogin?.imgUrl ? (
+                                <Avatar
+                                    alt={isLogin.username}
+                                    src={isLogin.imgUrl}
+                                    sx={{ width: 40, height: 40 }}
+                                    imgProps={{ referrerPolicy: "no-referrer" }}
+                                />
+                            ) : (
+                                <Avatar sx={{ bgcolor: "red", width: 40, height: 40 }}>
+                                    {isLogin?.username?.[0]?.toUpperCase() || "U"}
+                                </Avatar>
+                            )}
+
                         </div>
 
                         <div className={`col-span-2 lg:${openAva ? "block" : "hidden"}  sm:block md:block `}>

@@ -6,13 +6,22 @@ import Avatar from '@mui/material/Avatar';
 import { deepOrange, deepPurple } from '@mui/material/colors';
 import SplitText from "./Text";
 import { ContextAuth } from '../../contexts/AuthProvider';
+import { useNavigate } from "react-router-dom";
 
 function HeaderAdmin(props) {
     const [open, setOpen] = useState(false);
     const handleAnimationComplete = () => {
         console.log('All letters have animated!');
     };
+
     const { handleLogout } = useContext(ContextAuth);
+    const navigate = useNavigate();
+
+    const onLogout = () => {
+        handleLogout();
+        navigate("/", { replace: true });
+    };
+
     return (
         <div>
             <div className='p-3'>
@@ -60,7 +69,7 @@ function HeaderAdmin(props) {
                                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">👤 Profile</li>
                                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">⚙️ Settings</li>
                                     <li
-                                        onClick={handleLogout}
+                                        onClick={onLogout}
                                         className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-500"
                                     >
                                         🚪 Logout

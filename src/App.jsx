@@ -11,11 +11,11 @@ function App() {
   return (
     <Routes>
       {/* Nếu là admin thì load trang admin */}
-      {isLogin?.roles !== "admin" ? (
+      {isLogin?.roles === "admin" ? (
         <Route path="/*" element={<HomeAdmin />} />
       ) : (
         <>
-          {/* Nếu không phải admin thì ép về Main khi vào "/" */}
+          {/* Nếu không phải admin thì load client */}
           <Route path="/*" element={<Home />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </>

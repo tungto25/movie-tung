@@ -20,10 +20,18 @@ function Packages(props) {
             <h1 className='text-5xl text-center font-bold'>Tài Khoản VIP</h1>
             <p className='text-center'>Sở hữu tà khoản vip để có trãi nghiệm xem phim tốt hơn</p>
             <div className='mt-10 flex items-center justify-center gap-5'>
-                <Avatar
-                    src={isLogin?.imgUrl && isLogin?.imgUrl}
-                    sx={{ width: 80, height: 80, background: "red" }}
-                />
+                {isLogin?.imgUrl ? (
+                    <Avatar
+                        alt={isLogin.username}
+                        src={isLogin.imgUrl}
+                        sx={{ width: 90, height: 90}}
+                        imgProps={{ referrerPolicy: "no-referrer" }}
+                    />
+                ) : (
+                    <Avatar sx={{ bgcolor: "red", width: 40, height: 40 }}>
+                        {isLogin?.username?.[0]?.toUpperCase() || "U"}
+                    </Avatar>
+                )}
                 <div>
                     <div className="flex items-center gap-3">
                         <p>{isLogin?.email?.split("@")[0].replace(/[0-9]/g, "")}</p>

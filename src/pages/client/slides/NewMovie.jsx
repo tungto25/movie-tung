@@ -18,6 +18,9 @@ import { Link } from "react-router-dom";
 import { ContextLikeMovie } from "../../../contexts/LikeMovieProvider";
 import { addDocument, deleteDocument } from "../../../services/FirebaseService";
 import { ContextAuth } from "../../../contexts/AuthProvider";
+import MovieHoverCard from "./MovieHoverCard";
+import { ContextMovieTypes } from "../../../contexts/MovieTypeProvider";
+import { ContextMovies } from "../../../contexts/MovieProvider";
 
 // Kích hoạt module
 SwiperCore.use([Navigation, Thumbs]);
@@ -30,6 +33,7 @@ export default function NewMovie({ data, title }) {
     const { isLogin } = useContext(ContextAuth);
     const [movieShow, setMovieShow] = useState({});
     const likeMovies = useContext(ContextLikeMovie);
+    const movies = useContext(ContextMovies);
 
     const prevRef = useRef(null);
     const nextRef = useRef(null);
@@ -62,7 +66,7 @@ export default function NewMovie({ data, title }) {
         }, 150);
 
     };
-    const checkLike = likeMovies.find(e => e.idMovie === movieShow?.id && e.idUser === isLogin?.id );
+    const checkLike = likeMovies.find(e => e.idMovie === movieShow?.id && e.idUser === isLogin?.id);
     const addLike = async () => {
         if (!isLogin) {
             alert("Vui lòng đăng nhập để thêm vào danh sách yêu thích!");
@@ -120,90 +124,27 @@ export default function NewMovie({ data, title }) {
                                     onMouseEnter={(a) => handleMouseEnter(e, i, a)}
                                     onMouseLeave={handleMouseLeave}
                                 >
-                                    <img src={e.imgUrl}
-                                        alt={e.name}
-                                        className="rounded-lg hover:scale-102 h-[100px] md:h-[120px] lg:h-[140px] w-full object-cover"
-                                    />
+                                    <div className="relative">
+                                        <img src={e.imgUrl}
+                                            alt={e.name}
+                                            className="rounded-lg hover:scale-102 h-[100px] md:h-[120px] lg:h-[140px] w-full object-cover"
+                                        />
+                                        <div className="absolute bottom-0 left-0 bg-green-500/50 text-xs px-2 py-1 rounded-tr-lg">
+                                            {e.movieType || "Không rõ"}
+                                        </div>
+                                    </div>
                                     <h3 className="text-sm mt-2">{e.name}</h3>
                                 </div>
 
-                                {hoveredMovie?.i === i &&
-                                    createPortal(
-                                        <motion.div
-                                            onMouseEnter={() => clearTimeout(closeTimer.current)}
-                                            onMouseLeave={() => {
-                                                clearTimeout(closeTimer.current);
-                                                closeTimer.current = setTimeout(() => setHoveredMovie(null), 100);
-                                            }}
-                                            initial={{ opacity: 0, scale: 0.96 }}
-                                            animate={{ opacity: 1, scale: 1.08 }}
-                                            exit={{ opacity: 0, scale: 0.96 }}
-                                            transition={{ duration: 0.2 }}
-                                            style={{
-                                                position: "fixed",
-                                                top: hoveredMovie.rect.top - 50,
-                                                left: hoveredMovie.rect.left - 50,
-                                                width: "auto",
-                                                transformOrigin: "top left",
-                                                zIndex: 9999,
-                                            }}
-                                            className="rounded-2xl overflow-hidden shadow-2xl bg-gray-950/90 text-white hidden lg:block"
-                                        >
-                                            <img
-                                                src={hoveredMovie.imgUrl}
-                                                className="w-full h-40 object-cover"
-                                            />
-                                            <div className="p-4">
-                                                <h1 className="text-lg font-semibold">{hoveredMovie.name}</h1>
-                                                <div className='flex items-center gap-2 mt-5'>
-                                                    <Link
-                                                        to={`/detail/${e.id}`}
-                                                        className='px-4 py-2 bg-yellow-500 flex items-center rounded-lg text-sm gap-2
-                                                         text-black active:scale-95 active:shadow-[0_0_10px_3px_rgba(249,215,87)]'
-                                                    >
-                                                        <FaPlay />
-                                                        <span className='whitespace-nowrap'>Xem ngay</span>
-                                                    </Link>
-                                                    <div
-                                                        onClick={addLike}
-                                                        className={`text-white flex items-center rounded-lg border-1 px-4 py-2 text-sm gap-2
-                                                             hover:text-yellow-400 hover:bg-gray-800/50 rounded-md p-2 cursor-pointer ${checkLike ? "border-red-500":""}`}
-                                                    >
-                                                        <FaHeart className={`${checkLike ? "text-red-500" : ""}`} />
-                                                        <p className={`${checkLike ? "text-red-500" : ""}`}>Yêu thích</p>
-                                                    </div>
-                                                    <div className='flex items-center rounded-lg border-1 px-4 py-2 text-sm gap-2'>
-                                                        <IoIosInformationCircle />
-                                                        <span className='whitespace-nowrap'>Chi tiết</span>
-                                                    </div>
-                                                </div>
-                                                <div className='flex items-center gap-2 mt-4 text-xs'>
-                                                    <div className='flex items-center bg-white text-black rounded-md px-3 py-1 font-bold'>
-                                                        T16
-                                                    </div>
-                                                    <div className='flex items-center bg-gray-400/30 text-white rounded-md px-3 py-1 font-bold'>
-                                                        2025
-                                                    </div>
-                                                    <div className='flex items-center bg-gray-400/30 text-white rounded-md px-3 py-1 font-bold'>
-                                                        Phần 1
-                                                    </div>
-                                                    <div className='flex items-center bg-gray-400/30 text-white rounded-md px-3 py-1 font-bold'>
-                                                        Phần 2
-                                                    </div>
-                                                </div>
-                                                <div className='flex items-center gap-2 my-4'>
-                                                    <p>Hoàng cung</p>
-                                                    <span className='text-xs'><GoDotFill /></span>
-                                                    <p>Tình cảm</p>
-                                                    <span className='text-xs'><GoDotFill /></span>
-                                                    <p>Hài</p>
-                                                    <span className='text-xs'><GoDotFill /></span>
-                                                    <p>Kỳ ảo</p>
-                                                </div>
-                                            </div>
-                                        </motion.div>,
-                                        document.body
-                                    )}
+                                {hoveredMovie?.i === i && (
+                                    <MovieHoverCard
+                                        hoveredMovie={hoveredMovie}
+                                        closeTimer={closeTimer}
+                                        setHoveredMovie={setHoveredMovie}
+                                        checkLike={checkLike}
+                                        addLike={addLike}
+                                    />
+                                )}
                             </SwiperSlide>
                         ))}
                     </Swiper>
