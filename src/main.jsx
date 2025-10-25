@@ -21,6 +21,7 @@ import { AuthProvider } from "./contexts/AuthProvider";
 import { LikeMovieProvider } from './contexts/LikeMovieProvider';
 import { CommentProvider } from './contexts/CommentProvider';
 import { PlayListProvider } from './contexts/PlayListProvider';
+import { PlayListMoviesProvider } from './contexts/PlayListMoviesProvider';
 const providers = [
   AccountProvider,
   MovieTypeProvider,
@@ -38,7 +39,8 @@ const providers = [
   AuthProvider,
   LikeMovieProvider,
   CommentProvider,
-  PlayListProvider
+  PlayListProvider,
+  PlayListMoviesProvider
 ];
 
 const ComposeProviders = ({ providers, children }) =>

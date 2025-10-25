@@ -14,6 +14,8 @@ import { ContextEpisodes } from "../../../contexts/EpisodeProvider";
 import { ContextLikeMovie } from "../../../contexts/LikeMovieProvider";
 import { ContextAuth } from "../../../contexts/AuthProvider";
 import { addDocument, deleteDocument } from "../../../services/FirebaseService";
+import { ContextPlayLists } from "../../../contexts/PlayListProvider";
+import AddToPlaylist from "./AddToPlaylist";
 
 function DetailMovie({ handleOpenLogin }) {
     const { id } = useParams();
@@ -23,7 +25,8 @@ function DetailMovie({ handleOpenLogin }) {
     const episodes = useContext(ContextEpisodes);
     const likeMovies = useContext(ContextLikeMovie);
     const { isLogin } = useContext(ContextAuth);
-
+    const playLists = useContext(ContextPlayLists);
+    const [openModal, setOpenModal] = useState(false);
     const firstEpisode = movieShow && episodes ? episodes.find(e => e.movieId === movieShow.id) : null;
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -84,7 +87,7 @@ function DetailMovie({ handleOpenLogin }) {
                                 <FaHeart className={`${checkLike ? "text-red-500" : ""}`} />
                                 <p className={`${checkLike ? "text-red-500" : ""}`}>Yêu thích</p>
                             </div>
-                            <div className="text-white whitespace-nowrap flex flex-col items-center gap-1 hover:text-yellow-400  hover:bg-gray-800/50 rounded-md p-2">
+                            <div onClick={() => setOpenModal(true)} className="text-white whitespace-nowrap flex flex-col items-center gap-1 hover:text-yellow-400  hover:bg-gray-800/50 rounded-md p-2">
                                 <IoMdAdd />
                                 <p>Thêm vào</p>
                             </div>
@@ -125,6 +128,7 @@ function DetailMovie({ handleOpenLogin }) {
                     </div>
                 </div>
             </div>
+            <AddToPlaylist openModal={openModal} setOpenModal={setOpenModal} isLogin={isLogin} movieShow={movieShow}/>
         </div >
     );
 }

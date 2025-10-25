@@ -12,13 +12,7 @@ import { ContextSections } from "../../../contexts/SectionProvider";
 import { getOjectById } from "../../../services/reponsitory";
 import { ContextEpisodes } from "../../../contexts/EpisodeProvider";
 
-export default function MovieHoverCard({
-    hoveredMovie,
-    closeTimer,
-    setHoveredMovie,
-    checkLike,
-    addLike,
-}) {
+export default function MovieHoverCard({hoveredMovie,closeTimer,setHoveredMovie,checkLike,addLike}) {
     if (!hoveredMovie) return null;
 
     const top = hoveredMovie.rect.top + window.scrollY - 50;

@@ -11,7 +11,7 @@ function App() {
   return (
     <Routes>
       {/* Nếu là admin thì load trang admin */}
-      {isLogin?.roles === "admin" ? (
+      {isLogin?.roles !== "admin" ? (
         <Route path="/*" element={<HomeAdmin />} />
       ) : (
         <>

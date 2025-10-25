@@ -1,18 +1,18 @@
 import { createContext, useEffect, useState } from 'react';
 import { fetchDocumentsRealtime } from '../services/FirebaseService';
 
-export const ContextPlayList = createContext([]);
+export const ContextPlayLists = createContext([]);
 export const PlayListProvider = ({ children }) => {
     const [playLists, setPlayLists] = useState([]);
     useEffect(() => {
-        const unsubscribe = fetchDocumentsRealtime("PlayLists", (playList) => {
-            setPlayLists(playList);
+        const unsubscribe = fetchDocumentsRealtime("PlayLists", (playLists) => {
+            setPlayLists(playLists);
         });
         return () => unsubscribe();
     }, []);
     return (
-        <ContextPlayList.Provider value={playLists}>
+        <ContextPlayLists.Provider value={playLists}>
             {children}
-        </ContextPlayList.Provider>
+        </ContextPlayLists.Provider>
     )
 }

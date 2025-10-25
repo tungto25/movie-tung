@@ -6,23 +6,15 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 
 import { MdArrowForwardIos, MdOutlineArrowBackIos, MdOutlineKeyboardArrowRight } from "react-icons/md";
-import { FaHeart, FaPlay } from "react-icons/fa";
-import { IoIosInformationCircle } from "react-icons/io";
-import { GoDotFill } from "react-icons/go";
-
 import GradientText from "../../../components/client/GradientText";
 import { useContext, useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { createPortal } from "react-dom";
-import { Link } from "react-router-dom";
 import { ContextLikeMovie } from "../../../contexts/LikeMovieProvider";
 import { addDocument, deleteDocument } from "../../../services/FirebaseService";
 import { ContextAuth } from "../../../contexts/AuthProvider";
 import MovieHoverCard from "./MovieHoverCard";
-import { ContextMovieTypes } from "../../../contexts/MovieTypeProvider";
 import { ContextMovies } from "../../../contexts/MovieProvider";
+import { ContextPlayLists } from "../../../contexts/PlayListProvider";
 
-// Kích hoạt module
 SwiperCore.use([Navigation, Thumbs]);
 
 export default function NewMovie({ data, title }) {
@@ -34,6 +26,7 @@ export default function NewMovie({ data, title }) {
     const [movieShow, setMovieShow] = useState({});
     const likeMovies = useContext(ContextLikeMovie);
     const movies = useContext(ContextMovies);
+    
 
     const prevRef = useRef(null);
     const nextRef = useRef(null);
@@ -77,8 +70,9 @@ export default function NewMovie({ data, title }) {
         } else {
             await addDocument("LikeMovies", { idMovie: movieShow.id, idUser: isLogin.id });
         }
-
     };
+    
+    
     return (
         <div className="">
 

@@ -79,3 +79,6 @@ export function useSort(data, options = {}) {
   return { sortedData, sortConfig, toggleSort };
 }
 
+export const filterById = (data, id, key = "id") => {
+  return data.filter(item => item[key] === id);
+};

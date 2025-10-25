@@ -2,14 +2,19 @@ import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 import Favorite from "./Favorite";
 import { useState, useContext } from "react";
 import ModalLists from "./ModalLists";
-import { ContextPlayList } from "../../../contexts/PlayListProvider";
 import { deleteDocument } from "../../../services/FirebaseService";
-
+import { ContextPlayLists } from "../../../contexts/PlayListProvider";
+import { ContextAuth } from "../../../contexts/AuthProvider";
+import { ContextPlayListMovies } from "../../../contexts/PlayListMoviesProvider";
+import { filterById } from "../../../services/reponsitory";
 function ListEpi() {
-    const playLists = useContext(ContextPlayList);
+    const playLists = useContext(ContextPlayLists);
+    const playListMovies = useContext(ContextPlayListMovies);
+    console.log(playListMovies);
+
     const [open, setOpen] = useState(false);
     const [editItem, setEditItem] = useState(null);
-
+    const { isLogin } = useContext(ContextAuth);
     const handleClose = () => {
         setOpen(false);
         setEditItem(null);
@@ -51,7 +56,7 @@ function ListEpi() {
                             >
                                 <span className="text-base">{p.name}</span>
                                 <div className="flex items-center justify-between">
-                                    <p>0 phim</p>
+                                    <p>{filterById(playListMovies,p.id,"idPlayList").length} phim</p>
                                     <div className="flex gap-3 text-lg">
                                         <button onClick={() => handleEdit(p)}>
                                             <FaEdit className="text-yellow-400 hover:scale-110" />
@@ -61,10 +66,9 @@ function ListEpi() {
                                         </button>
                                     </div>
                                 </div>
-                            </div>
-                        ))
+                            </div>))
                     ) : (
-                        <p className="text-gray-400 italic">Chưa có danh sách nào</p>
+                    <p className="text-gray-400 italic">Chưa có danh sách nào</p>
                     )}
                 </div>
             </div>
