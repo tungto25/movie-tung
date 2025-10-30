@@ -3,7 +3,7 @@ import { MdOutlineSearch } from "react-icons/md";
 import { IoIosMail } from "react-icons/io";
 import { FaBell } from "react-icons/fa";
 import Avatar from '@mui/material/Avatar';
-import { deepOrange, deepPurple } from '@mui/material/colors';
+import { deepOrange } from '@mui/material/colors';
 import SplitText from "./Text";
 import { ContextAuth } from '../../contexts/AuthProvider';
 import { useNavigate } from "react-router-dom";
@@ -17,9 +17,12 @@ function HeaderAdmin(props) {
     const { handleLogout } = useContext(ContextAuth);
     const navigate = useNavigate();
 
-    const onLogout = () => {
-        handleLogout();
+    const onLogout = async () => {
+        console.log("Bắt đầu logout...");
+        await handleLogout();
+        console.log("Đã gọi handleLogout");
         navigate("/", { replace: true });
+        console.log("Đã navigate");
     };
 
     return (

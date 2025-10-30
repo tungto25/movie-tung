@@ -66,7 +66,7 @@ export default function MovieHoverCard({hoveredMovie,closeTimer,setHoveredMovie,
                             }`}
                     >
                         <FaHeart className={`${checkLike ? "text-red-500" : ""}`} />
-                        <p className={`${checkLike ? "text-red-500" : ""}`}>Yêu thích</p>
+                        <p className={`whitespace-nowrap ${checkLike ? "text-red-500" : ""}`}>Yêu thích</p>
                     </div>
 
                     <div className="flex items-center rounded-lg border px-4 py-2 text-sm gap-2">

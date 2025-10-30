@@ -14,6 +14,7 @@ function InforMovie({ movieShow }) {
     const actors = useContext(ContextActors);
     const authors = useContext(ContextAuthors);
     const sections = useContext(ContextSections);
+
     return (
         <div className="text-white p-2">
             <img
@@ -22,9 +23,11 @@ function InforMovie({ movieShow }) {
                 className="w-[150px] h-[210px] object-cover rounded-md"
             />
             <h1 className="text-2xl mt-2">{movieShow?.name}</h1>
-            <div className="flex items-center gap-2 mt-5">
-                {sections.map(e => (
-                    <div className="bg-white border text-black text-center rounded p-1">{e.season}</div>
+            <div className="flex items-center gap-2 mt-5 flex-wrap">
+                {sections.filter(e => e.movieId === movieShow?.id).sort((a, b) => a.season - b.season).map(e => (
+                    <div key={e.id} className="bg-white border text-black text-center rounded p-1">
+                        Phần {e.season}
+                    </div>
                 ))}
             </div>
             <div className="flex items-center gap-2 mt-2  whitespace-nowrap flex-wrap">

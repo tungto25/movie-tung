@@ -25,7 +25,6 @@ function DetailMovie({ handleOpenLogin }) {
     const episodes = useContext(ContextEpisodes);
     const likeMovies = useContext(ContextLikeMovie);
     const { isLogin } = useContext(ContextAuth);
-    const playLists = useContext(ContextPlayLists);
     const [openModal, setOpenModal] = useState(false);
     const firstEpisode = movieShow && episodes ? episodes.find(e => e.movieId === movieShow.id) : null;
     useEffect(() => {
@@ -128,7 +127,7 @@ function DetailMovie({ handleOpenLogin }) {
                     </div>
                 </div>
             </div>
-            <AddToPlaylist openModal={openModal} setOpenModal={setOpenModal} isLogin={isLogin} movieShow={movieShow}/>
+            <AddToPlaylist openModal={openModal} setOpenModal={setOpenModal} isLogin={isLogin} movieShow={movieShow} />
         </div >
     );
 }

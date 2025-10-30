@@ -21,6 +21,7 @@ import { ContextSections } from "../../../contexts/SectionProvider";
 import { ContextLikeMovie } from "../../../contexts/LikeMovieProvider";
 import { ContextAuth } from "../../../contexts/AuthProvider";
 import { addDocument, deleteDocument } from "../../../services/FirebaseService";
+import AddToPlaylist from "./AddToPlaylist";
 
 function PlayMovie({ handleOpenLogin }) {
     const { id } = useParams();
@@ -34,6 +35,7 @@ function PlayMovie({ handleOpenLogin }) {
     const [isOn, setIsOn] = useState(false);
     const likeMovies = useContext(ContextLikeMovie);
     const { isLogin } = useContext(ContextAuth);
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         const episodeFound = episodes.find(ep => ep.id === id);
@@ -51,17 +53,17 @@ function PlayMovie({ handleOpenLogin }) {
     const checkLike = likeMovies.find(e => e.idMovie === movieShow?.id && e.idUser === isLogin?.id);
 
     const addLike = async () => {
-    
-        const like = { idMovie: movieShow.id, idUser: isLogin?.id };   
+
+        const like = { idMovie: movieShow.id, idUser: isLogin?.id };
         if (!isLogin) {
-            console.log("need login");          
+            console.log("need login");
             handleOpenLogin();
             return;
         }
         if (checkLike) {
             await deleteDocument("LikeMovies", checkLike.id);
         } else {
-            await addDocument("LikeMovies",like );
+            await addDocument("LikeMovies", like);
         }
     }
 
@@ -86,7 +88,7 @@ function PlayMovie({ handleOpenLogin }) {
                                 <FaHeart className={`${checkLike ? "text-red-500" : ""}`} />
                                 <p className={`${checkLike ? "text-red-500" : ""}`}>Yêu thích</p>
                             </div>
-                            <div className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-700/50">
+                            <div onClick={() => setOpenModal(true)} className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-700/50">
                                 <IoMdAdd />
                                 <p>Thêm vào</p>
                             </div>
@@ -124,8 +126,10 @@ function PlayMovie({ handleOpenLogin }) {
                             <div className="mb-auto">
                                 <h1 className="text-2xl">{movieShow?.name}</h1>
                                 <div className="flex items-center gap-2 mt-5 text-xs">
-                                    {sections.map(e => (
-                                        <div className="bg-white border text-black text-center rounded p-1">Phần {e.season}</div>
+                                    {sections.filter(e => e.movieId === movieShow?.id).map(e => (
+                                        <div key={e.id} className="bg-white border text-black text-center rounded p-1">
+                                            {e.season}
+                                        </div>
                                     ))}
                                 </div>
                                 <div className="flex items-center gap-2 mt-2 whitespace-nowrap flex-wrap text-xs">
@@ -174,7 +178,7 @@ function PlayMovie({ handleOpenLogin }) {
                         <Recommend />
                     </div>
                 </div>
-
+                <AddToPlaylist openModal={openModal} setOpenModal={setOpenModal} isLogin={isLogin} movieShow={movieShow} />
             </div>
         </div >
     );

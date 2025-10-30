@@ -23,7 +23,7 @@ function EpisodeMovie() {
                 <div className='flex items-center justify-center w-10 h-10 rounded-full bg-blue-900 p-2'>
                     <FaBell className="text-yellow-400 text-xl bell-animate" />
                 </div>
-                <p>phần 3 sẽ công chiếu vào 25-12-2025.Các bạn nhớ đón xem nhé 😘</p>
+                <p>phần sẽ công chiếu vào 25-12-2025.Các bạn nhớ đón xem nhé 😘</p>
             </div>
             <div className='flex items-center'>
                 <div className='flex items-center gap-3 my-5 relative'>
@@ -37,7 +37,7 @@ function EpisodeMovie() {
                     </button>
                     {open && (
                         <ul className="absolute top-4 translate-y-4 right-0 w-auto bg-gray-700 text-white rounded-lg shadow-lg z-10 p-1">
-                            {sections.map((section) => (
+                            {sections.filter(s => s.movieId === id).sort((a, b) => a.season - b.season).map((section) => (
                                 <div
                                     key={section.id}
                                     onClick={() => {

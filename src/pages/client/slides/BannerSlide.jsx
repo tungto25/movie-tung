@@ -21,6 +21,7 @@ function BannerSlide(props) {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const navigate = useNavigate();
+
     return (
         <div className="w-full relative">
             <Swiper
@@ -74,7 +75,7 @@ function BannerSlide(props) {
                             </div>
                             <div className="items-center gap-5 mt-10 hidden md:flex ">
                                 <button
-                                    onClick={() => navigate(`/playmovie/${e.id}`)}
+                                    onClick={() => navigate(`/detail/${e.id}`)}
                                     type="button"
                                     className="h-13 w-13 lg:h-17 lg:w-17 rounded-full bg-gradient-to-l from-yellow-500 to-yellow-200 flex items-center justify-center shadow-lg transition-transform duration-100 active:scale-95"
                                 >

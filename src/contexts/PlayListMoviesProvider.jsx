@@ -10,7 +10,6 @@ export const PlayListMoviesProvider = ({ children }) => {
         });
         return () => unsubscribe();
     }, []);
-    console.log(playListMovies);
     
     return (
         <ContextPlayListMovies.Provider value={playListMovies}>
