@@ -18,18 +18,19 @@ import { FaPlus } from "react-icons/fa";
 import { MdReplayCircleFilled } from "react-icons/md";
 import { FaSignOutAlt } from "react-icons/fa";
 import useClickOutside from "../../services/UseClickOutside";
-import { Stack } from "@mui/system";
 import { Autocomplete, TextField } from "@mui/material";
 import { ContextMovies } from "../../contexts/MovieProvider";
 import { ContextEpisodes } from "../../contexts/EpisodeProvider";
-import { getOjectById, removeVietnameseTones } from "../../services/reponsitory";
+import { removeVietnameseTones } from "../../services/reponsitory";
 import { ContextSections } from "../../contexts/SectionProvider";
 import { GoDotFill } from "react-icons/go";
+import { useNavigate } from "react-router-dom";
 
 function Header({ handleOpenLogin }) {
     const [openAva, setOpenAva] = useState(false);
     const [openSearch, setOpenSearch] = useState(false)
     const [openDrop, setOpenDrop] = useState(null);
+    const [inputValue, setInputValue] = useState("");
     const categories = useContext(ContextCategories);
     const countries = useContext(ContextCountries);
     const [openMenu, setOpenMenu] = useState(false);
@@ -39,6 +40,8 @@ function Header({ handleOpenLogin }) {
     const movies = useContext(ContextMovies);
     const episodes = useContext(ContextEpisodes);
     const sections = useContext(ContextSections);
+
+    const navigate = useNavigate();
 
     const containerRef = useRef(null);
     useClickOutside(containerRef, () => {
@@ -74,6 +77,8 @@ function Header({ handleOpenLogin }) {
 
                 <Autocomplete
                     openOnFocus={false}
+                    inputValue={inputValue}
+                    onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
                     fullWidth
                     freeSolo
                     disableClearable
@@ -116,7 +121,16 @@ function Header({ handleOpenLogin }) {
                         },
                     }}
                     renderOption={(props, e) => (
-                        <li {...props} key={e.id} className="flex items-center gap-3 p-2 w-18 h-25 whitespace-nowrap ">
+                        <li {...props} key={e.id}
+                            onClick={() => {
+                                navigate(`/detail/${e.id}`);
+                                setOpenSearch(false);
+                                setValue(null);
+                                setInputValue("");
+                                document.activeElement.blur();
+                            }}
+                            className="flex items-center gap-3 p-2 w-18 h-25 whitespace-nowrap "
+                        >
                             <img
                                 src={e.imgUrl}
                                 alt={e.name}
@@ -256,10 +270,14 @@ function Header({ handleOpenLogin }) {
                                 {openDrop == e.title && (
                                     <div className="absolute bg-gray-800/80 left-1/2 -translate-x-1/2 top-4 translate-y-4 gap-2  w-max rounded-2xl p-2 shadow-xl z-100">
                                         {openDrop === "Thể Loại" && (
-                                            <div className="grid grid-cols-4 ">
-                                                {categories.map((a) => (
-                                                    <div className="p-2 hover:text-yellow-500 hover:text-shadow-md ">
-                                                        {a.name}
+                                            <div className="grid grid-cols-4 gap-2">
+                                                {categories.map((e) => (
+                                                    <div
+                                                        key={e.id}
+                                                        onClick={() => navigate("/movie", { state: { selectedCategory: e } })}
+                                                        className="cursor-pointer hover:text-yellow-400 "
+                                                    >
+                                                        {e.name}
                                                     </div>
                                                 ))}
                                             </div>

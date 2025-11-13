@@ -1,10 +1,11 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { FaFilter, FaLongArrowAltLeft, FaLongArrowAltRight } from "react-icons/fa";
 import { ContextCountries } from "../../../contexts/CountryProvider";
 import { ContextMovieTypes } from "../../../contexts/MovieTypeProvider";
 import { ContextCategories } from "../../../contexts/CategoryProvider";
 import { ContextMovies } from "../../../contexts/MovieProvider";
+import { useLocation } from "react-router-dom";
 
 const version = ["Tất cả", "Phụ đề", "Lồng tiếng", "Thuyết minh"];
 const type = ["Tất cả", "Phim lẻ", "phim bộ"];
@@ -27,7 +28,6 @@ function Movie(props) {
     };
 
     const countries = useContext(ContextCountries);
-    const movieType = useContext(ContextMovieTypes);
     const categories = useContext(ContextCategories);
     const movies = useContext(ContextMovies);
     const [filteredMovies, setFilteredMovies] = useState(movies);
@@ -36,23 +36,48 @@ function Movie(props) {
     const rowsPerPage = 18;
 
     // Phân trang
-    const moviesPhimLe = filteredMovies.filter(f => f.movieType === "phim lẻ");
-    const paginatedData = moviesPhimLe.slice((page - 1) * rowsPerPage, page * rowsPerPage);
-    const totalPages = Math.ceil(moviesPhimLe.length / rowsPerPage);
+    const displayedMovies = filteredMovies.filter(f =>
+        selected.type === "Tất cả" ? true : f.movieType.toLowerCase() === selected.type.toLowerCase()
+    );
+
+    const paginatedData = displayedMovies.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+    const totalPages = Math.ceil(displayedMovies.length / rowsPerPage);
 
     const handleFilter = () => {
         const filtered = movies.filter(movie => {
             return (
-                (!selected.country || movie.country === selected.country) &&
-                (selected.type === "Tất cả" || movie.movieType === selected.type) &&
-                (!selected.category || movie.listCate.some(c => c.id === selected.category.id)) &&
+                (!selected.country || movie.country === selected.country.name || movie.country === selected.country) &&
+                (selected.type === "Tất cả" || movie.movieType.toLowerCase() === selected.type.toLowerCase()) &&
+                (!selected.category || movie.listCate?.includes(selected.category.name) || movie.listCate?.includes(selected.category)) &&
                 (selected.version === "Tất cả" || movie.version === selected.version) &&
                 (!selected.year || movie.year === selected.year)
             );
         });
+
         setFilteredMovies(filtered);
         setPage(1);
-    }
+    };
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.state?.selectedCategory) {
+            const cate = location.state.selectedCategory;
+
+            setSelected(prev => ({
+                ...prev,
+                category: cate,
+            }));
+
+            const filtered = movies.filter(movie =>
+                movie.listCate?.includes(cate.name)
+            );
+
+            setFilteredMovies(filtered);
+            setPage(1);
+        } else {
+            setFilteredMovies(movies);
+        }
+    }, [location.state, movies]);
 
     return (
         <div className='mt-30 text-white p-5 relative'>
@@ -72,8 +97,9 @@ function Movie(props) {
                             <div className="flex items-center gap-5 ">
                                 {countries.map(e => (
                                     <div
+                                        key={e.id}
                                         onClick={() => handleSelect("country", e)}
-                                        className={`${selected.country === e ? "text-yellow-500 border p-1.5 rounded-md" : ""}`}
+                                        className={`${selected.country?.id === e.id ? "text-yellow-500 border p-1.5 rounded-md" : ""}`}
                                     >
                                         {e.name}
                                     </div>
@@ -100,8 +126,9 @@ function Movie(props) {
                             <div className="flex items-center gap-5 flex-wrap justify-start">
                                 {categories.map(e => (
                                     <div
+                                        key={e.id}
                                         onClick={() => handleSelect("category", e)}
-                                        className={`${selected.category === e ? "text-yellow-500 border p-1.5 rounded-md" : ""}`}
+                                        className={`${selected.category?.id === e.id ? "text-yellow-500 border p-1.5 rounded-md" : ""}`}
                                     >
                                         {e.name}
                                     </div>

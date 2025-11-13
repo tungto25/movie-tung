@@ -3,6 +3,7 @@ import { ContextLikeMovie } from '../../../contexts/LikeMovieProvider';
 import { ContextMovies } from '../../../contexts/MovieProvider';
 import Favorite from './Favorite';
 import { ContextAuth } from '../../../contexts/AuthProvider';
+import { useNavigate } from "react-router-dom";
 
 const list = [
     {
@@ -25,8 +26,8 @@ function LikeEpi(props) {
         const likedIds = likeUser.map(e => e.idMovie);
         const listLikes = movies.filter(e => likedIds.includes(e.id));
         setLikeLists(listLikes);
-    }, [isLogin,likeMovies,movies]);
-
+    }, [isLogin, likeMovies, movies]);
+    const navigate = useNavigate();
     return (
         <div className='w-full'>
             <div className='text-white'>
@@ -43,6 +44,7 @@ function LikeEpi(props) {
                         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4'>
                             {likeLists.map(e => (
                                 <div
+                                    onClick={() => navigate(`/detail/${e.id}`)}
                                     className='bg-gray-800 rounded-lg overflow-hidden hover:scale-105 transition-transform'
                                 >
                                     <img

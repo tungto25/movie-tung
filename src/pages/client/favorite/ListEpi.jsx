@@ -1,5 +1,4 @@
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
-import Favorite from "./Favorite";
 import { useState, useContext } from "react";
 import ModalLists from "./ModalLists";
 import { deleteDocument } from "../../../services/FirebaseService";
@@ -10,16 +9,21 @@ import { filterById, getOjectById } from "../../../services/reponsitory";
 import { ContextMovies } from "../../../contexts/MovieProvider";
 import { CiMenuKebab } from "react-icons/ci";
 import { RiArrowGoBackLine } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
 
 function ListEpi() {
-    const playLists = useContext(ContextPlayLists);
-    const playListMovies = useContext(ContextPlayListMovies);
+
     const [open, setOpen] = useState(false);
     const [editItem, setEditItem] = useState(null);
     const [selectedList, setSelectedList] = useState(null);
     const [openMenu, setOpenMenu] = useState(null);
+    const { isLogin } = useContext(ContextAuth);
+    const playLists = useContext(ContextPlayLists);
+    const playListMovies = useContext(ContextPlayListMovies);
     const movies = useContext(ContextMovies);
+    const userPlayLists = playLists.filter(p => p.idUser === isLogin?.id);
 
+    const navigate = useNavigate();
     const handleClose = () => {
         setOpen(false);
         setEditItem(null);
@@ -39,12 +43,12 @@ function ListEpi() {
             await deleteDocument("PlayLists", id);
         }
     };
-    const handleDeleteMovieFromList = async (id) => {
+    const handleDeleteMovieFromList = async (id, e) => {
+        e.stopPropagation();
         if (window.confirm("Bạn có chắc muốn xóa phim này khỏi danh sách không?")) {
             await deleteDocument("PlayListMovies", id);
         }
     };
-
     const handleShowMenu = (id) => {
         setOpenMenu(openMenu == id ? null : id)
     }
@@ -76,8 +80,8 @@ function ListEpi() {
                 </div>
 
                 <div className={`flex items-center gap-4 mt-5 ${selectedList ? "hidden" : ""}`}>
-                    {playLists?.length > 0 ? (
-                        playLists.map((p) => (
+                    {userPlayLists?.length > 0 ? (
+                        userPlayLists.map((p) => (
                             <div
                                 onClick={() => handleShowList(p.id)}
                                 className={`bg-[#2e3355] rounded-lg p-4 w-[200px] flex flex-col gap-1
@@ -107,13 +111,16 @@ function ListEpi() {
                     <div className="flex items-center gap-5">
                         {filterById(playListMovies, selectedList, "idPlayList").map(e => (
                             <div className="bg-gray-700 rounded-md w-[200px] h-[310px] mt-5 hover:scale-102">
-                                <div className="relative ">
+                                <div
+                                    onClick={() => navigate(`/detail/${e.idMovie}`)}
+                                    className="relative "
+                                >
                                     <img src={getOjectById(movies, e.idMovie)?.poster || getOjectById(movies, e.idMovie)?.imgUrl}
                                         alt=""
                                         className="rounded-lg  object-cover w-full h-[250px]"
                                     />
                                     <FaTrash
-                                        onClick={() => handleDeleteMovieFromList(e.id)}
+                                        onClick={(e) => handleDeleteMovieFromList(e.id, e)}
                                         className="text-red-500 text-md absolute top-0 right-0 p-1 text-2xl"
                                     />
                                     <p className="text-sm absolute bottom-0 bg-green-500 rounded-tr-xl p-1">{getOjectById(movies, e.idMovie)?.movieType}</p>
