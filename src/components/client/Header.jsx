@@ -285,7 +285,10 @@ function Header({ handleOpenLogin }) {
                                         {openDrop === "Quốc Gia" && (
                                             <div className="grid grid-cols-2">
                                                 {countries.map((a) => (
-                                                    <div className="p-2 hover:text-yellow-500 hover:text-shadow-md ">
+                                                    <div
+                                                        onClick={() => navigate("/movie", { state: { selectedCountry: a } })}
+                                                        className="p-2 hover:text-yellow-500 hover:text-shadow-md "
+                                                    >
                                                         {a.name}
                                                     </div>
                                                 ))}

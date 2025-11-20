@@ -2,10 +2,10 @@ import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { FaFilter, FaLongArrowAltLeft, FaLongArrowAltRight } from "react-icons/fa";
 import { ContextCountries } from "../../../contexts/CountryProvider";
-import { ContextMovieTypes } from "../../../contexts/MovieTypeProvider";
 import { ContextCategories } from "../../../contexts/CategoryProvider";
 import { ContextMovies } from "../../../contexts/MovieProvider";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const version = ["Tất cả", "Phụ đề", "Lồng tiếng", "Thuyết minh"];
 const type = ["Tất cả", "Phim lẻ", "phim bộ"];
@@ -58,25 +58,34 @@ function Movie(props) {
         setPage(1);
     };
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        if (location.state?.selectedCategory) {
-            const cate = location.state.selectedCategory;
+        const cate = location.state?.selectedCategory;
+        const country = location.state?.selectedCountry;
 
+        if (cate) {
             setSelected(prev => ({
                 ...prev,
-                category: cate,
+                category: cate
             }));
 
-            const filtered = movies.filter(movie =>
-                movie.listCate?.includes(cate.name)
-            );
-
+            const filtered = movies.filter(m => m.listCate?.includes(cate.name));
             setFilteredMovies(filtered);
             setPage(1);
-        } else {
-            setFilteredMovies(movies);
         }
+
+        if (country) {
+            setSelected(prev => ({
+                ...prev,
+                country: country
+            }));
+
+            const filtered = movies.filter(m => m.country === country.name);
+            setFilteredMovies(filtered);
+            setPage(1);
+        }
+
     }, [location.state, movies]);
 
     return (
@@ -175,16 +184,19 @@ function Movie(props) {
                     </div>
                 )}
             </div>
-            <div className="grid grid-cols-6 gap-2 mt-15">
+            <div className="grid grid-cols-6 gap-6 mt-15">
                 {paginatedData.map((e, i) => (
-                    <div className="relative" key={i}>
+                    <div
+                        onClick={() => navigate(`/detail/${e.id}`)}
+                        className="relative" key={i}
+                    >
                         <img
                             src={e?.imgUrl}
                             alt={e?.name}
-                            className="rounded-lg hover:scale-102 w-40 h-60 object-cover"
+                            className="rounded-lg hover:scale-102 w-full h-60 object-cover"
                         />
                         <h3
-                            className="text-center mt-2 truncate hover:overflow-visible hover:whitespace-normal hover:text-white hover:rounded p-1 transition-all duration-200"
+                            className="text-center mt-2"
                             title={e?.name}
                         >
                             {e.name}
@@ -229,7 +241,7 @@ function Movie(props) {
                     <FaLongArrowAltRight />
                 </button>
             </div>
-        </div>
+        </div >
     );
 }
 
