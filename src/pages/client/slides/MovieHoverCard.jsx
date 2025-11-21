@@ -13,17 +13,17 @@ import { getOjectById } from "../../../services/reponsitory";
 import { ContextEpisodes } from "../../../contexts/EpisodeProvider";
 
 export default function MovieHoverCard({ hoveredMovie, closeTimer, setHoveredMovie, checkLike, addLike }) {
-    if (!hoveredMovie) return null;
+    console.log(hoveredMovie);
 
     const top = hoveredMovie.rect.top + window.scrollY - 50;
     const left = hoveredMovie.rect.left + window.scrollX - 50;
     const movies = useContext(ContextMovies);
     const sections = useContext(ContextSections);
     const episodes = useContext(ContextEpisodes);
-
-    const movieData = hoveredMovie.movie;
-    const movieSections = sections.filter(s => s.idMovie === movieData.id);
-    const movieEpisodes = episodes.filter(ep => ep.movieId === movieData.id);
+    const categories = useContext(ContextCategories);
+    const movieData = hoveredMovie;
+    const movieSections = sections.filter(s => s.idMovie === movieData?.id);
+    const movieEpisodes = episodes.filter(ep => ep.movieId === movieData?.id);
 
     return createPortal(
         <motion.div
@@ -45,9 +45,9 @@ export default function MovieHoverCard({ hoveredMovie, closeTimer, setHoveredMov
             }}
             className="rounded-2xl overflow-hidden shadow-2xl bg-gray-950/90 text-white hidden lg:block"
         >
-            <img src={movieData.imgUrl} className="w-full h-40 object-cover" />
+            <img src={movieData?.imgUrl} className="w-full h-40 object-cover" />
             <div className="p-4">
-                <h1 className="text-lg font-semibold">{movieData.name}</h1>
+                <h1 className="text-lg font-semibold">{movieData?.name}</h1>
                 <div className="flex items-center gap-2 mt-5">
                     <Link
                         to={`/detail/${hoveredMovie.id}`}
@@ -83,7 +83,7 @@ export default function MovieHoverCard({ hoveredMovie, closeTimer, setHoveredMov
 
                     {movieData && (
                         <div className="flex items-center bg-gray-400/30 text-white rounded-md px-3 py-1 font-bold">
-                            {movieData.year}
+                            {movieData?.year}
                         </div>
                     )}
 
@@ -98,10 +98,10 @@ export default function MovieHoverCard({ hoveredMovie, closeTimer, setHoveredMov
                 </div>
 
                 <div className="flex items-center gap-2 my-4 text-xs">
-                    {movieData.listCate.map((cate, i) => (
+                    {movieData?.listCate.map((e, i) => (
                         <div className="flex items-center gap-2">
-                            <p>{cate}</p>
-                            {i < movieData.listCate.length - 1 && (
+                            <p>{getOjectById(categories,e)?.name}</p>
+                            {i < movieData?.listCate.length - 1 && (
                                 <span className="text-xs">
                                     <GoDotFill />
                                 </span>

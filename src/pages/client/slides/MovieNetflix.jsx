@@ -117,7 +117,7 @@ export default function MovieNetflix() {
                                     </h3>
                                 </div>
 
-                                {hoveredMovie?.idx === i && (
+                                {hoveredMovie?.i === i && (
                                     <MovieHoverCard
                                         hoveredMovie={hoveredMovie}
                                         closeTimer={closeTimer}

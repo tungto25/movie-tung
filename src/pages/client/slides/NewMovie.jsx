@@ -13,11 +13,14 @@ import { addDocument, deleteDocument } from "../../../services/FirebaseService";
 import { ContextAuth } from "../../../contexts/AuthProvider";
 import MovieHoverCard from "./MovieHoverCard";
 import { ContextMovies } from "../../../contexts/MovieProvider";
-import { ContextPlayLists } from "../../../contexts/PlayListProvider";
+import { getOjectById } from "../../../services/reponsitory";
+import { ContextPackages } from "../../../contexts/PackageProvider";
+import { ContextPlans } from "../../../contexts/PlanProvider";
 
 SwiperCore.use([Navigation, Thumbs]);
 
 export default function NewMovie({ data, title }) {
+console.log(data);
 
     const [hoveredMovie, setHoveredMovie] = useState(null);
     const openTimer = useRef(null);
@@ -25,9 +28,9 @@ export default function NewMovie({ data, title }) {
     const { isLogin } = useContext(ContextAuth);
     const [movieShow, setMovieShow] = useState({});
     const likeMovies = useContext(ContextLikeMovie);
-    const movies = useContext(ContextMovies);
-    
+    const plans = useContext(ContextPlans)
 
+    
     const prevRef = useRef(null);
     const nextRef = useRef(null);
     const swiperRef = useRef(null);
@@ -71,8 +74,8 @@ export default function NewMovie({ data, title }) {
             await addDocument("LikeMovies", { idMovie: movieShow.id, idUser: isLogin.id });
         }
     };
-    
-    
+
+
     return (
         <div className="">
 
@@ -123,6 +126,7 @@ export default function NewMovie({ data, title }) {
                                             alt={e.name}
                                             className="rounded-lg hover:scale-102 h-[100px] md:h-[120px] lg:h-[140px] w-full object-cover"
                                         />
+                                        <div className="absolute top-0 right-0 px-2 bg-red-500/50 rounded-bl-lg">{getOjectById(plans,e.plan)?.title}</div>
                                         <div className="absolute bottom-0 left-0 bg-green-500/50 text-xs px-2 py-1 rounded-tr-lg">
                                             {e.movieType || "Không rõ"}
                                         </div>
@@ -130,7 +134,7 @@ export default function NewMovie({ data, title }) {
                                     <h3 className="text-sm mt-2">{e.name}</h3>
                                 </div>
 
-                                {hoveredMovie?.i === i && (
+                                {hoveredMovie?.id === e.id && (
                                     <MovieHoverCard
                                         hoveredMovie={hoveredMovie}
                                         closeTimer={closeTimer}

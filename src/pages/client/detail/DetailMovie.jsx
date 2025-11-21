@@ -16,6 +16,7 @@ import { ContextAuth } from "../../../contexts/AuthProvider";
 import { addDocument, deleteDocument } from "../../../services/FirebaseService";
 import { ContextPlayLists } from "../../../contexts/PlayListProvider";
 import AddToPlaylist from "./AddToPlaylist";
+import { ContextPlans } from "../../../contexts/PlanProvider";
 
 function DetailMovie({ handleOpenLogin }) {
     const { id } = useParams();
@@ -25,6 +26,9 @@ function DetailMovie({ handleOpenLogin }) {
     const episodes = useContext(ContextEpisodes);
     const likeMovies = useContext(ContextLikeMovie);
     const { isLogin } = useContext(ContextAuth);
+    const plans = useContext(ContextPlans);
+    console.log(plans);
+
     const [openModal, setOpenModal] = useState(false);
     const firstEpisode = movieShow && episodes ? episodes.find(e => e.movieId === movieShow.id) : null;
     useEffect(() => {
@@ -52,6 +56,13 @@ function DetailMovie({ handleOpenLogin }) {
         }
     };
 
+
+    const handleMovie = (movie) => {
+        // dang nhap chua 
+      // getOjectByid => thuoc plane nao
+      // neu >= 4 thi qua trang thue duoi qua trang dang ky goi
+      
+    }
     return (
         <div>
             <div className="w-full">
@@ -70,6 +81,7 @@ function DetailMovie({ handleOpenLogin }) {
                         <div className="flex items-center justify-between w-full">
                             {firstEpisode && (
                                 <Link
+
                                     to={`/playmovie/${firstEpisode.id}`}
                                     className="rounded-full px-8 py-4 gap-2 bg-gradient-to-l
                                               from-yellow-500 to-yellow-200 flex items-center justify-center shadow-lg transition-transform duration-100
