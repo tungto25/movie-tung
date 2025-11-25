@@ -17,6 +17,8 @@ import { addDocument, deleteDocument } from "../../../services/FirebaseService";
 import { ContextPlayLists } from "../../../contexts/PlayListProvider";
 import AddToPlaylist from "./AddToPlaylist";
 import { ContextPlans } from "../../../contexts/PlanProvider";
+import { getOjectById } from "../../../services/reponsitory";
+import { useNavigate } from "react-router-dom";
 
 function DetailMovie({ handleOpenLogin }) {
     const { id } = useParams();
@@ -27,7 +29,7 @@ function DetailMovie({ handleOpenLogin }) {
     const likeMovies = useContext(ContextLikeMovie);
     const { isLogin } = useContext(ContextAuth);
     const plans = useContext(ContextPlans);
-    console.log(plans);
+    const navigate = useNavigate();
 
     const [openModal, setOpenModal] = useState(false);
     const firstEpisode = movieShow && episodes ? episodes.find(e => e.movieId === movieShow.id) : null;
@@ -59,9 +61,25 @@ function DetailMovie({ handleOpenLogin }) {
 
     const handleMovie = (movie) => {
         // dang nhap chua 
-      // getOjectByid => thuoc plane nao
-      // neu >= 4 thi qua trang thue duoi qua trang dang ky goi
-      
+        // getOjectByid => thuoc plane nao
+        // neu >= 4 thi qua trang thue duoi qua trang dang ky goi
+        if (!isLogin) {
+            handleOpenLogin();
+            return;
+        }
+        const plan = getOjectById(plans, movie.plan);
+        if (!plan) {
+            console.log("Không tìm thấy plan với id:", movie.plan);
+            return;
+        }
+        console.log("Plan:", plan);
+        if (plan.level <= 2) {
+            navigate(`/packages`);
+        } else {
+            navigate(`/moviePayment/${firstEpisode.id}`);
+            console.log("firstEpisode:", firstEpisode);
+        }
+
     }
     return (
         <div>
@@ -80,16 +98,15 @@ function DetailMovie({ handleOpenLogin }) {
                     <div className="flex-1 ">
                         <div className="flex items-center justify-between w-full">
                             {firstEpisode && (
-                                <Link
-
-                                    to={`/playmovie/${firstEpisode.id}`}
+                                <button
+                                    onClick={() => handleMovie(movieShow)}
                                     className="rounded-full px-8 py-4 gap-2 bg-gradient-to-l
                                               from-yellow-500 to-yellow-200 flex items-center justify-center shadow-lg transition-transform duration-100
                                                 active:scale-95 active:shadow-[0_0_10px_3px_rgba(249,215,87)]"
                                 >
                                     <FaPlay className="text-sm text-black" />
                                     <span className="whitespace-nowrap text-xl">Xem ngay</span>
-                                </Link>
+                                </button>
                             )}
                             <div
                                 onClick={addLike}

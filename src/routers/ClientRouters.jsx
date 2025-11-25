@@ -23,6 +23,7 @@ import SeeMore from '../pages/client/favorite/SeeMore';
 import Notice from '../pages/client/favorite/Notice';
 import Account from '../pages/client/favorite/Account';
 import ManageAccount from '../pages/client/favorite/ManageAccount';
+import MoviePayment from '../pages/client/vip/MoviePayment';
 
 function ClientRouters({ handleOpenLogin }) {
     const routes = [
@@ -87,6 +88,10 @@ function ClientRouters({ handleOpenLogin }) {
         {
             path: "/paymentPage/:id",
             element: <PaymentPage />
+        },
+        {
+            path: "/moviePayment/:id",
+            element: <MoviePayment />
         },
         {
             path: "/manageAccount",

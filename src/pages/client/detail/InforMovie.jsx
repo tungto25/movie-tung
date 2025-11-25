@@ -22,11 +22,14 @@ function InforMovie({ movieShow }) {
     const movies = useContext(ContextMovies)
     return (
         <div className="text-white p-2">
-            <img
-                src={movieShow?.imgUrl}
-                alt=""
-                className="w-[150px] h-[210px] object-cover rounded-md"
-            />
+            <div className="relative w-[150px] h-[210px]">
+                <img
+                    src={movieShow?.imgUrl}
+                    alt=""
+                    className="w-full h-full object-cover rounded-md"
+                />
+                <div className=" bg-red-500/50 text-white text-center rounded flex items-center p-1 absolute top-0">{getOjectById(plans, movieShow?.plan)?.title}</div>
+            </div>
             <h1 className="text-2xl mt-2">{movieShow?.name}</h1>
             <div className="flex item-center gap-3 mt-5">
                 <div className="flex items-center gap-2 flex-wrap">
@@ -37,7 +40,7 @@ function InforMovie({ movieShow }) {
                     ))}
                 </div>
 
-                <div className=" bg-red-500/30 text-white text-center rounded flex items-center p-1">{getOjectById(plans, movieShow?.plan)?.title}</div>
+
             </div>
             <div className="flex items-center gap-2 mt-2  whitespace-nowrap flex-wrap">
                 {movieShow?.listCate?.map((e, i) => (

@@ -20,8 +20,6 @@ import { ContextPlans } from "../../../contexts/PlanProvider";
 SwiperCore.use([Navigation, Thumbs]);
 
 export default function NewMovie({ data, title }) {
-console.log(data);
-
     const [hoveredMovie, setHoveredMovie] = useState(null);
     const openTimer = useRef(null);
     const closeTimer = useRef(null);

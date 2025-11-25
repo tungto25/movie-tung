@@ -7,7 +7,6 @@ import { ContextPlayLists } from "../../../contexts/PlayListProvider";
 export default function AddToPlaylist({ isLogin, movieShow, openModal, setOpenModal }) {
     const playLists = useContext(ContextPlayLists);
     const [selectedList, setSelectedList] = useState(null);
-    console.log(isLogin);
 
     const addPlayList = async () => {
         if (!isLogin) {
