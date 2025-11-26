@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ContextPackages } from '../../../contexts/PackageProvider';
 import { ContextPlans } from '../../../contexts/PlanProvider';
 import { getOjectById } from '../../../services/reponsitory';
@@ -9,12 +9,22 @@ import { ContextMovies } from '../../../contexts/MovieProvider';
 
 function MoviePackages(props) {
     const { id } = useParams();
+    const [movie, setMovie] = useState({})
     const { isLogin } = useContext(ContextAuth);
     const packages = useContext(ContextPackages);
     const movies = useContext(ContextMovies);
+
+    
     const pack = packages.find(p => p.id == id);
-    const movie = movies.find(e => e.id == id);
-    console.log(movie);
+
+   // useEffect => id => getOjectById('movies', id) => setMovie
+   useEffect(()=>{
+    const movieShow = movies.find(e => e.id == id);
+    console.log(id);
+    console.log(movies);
+    console.log(movieShow);
+    setMovie(movieShow);
+   },[movies,id]);
 
     const today = new Date();
     const formattedDate = today.toLocaleDateString("vi-VN");

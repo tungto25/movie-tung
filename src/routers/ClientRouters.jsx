@@ -24,6 +24,7 @@ import Notice from '../pages/client/favorite/Notice';
 import Account from '../pages/client/favorite/Account';
 import ManageAccount from '../pages/client/favorite/ManageAccount';
 import MoviePayment from '../pages/client/vip/MoviePayment';
+import PayMovies from '../pages/client/vip/PayMovies';
 
 function ClientRouters({ handleOpenLogin }) {
     const routes = [
@@ -92,6 +93,10 @@ function ClientRouters({ handleOpenLogin }) {
         {
             path: "/moviePayment/:id",
             element: <MoviePayment />
+        },
+        {
+            path: "/payMovies/:id",
+            element: <PayMovies />
         },
         {
             path: "/manageAccount",

@@ -76,8 +76,8 @@ function DetailMovie({ handleOpenLogin }) {
         if (plan.level <= 2) {
             navigate(`/packages`);
         } else {
-            navigate(`/moviePayment/${firstEpisode.id}`);
-            console.log("firstEpisode:", firstEpisode);
+            navigate(`/payMovies/${movie.id}`);
+            console.log("payMovies", movie);
         }
 
     }
