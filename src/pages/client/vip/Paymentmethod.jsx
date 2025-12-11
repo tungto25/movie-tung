@@ -2,6 +2,9 @@ import { TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { initialOptions } from '../../../untils/ConstantsClient';
+import { Modal, Box } from "@mui/material";
+import { QRCodeCanvas } from "qrcode.react";
+
 const payment = [
     {
         name: "Thẻ tín dụng",
@@ -24,160 +27,105 @@ const payment = [
         img: "https://vnpay.vn/s1/statics.vnpay.vn/2023/6/0oxhzjmxbksr1686814746087.png"
     },
 ]
-function Paymentmethod(props) {
-    const [value, setValue] = useState("");
-    const [selected, setSelected] = useState("")
-    const handleChange = (e) => {
-        let input = e.target.value.replace(/\D/g, ""); 
-        if (input.length > 4) input = input.slice(0, 4);
+function Paymentmethod({ selectedPlan }) {
+    const [selected, setSelected] = useState("");
+    const [openQR, setOpenQR] = useState(false);
+    const [qrValue, setQrValue] = useState("");
 
-        if (input.length >= 3) {
-            input = input.slice(0, 2) + "/" + input.slice(2);
+    const handlePayment = () => {
+        if (!selected) {
+            alert("Bạn chưa chọn phương thức thanh toán!");
+            return;
         }
 
-        setValue(input);
+        // ---- QR cho từng loại thanh toán ----
+        let qr = "";
+
+        if (selected === "Thẻ tín dụng") {
+            qr = "public/images/25f4ea2f-a520-46af-9c26-8efe1aae25c5.jpg"; 
+        } else if (selected === "Ví MoMo") {
+            qr = "https://qr.momo.vn/YOUR_MOMO_QR";
+        } else if (selected === "Ví ZaloPay") {
+            qr = "https://your-zalopay-qr.com/xyz";
+        } else if (selected === "VNPAY") {
+            qr = "https://img.vietqr.io/YOUR_VNPAY_QR.png";
+        }
+
+        setQrValue(qr);
+        setOpenQR(true);
     };
-    const createSubscription = (transactionId)  => {
-          alert("code thanh toan thanh cong");
+
+    // ❗ Return giao diện khi chưa chọn gói
+    if (!selectedPlan) {
+        return (
+            <div className='p-5 max-w-[50%]'>
+                <div className='text-white w-full bg-gray-800/20 shadow-lg rounded-xl p-5'>
+                    <h1 className="text-lg font-bold py-4">Chọn phương thức thanh toán</h1>
+                    <p className="text-gray-400">Vui lòng chọn gói ở bên trái</p>
+                </div>
+            </div>
+        );
     }
+
+    // ✅ Return giao diện khi đã chọn gói
     return (
         <div className='p-5 max-w-[50%]'>
-            <div className='text-white w-full bg-gray-800/20 shadow-lg rounded-xl shadow-[0_0_10px_3px_rgba(255,255,255) p-5'>
-                <h1 className='text-lg font-bold py-4'>Chọn phương thức thanh toán</h1>
+            <div className='text-white w-full bg-gray-800/20 shadow-lg rounded-xl p-5'>
                 <div className='flex flex-wrap justify-start gap-3'>
                     {payment.map(e => (
                         <div
                             onClick={() => setSelected(e.name)}
-                            className={`border rounded-xl flex flex-col items-center justify-center w-35 h-25 gap-3 ${selected === e.name ? "border-yellow-500 bg-gradient-to-bl from-gray-800 via-gray-600 to-gray-400" : ""}`}
+                            className={`border rounded-xl flex flex-col items-center justify-center w-35 h-25 gap-3 ${selected === e.name ? "border-blue-900 border-3 bg-blue-700" : ""}`}
                         >
                             <h1>{e.name}</h1>
-                            <img
-                                src={e.img}
-                                alt={e.name}
-                                className='w-10 h-10 rounded-xl'
-                            />
+                            <img src={e.img} alt={e.name} className='w-10 h-10 rounded-xl' />
                         </div>
                     ))}
                 </div>
-                {/* <div className='mt-5'>
-                    <TextField
-                        id="outlined-basic"
-                        label="Tên in trên thẻ"
-                        variant="outlined"
-                        fullWidth
-                        sx={{
-                            "& .MuiInputBase-input": { color: "white" }, // màu chữ nhập
-                            "& .MuiInputLabel-root": { color: "white" },  // màu label
-                            "& .MuiInputLabel-root.Mui-focused": { color: "white" }, // label khi focus
-                            "& .MuiOutlinedInput-notchedOutline": {
-                                borderColor: "white", // viền mặc định
-                            },
-                            "&:hover .MuiOutlinedInput-notchedOutline": {
-                                borderColor: "white", // viền khi hover
-                            },
-                            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                borderColor: "white", // viền khi focus
-                            },
-                        }}
-                    />
-                    <TextField
-                        id="outlined-basic"
-                        label="Số thẻ"
-                        variant="outlined"
-                        fullWidth
-                        sx={{
-                            "& .MuiInputBase-input": { color: "white" }, // màu chữ nhập
-                            "& .MuiInputLabel-root": { color: "white" },  // màu label
-                            "& .MuiInputLabel-root.Mui-focused": { color: "white" }, // label khi focus
-                            "& .MuiOutlinedInput-notchedOutline": {
-                                borderColor: "white", // viền mặc định
-                            },
-                            "&:hover .MuiOutlinedInput-notchedOutline": {
-                                borderColor: "white", // viền khi hover
-                            },
-                            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                borderColor: "white", // viền khi focus
-                            },
-                            marginY: 2
-                        }}
-                    />
-                    <div className='flex items-center w-full gap-3'>
-                        <div className='flex-1'>
-                            <p>Ngày hết hạn</p>
-                            <TextField
-                                label="MM/YY"
-                                variant="outlined"
-                                value={value}
-                                onChange={handleChange}
-                                placeholder="MM/YY"
-                                fullWidth
-                                inputProps={{ maxLength: 5 }}
-                                sx={{
-                                    "& .MuiInputBase-input": { color: "white" },
-                                    "& .MuiInputLabel-root": { color: "white" },
-                                    "& .MuiInputLabel-root.Mui-focused": { color: "white" },
-                                    "& .MuiOutlinedInput-notchedOutline": { borderColor: "white" },
-                                    marginY: 2
-                                }}
-                            />
-                        </div>
-                        <div className='flex-1'>
-                            <p>Mã bảo mật</p>
-                            <TextField
-                                id="outlined-basic"
-                                label="CVV"
-                                type='number'
-                                variant="outlined"
-                                fullWidth
-                                sx={{
-                                    "& .MuiInputBase-input": { color: "white" }, // màu chữ nhập
-                                    "& .MuiInputLabel-root": { color: "white" },  // màu label
-                                    "& .MuiInputLabel-root.Mui-focused": { color: "white" }, // label khi focus
-                                    "& .MuiOutlinedInput-notchedOutline": {
-                                        borderColor: "white", // viền mặc định
-                                    },
-                                    "&:hover .MuiOutlinedInput-notchedOutline": {
-                                        borderColor: "white", // viền khi hover
-                                    },
-                                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                        borderColor: "white", // viền khi focus
-                                    },
-                                    marginY: 2
-                                }}
-                            />
-                        </div>
-                    </div>
-                    <p className='text-gray-500 py-5'>Bằng việc thanh toán,Quý Khách đã đồng ý với <span className='text-blue-600'>Quy chế sữ dụng dịch vụ </span>
-                        của Tfilm và ủy quyền cho Tfilm tự động gia hạn khi hết hạn sữ dụng,cho đến khi bạn hủy tự động gia hạn.</p>
-                    <button className='mt-5 bg-blue-700 w-full py-2 rounded-full active:scale-98'>Thanh toán</button>
-                    <p className='text-center text-blue-500 mt-3'>xem kho phim và thanh toán sau</p>
-                </div> */}
-                     <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                        <PayPalScriptProvider options={initialOptions}>
-                            <PayPalButtons
-                                style={{ layout: "vertical" }}
-                                createOrder={(data, actions) => {
-                                
-                                    return actions.order.create({
-                                        purchase_units: [{
-                                            amount: {
-                                                value: "10.00"
-                                            }
-                                        }]
-                                    });
-                                }}
-                                onApprove={(data, actions) => {
-                                    return actions.order.capture().then((details) => {
-                                        const transactionId = details.id; // Lấy ID giao dịch từ PayPal
-                                        createSubscription(transactionId);
-                                    });
-                                }}
-                                onError={(err) => {
-                                    console.error("PayPal error:", err);
-                                }}
-                            />
-                        </PayPalScriptProvider>
-                    </div>
+
+                {/* PAYPAL */}
+                <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                    <PayPalScriptProvider options={initialOptions}>
+                        <PayPalButtons
+                            style={{ layout: "vertical" }}
+                            createOrder={(data, actions) => {
+                                return actions.order.create({
+                                    purchase_units: [{
+                                        amount: {
+                                            value: selectedPlan.finalPrice.toString()
+                                        }
+                                    }]
+                                });
+                            }}
+                        />
+                    </PayPalScriptProvider>
+                </div>
+
+                <button
+                    onClick={handlePayment}
+                    className="mt-5 bg-blue-600 w-full py-2 rounded-lg text-white active:scale-95"
+                >
+                    Thanh toán bằng QR
+                </button>
+
+                {/* QR Modal */}
+                <Modal open={openQR} onClose={() => setOpenQR(false)}>
+                    <Box sx={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        bgcolor: "white",
+                        p: 4,
+                        borderRadius: "15px",
+                        textAlign: "center"
+                    }}>
+                        <h2>Quét mã để thanh toán</h2>
+                        <QRCodeCanvas value={qrValue} size={200} includeMargin={true} />
+                        <p style={{ marginTop: 10 }}>Phương thức: {selected}</p>
+                        <p>Số tiền: {selectedPlan?.finalPrice?.toLocaleString("vi-VN")}₫</p>
+                    </Box>
+                </Modal>
             </div>
         </div>
     );

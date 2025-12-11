@@ -5,6 +5,9 @@ import { getOjectById } from '../../../services/reponsitory';
 import { useParams } from 'react-router-dom';
 import { ContextAuth } from '../../../contexts/AuthProvider';
 import { ContextMovies } from '../../../contexts/MovieProvider';
+import { Button, Modal, Typography } from '@mui/material';
+import { Box } from '@mui/system';
+import { style } from '../../../untils/styleContants';
 
 
 function MoviePackages(props) {
@@ -14,17 +17,17 @@ function MoviePackages(props) {
     const packages = useContext(ContextPackages);
     const movies = useContext(ContextMovies);
 
-    
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     const pack = packages.find(p => p.id == id);
 
-   // useEffect => id => getOjectById('movies', id) => setMovie
-   useEffect(()=>{
-    const movieShow = movies.find(e => e.id == id);
-    console.log(id);
-    console.log(movies);
-    console.log(movieShow);
-    setMovie(movieShow);
-   },[movies,id]);
+    // useEffect => id => getOjectById('movies', id) => setMovie
+    useEffect(() => {
+        const movieShow = movies.find(e => e.id == id);
+        setMovie(movieShow);
+    }, [movies, id]);
 
     const today = new Date();
     const formattedDate = today.toLocaleDateString("vi-VN");
@@ -32,6 +35,11 @@ function MoviePackages(props) {
     const expire = new Date();
     expire.setMonth(expire.getMonth() + (pack?.time || 0));
     const expireDate = expire.toLocaleDateString("vi-VN");
+    const discount = 0.1;
+
+    const price = movie?.rent
+        ? movie.rent - movie.rent * discount
+        : 0;
     return (
         < div className='w-full p-5 max-w-[50%]' >
             <div className="mt-5 bg-gray-800/20 shadow rounded-lg p-6">
@@ -75,7 +83,7 @@ function MoviePackages(props) {
                         </div>
                         <div className="flex justify-between mt-2 pt-2 border-t font-semibold text-blue-600">
                             <span>Tổng cộng</span>
-                            <span>888.000đ</span>
+                            <span>{price}</span>
                         </div>
                     </div>
                 </div>
@@ -83,9 +91,32 @@ function MoviePackages(props) {
                 <p className="text-xs text-gray-500 mb-2">
                     * Thuê bao tự động gia hạn hàng tháng trừ phí bạn hủy thuê bao ít nhất 24 giờ trước khi hết hạn.
                 </p>
-                <button className="text-blue-500 text-sm font-medium flex items-center">
+                <button onClick={handleOpen} className="text-blue-500 text-sm font-medium flex items-center">
                     Áp dụng ưu đãi
                 </button>
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    slotProps={{
+                        backdrop: {
+                            sx: {
+                                backgroundColor: "rgba(0,0,0,0.5)", 
+                                backdropFilter: "blur(2px)"       
+                            }
+                        }
+                    }}
+                >
+                    <Box sx={style}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                            Text in a modal
+                        </Typography>
+                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                            aloalo
+                        </Typography>
+                    </Box>
+                </Modal>
             </div>
         </div >
     );

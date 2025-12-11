@@ -1,9 +1,9 @@
-import React from 'react';
+import { useState } from 'react';
 import Paymentmethod from './Paymentmethod';
 import PackagesPay from './PackagesPay';
-import MoviePackages from './MoviePackages';
 
 function PaymentPage(props) {
+    const [selectedPlan, setSelectedPlan] = useState(null);
     return (
         <div className='mt-30 text-white'>
             <div className='text-center'>
@@ -12,9 +12,9 @@ function PaymentPage(props) {
                 <div className='border border-yellow-500 w-[10%] mx-auto my-3'></div>
             </div>
             <div className='flex items-start justify-center px-5'>
-                {/* <MoviePackages /> */}
-                <PackagesPay />
-                <Paymentmethod />
+
+                <PackagesPay onPlanChange={setSelectedPlan}/>
+                <Paymentmethod selectedPlan={selectedPlan}/>
             </div>
         </div>
     );
