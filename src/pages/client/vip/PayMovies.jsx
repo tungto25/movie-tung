@@ -31,16 +31,16 @@ function PayMovies(props) {
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold m-auto">THÔNG TIN THANH TOÁN</h2>
             </div>
-            <div className='w-[270px] m-auto'>
+            <div className='w-[400px] m-auto'>
                 <div className=' flex items-center gap-3 justify-center flex-wrap'>
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-lg font-semibold m-auto text-blue-500">bạn đang chọn thuê</h2>
                     </div>
                     <div
                         onClick={() => setSelect("thue")}
-                        className={`flex items-center justify-between rounded-lg border p-3 min-w-full ${select === "thue" ? "border-2 border-yellow-400" : ""}`}
+                        className={`flex items-center justify-between rounded-lg border p-3 w-full ${select === "thue" ? "border-2 border-yellow-400" : ""}`}
                     >
-                        <div>{movie?.name}</div>
+                        <div className='whitespace-nowrap'>{movie?.name}</div>
                         <div>{movie?.rent}</div>
                     </div>
                     <h1 className='mt-5 text-center'>tiết kiệm hơn với gói combo</h1>
@@ -87,7 +87,8 @@ function PayMovies(props) {
                         }
                     }}
                     className='bg-blue-500 rounded-full px-14 py-2 text-md w-full mt-10 active:scale-98 active:bg-blue-700'
-                >tiếp tục</button>
+                >tiếp tục
+                </button>
                 <Link to="/" className='my-3 flex justify-center hover:text-blue-400'>xem kho phim và thanh toán sau</Link>
             </div>
 

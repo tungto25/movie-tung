@@ -42,7 +42,7 @@ function Paymentmethod({ selectedPlan }) {
         let qr = "";
 
         if (selected === "Thẻ tín dụng") {
-            qr = "public/images/25f4ea2f-a520-46af-9c26-8efe1aae25c5.jpg"; 
+            qr = "public/images/25f4ea2f-a520-46af-9c26-8efe1aae25c5.jpg";
         } else if (selected === "Ví MoMo") {
             qr = "https://qr.momo.vn/YOUR_MOMO_QR";
         } else if (selected === "Ví ZaloPay") {
@@ -55,19 +55,6 @@ function Paymentmethod({ selectedPlan }) {
         setOpenQR(true);
     };
 
-    // ❗ Return giao diện khi chưa chọn gói
-    if (!selectedPlan) {
-        return (
-            <div className='p-5 max-w-[50%]'>
-                <div className='text-white w-full bg-gray-800/20 shadow-lg rounded-xl p-5'>
-                    <h1 className="text-lg font-bold py-4">Chọn phương thức thanh toán</h1>
-                    <p className="text-gray-400">Vui lòng chọn gói ở bên trái</p>
-                </div>
-            </div>
-        );
-    }
-
-    // ✅ Return giao diện khi đã chọn gói
     return (
         <div className='p-5 max-w-[50%]'>
             <div className='text-white w-full bg-gray-800/20 shadow-lg rounded-xl p-5'>

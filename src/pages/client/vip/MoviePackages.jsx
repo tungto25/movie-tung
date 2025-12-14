@@ -35,7 +35,7 @@ function MoviePackages(props) {
     const expire = new Date();
     expire.setMonth(expire.getMonth() + (pack?.time || 0));
     const expireDate = expire.toLocaleDateString("vi-VN");
-    const discount = 0.1;
+    const discount = 0;
 
     const price = movie?.rent
         ? movie.rent - movie.rent * discount
@@ -102,8 +102,8 @@ function MoviePackages(props) {
                     slotProps={{
                         backdrop: {
                             sx: {
-                                backgroundColor: "rgba(0,0,0,0.5)", 
-                                backdropFilter: "blur(2px)"       
+                                backgroundColor: "rgba(0,0,0,0.5)",
+                                backdropFilter: "blur(2px)"
                             }
                         }
                     }}
