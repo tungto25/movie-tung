@@ -54,7 +54,27 @@ function Paymentmethod({ selectedPlan }) {
         setQrValue(qr);
         setOpenQR(true);
     };
+    // const handlePaymentSuccess = async () => {
+    //     const transactionId = uuidv4().replaceAll("-", "").slice(0, 16).toUpperCase();
 
+    //     const startDate = new Date();
+    //     const expiryDate = new Date(startDate);
+    //     expiryDate.setMonth(expiryDate.getMonth() + 1);
+
+    //     const rentData = {
+    //         transactionId,
+    //         movieId: movie.id,
+    //         isUser: isLogin.email,
+    //         paymentMethod: selected,
+    //         price: selectedPlan.finalPrice.toString(),
+    //         startDate,
+    //         expiryDate
+    //     };
+
+    //     await createRentMovie(rentData);
+
+    //     alert("Thanh toán thành công!");
+    // };
     return (
         <div className='p-5 max-w-[50%]'>
             <div className='text-white w-full bg-gray-800/20 shadow-lg rounded-xl p-5'>
