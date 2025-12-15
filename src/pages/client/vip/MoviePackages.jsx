@@ -10,9 +10,9 @@ import { Box } from '@mui/system';
 import { style } from '../../../untils/styleContants';
 
 
-function MoviePackages(props) {
+function MoviePackages({movie,setMovie,price}) {
     const { id } = useParams();
-    const [movie, setMovie] = useState({})
+    
     const { isLogin } = useContext(ContextAuth);
     const packages = useContext(ContextPackages);
     const movies = useContext(ContextMovies);
@@ -35,11 +35,9 @@ function MoviePackages(props) {
     const expire = new Date();
     expire.setMonth(expire.getMonth() + (pack?.time || 0));
     const expireDate = expire.toLocaleDateString("vi-VN");
-    const discount = 0;
+    
 
-    const price = movie?.rent
-        ? movie.rent - movie.rent * discount
-        : 0;
+    
     return (
         < div className='w-full p-5 max-w-[50%]' >
             <div className="mt-5 bg-gray-800/20 shadow rounded-lg p-6">

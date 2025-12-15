@@ -27,11 +27,13 @@ const payment = [
         img: "https://vnpay.vn/s1/statics.vnpay.vn/2023/6/0oxhzjmxbksr1686814746087.png"
     },
 ]
-function Paymentmethod({ selectedPlan }) {
+function Paymentmethod({ selectedPlan, price, createSubscription }) {
     const [selected, setSelected] = useState("");
     const [openQR, setOpenQR] = useState(false);
     const [qrValue, setQrValue] = useState("");
 
+
+    const priceUsd = (price / 25000).toFixed(2);
     const handlePayment = () => {
         if (!selected) {
             alert("Bạn chưa chọn phương thức thanh toán!");
@@ -54,27 +56,7 @@ function Paymentmethod({ selectedPlan }) {
         setQrValue(qr);
         setOpenQR(true);
     };
-    // const handlePaymentSuccess = async () => {
-    //     const transactionId = uuidv4().replaceAll("-", "").slice(0, 16).toUpperCase();
 
-    //     const startDate = new Date();
-    //     const expiryDate = new Date(startDate);
-    //     expiryDate.setMonth(expiryDate.getMonth() + 1);
-
-    //     const rentData = {
-    //         transactionId,
-    //         movieId: movie.id,
-    //         isUser: isLogin.email,
-    //         paymentMethod: selected,
-    //         price: selectedPlan.finalPrice.toString(),
-    //         startDate,
-    //         expiryDate
-    //     };
-
-    //     await createRentMovie(rentData);
-
-    //     alert("Thanh toán thành công!");
-    // };
     return (
         <div className='p-5 max-w-[50%]'>
             <div className='text-white w-full bg-gray-800/20 shadow-lg rounded-xl p-5'>
@@ -97,12 +79,22 @@ function Paymentmethod({ selectedPlan }) {
                             style={{ layout: "vertical" }}
                             createOrder={(data, actions) => {
                                 return actions.order.create({
+
                                     purchase_units: [{
                                         amount: {
-                                            value: selectedPlan.finalPrice.toString()
+                                            value: priceUsd
                                         }
                                     }]
                                 });
+                            }}
+                            onApprove={(data, actions) => {
+                                return actions.order.capture().then((details) => {
+                                    const transactionId = details.id; // Lấy ID giao dịch từ PayPal
+                                    createSubscription(transactionId);
+                                });
+                            }}
+                            onError={(err) => {
+                                console.error("PayPal error:", err);
                             }}
                         />
                     </PayPalScriptProvider>

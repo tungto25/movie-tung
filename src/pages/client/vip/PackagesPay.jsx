@@ -5,42 +5,15 @@ import { getOjectById } from '../../../services/reponsitory';
 import { useParams } from 'react-router-dom';
 import { ContextAuth } from '../../../contexts/AuthProvider';
 
-function PackagesPay({ onPlanChange }) {
+function PackagesPay({ basePrice, price, selectedPackage,selectedPackageTime,plans,packages,selected,setSelected }) {
     const { id } = useParams();
-    const [selected, setSelected] = useState("1");
     const { isLogin } = useContext(ContextAuth);
-    const packages = useContext(ContextPackages);
-    const plans = useContext(ContextPlans);
     const today = new Date();
     const formattedDate = `${today.getDate().toString().padStart(2, '0')}/${(today.getMonth() + 1).toString().padStart(2, '0')}/${today.getFullYear()}`;
-
-    const selectedPackage = packages.find(p => p.id === selected);
-    const selectedPackageTime = selectedPackage ? Number(selectedPackage.time) : 0;
     const autoRenewDate = new Date(today);
     autoRenewDate.setMonth(today.getMonth() + selectedPackageTime);
     const formattedAutoRenew = `${autoRenewDate.getDate().toString().padStart(2, '0')}/${(autoRenewDate.getMonth() + 1).toString().padStart(2, '0')}/${autoRenewDate.getFullYear()}`;
 
-    const selectedPlan = getOjectById(plans, selectedPackage?.plan);
-
-    const basePrice = selectedPlan?.price || 0;
-
-    const price = selectedPackage?.discount
-        ? basePrice - (basePrice * selectedPackage.discount / 100)
-        : basePrice;
-    useEffect(() => {
-        if (selectedPackage && selectedPlan) {
-            const finalPrice = selectedPackage.discount
-                ? basePrice - (basePrice * selectedPackage.discount / 100)
-                : basePrice;
-
-            onPlanChange({
-                ...selectedPlan,       
-                time: selectedPackage.time,
-                discount: selectedPackage.discount,
-                finalPrice: finalPrice   
-            });
-        }
-    }, [selectedPackage, selectedPlan]);
     return (
         <div className='w-full p-5 max-w-[50%]'>
             <div className="rounded-xl p-5 shadow-lg shadow-[0_0_10px_3px_rgba(255,255,255) bg-gray-800/20">
